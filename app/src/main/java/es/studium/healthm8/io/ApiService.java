@@ -2,11 +2,13 @@ package es.studium.healthm8.io;
 
 import java.util.List;
 
+import es.studium.healthm8.ui.citas.Citas;
 import es.studium.healthm8.usuarios.Usuarios;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface ApiService
 {
@@ -18,5 +20,12 @@ public interface ApiService
     //Lectura
     @GET("usuarios/getall")
     Call<List<Usuarios>> getAllUsuarios();
+
+    //CITAS
+    //Alta
+
+    //Lectura
+    @GET("/api/citas/usuarios/{idUsuarioFK}")
+    Call<List<Citas>> obtenerCitasPorUsuario(@Path("idUsuarioFK") int idUsuarioFK);
 
 }

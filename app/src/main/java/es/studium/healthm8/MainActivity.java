@@ -20,8 +20,10 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import es.studium.healthm8.databinding.ActivityMainBinding;
+import es.studium.healthm8.ui.citas.CitasFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,10 +33,15 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedpreferences;
 
+    RecyclerView recyclerView;
+
+    public int idUsuarioLogueado;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         //Creamos en memoria la vista de la actividad principal a partir del activity_main.xml
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         //Establecemos el contenido del activity_main.xml a la vista
@@ -59,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_home, R.id.nav_gallery)
                 .setOpenableLayout(drawer)
                 .build();
+
         //Este es el responsable de gestionar la navegación entre los diferentes fragmentos de tu aplicación
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         //Configura la barra de acción para que funcione junto con el controlador de navegación. Habilita la navegación hacia atrás y actualiza la barra de acción
@@ -68,6 +76,15 @@ public class MainActivity extends AppCompatActivity {
 
         //Inicializa las SharedPreferences
         sharedpreferences = getSharedPreferences(LoginActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+
+        // Obtener el idUsuarioLogueado de los extras del intent
+        idUsuarioLogueado = getIntent().getIntExtra("idUsuarioLogueado", -1);
+        Log.d("Mnsj. MainActivity", "idUsuarioLogueado: " + idUsuarioLogueado);
+        // Iniciar CitasFragment y pasar el idUsuarioLogueado como argumento
+        CitasFragment citasFragment = new CitasFragment(idUsuarioLogueado);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.myRecyclerView_Citas, citasFragment)
+                .commit();
     }
     /*Se monta el menú lateral y se asigna el controlador que gestionará lo eventos*/
     @Override

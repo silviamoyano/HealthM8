@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.List;
 
 import es.studium.healthm8.io.ApiAdapter;
+import es.studium.healthm8.ui.citas.CitasFragment;
 import es.studium.healthm8.usuarios.NuevoUsuarioActivity;
 import es.studium.healthm8.usuarios.Usuarios;
 import retrofit2.Call;
@@ -44,6 +45,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static final String Password = "passwordKey";
     //Creamos la sharedPreferences
     SharedPreferences sharedpreferences;
+
+    int idUsuarioLogueado;
+
+    Usuarios usuarios;
 
     //Habilitamos el botón acceder según los campos de texto
     /* Para ello, usamos un rasterador de texto. Cada vez que el EditText cambie,
@@ -140,6 +145,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putString(Nombre, editTextUsuario.getText().toString());
                     editor.putString(Password, editTextPassword.getText().toString());
+                    editor.putInt("idUsuario", idUsuarioLogueado); // Guardar el ID de usuario
                     editor.apply();
                 }
             }
@@ -208,6 +214,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         {
                             if (usuario.getNombreUsuario().equals(nombreUsuario) && usuario.getClaveUsuario().equals(claveUsuario))
                             {
+                                //Guardamos el id de usuario logueado
+                                idUsuarioLogueado = usuario.getIdUsuario();
+                                Log.d("Mnsj. LoginActivity2", "idUsuarioLogueado: " + idUsuarioLogueado);
+
                                 // Acceder al MainActivity
                                 abrirMainActivity();
                                 return; // Salir del bucle si se encuentra una coincidencia
@@ -241,6 +251,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void abrirMainActivity()
     {
         Intent intent = new Intent(this, MainActivity.class);
+        //Pasamos el id al nuevo activity
+        intent.putExtra("idUsuarioLogueado", idUsuarioLogueado);
+        Log.d("Mnsj. LoginActivity", "idUsuarioLogueado: " + idUsuarioLogueado);
         startActivity(intent);
         finish();
     }
