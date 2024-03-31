@@ -10,10 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import es.studium.healthm8.R;
-import es.studium.healthm8.citas.Citas;
 
 /*Representa la vista individual de cada elemento en el RecyclerView*/
 public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHolder>
@@ -31,7 +33,7 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
 
         public CitasViewHolder(@NonNull View v) {
             super(v);
-            //Asociamos los elementos del cardview a la vista
+            //Asociamos los objetos a la vista del CardView
             fechaCita = v.findViewById(R.id.TextView_fechaCita);
             especialidadCita = v.findViewById(R.id.TextView_especialistaCita);
             horaCita = v.findViewById(R.id.TextView_horaCita);
@@ -52,19 +54,32 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
 
     @NonNull
     @Override
-    public CitasAdapter.CitasViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CitasViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.citas_card, parent, false);
         return new CitasViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CitasViewHolder viewHolder, int position) {
-        //Llamamos a la API
+    public void onBindViewHolder(@NonNull CitasViewHolder viewHolder, int position)
+    {
         Citas cita = items.get(position);
-        viewHolder.fechaCita.setText("26/03/2024");
-        viewHolder.horaCita.setText("08:15");
-        viewHolder.especialidadCita.setText("Médico de Familia");
+        //Obtenemos los datos de la BD
+        Date fechaCitaBD = cita.getFechaCita();
+        Time horaCitaBD = cita.getHoraCita();
+        int especialidadCitaBD = cita.getIdEspecialidadFK(); // numero
+
+        //Formatear fecha y hora
+        SimpleDateFormat formateoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaFormateada = formateoFecha.format(fechaCitaBD);
+        SimpleDateFormat formateoHora = new SimpleDateFormat("HH:mm");
+        String horaFormateada = formateoHora.format(horaCitaBD);
+        String especialidadCita = especialidadCitaBD +"";
+
+        //Asignamos los datos a los elementos del cardview
+        viewHolder.fechaCita.setText(fechaFormateada);
+        viewHolder.horaCita.setText(horaFormateada);
+        viewHolder.especialidadCita.setText(especialidadCita);
 
         // Agregamos el clic del elemento del RecyclerView
         viewHolder.itemView.setOnClickListener(new View.OnClickListener()
