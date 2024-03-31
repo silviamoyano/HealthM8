@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">HealthM8</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">HealthM8</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Citas médicas</string>
+    <string name="menu_gallery">Medicamentos</string>
+    <string name="action_eliminarCredenciales">Eliminar Credenciales</string>
+    <string name="action_eliminarUsuario">Eliminar Usuario</string>
+
+    <string name="hint_usuario">Usuario</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="hint_password_repeat">Escriba de nuevo la contraseña</string>
+    <string name="texto_credenciales">¿Guardar credenciales?</string>
+    <string name="boton_acceder">Acceder</string>
+    <string name="boton_regristrarse">Registrarse</string>
+
+    <string name="boton_aceptar">Aceptar</string>
+    <string name="boton_cancelar">Cancelar</string>
+
+
+
+</resources>
