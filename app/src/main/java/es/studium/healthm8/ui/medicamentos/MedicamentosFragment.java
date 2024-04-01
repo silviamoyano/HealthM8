@@ -16,10 +16,8 @@ public class MedicamentosFragment extends Fragment {
 
     private FragmentMedicamentosBinding binding;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        MedicamentosViewModel medicamentosViewModel =
-                new ViewModelProvider(this).get(MedicamentosViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        MedicamentosViewModel medicamentosViewModel = new ViewModelProvider(this).get(MedicamentosViewModel.class);
 
         binding = FragmentMedicamentosBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

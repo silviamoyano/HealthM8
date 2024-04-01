@@ -21,6 +21,8 @@
     <string name="boton_aceptar">Aceptar</string>
     <string name="boton_cancelar">Cancelar</string>
 
+    <string name="boton_nuevo">+</string>
+
 
 
 </resources>

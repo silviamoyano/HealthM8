@@ -117,9 +117,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
-            // Obtener las credenciales y colocarlas en sus respectivos lugares
-            //editTextUsuario.setText(sharedpreferences.getString(Nombre, ""));
-            //editTextPassword.setText(sharedpreferences.getString(Password, ""));
         }
         else
         {
@@ -216,7 +213,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             {
                                 //Guardamos el id de usuario logueado
                                 idUsuarioLogueado = usuario.getIdUsuario();
-                                Log.d("Mnsj. LoginActivity2", "idUsuarioLogueado: " + idUsuarioLogueado);
+                                Log.d("Mnsj. LoginActivityAPI", "idUsuarioLogueado: " + idUsuarioLogueado);
 
                                 // Acceder al MainActivity
                                 abrirMainActivity();
@@ -253,7 +250,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Intent intent = new Intent(this, MainActivity.class);
         //Pasamos el id al nuevo activity
         intent.putExtra("idUsuarioLogueado", idUsuarioLogueado);
-        Log.d("Mnsj. LoginActivity", "idUsuarioLogueado: " + idUsuarioLogueado);
+        Log.d("Mnsj. LoginActivityIntent", "idUsuarioLogueado: " + idUsuarioLogueado);
         startActivity(intent);
         finish();
     }
