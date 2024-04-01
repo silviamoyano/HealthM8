@@ -28,20 +28,7 @@ import retrofit2.Response;
 public class CitasFragment extends Fragment {
 
     private FragmentCitasBinding binding;
-    private RecyclerView recyclerView;
-    private CitasAdapter citasAdapter;
 
-    LoginActivity loginActivity;
-    int idUsuarioFK;
-
-    List<Citas> items;
-    // Constructor vacío requerido por el sistema
-    public CitasFragment() {
-        // Aquí puedes inicializar cualquier variable si es necesario
-    }
-    public CitasFragment(int idUsuarioLogueado) {
-        this.idUsuarioFK = idUsuarioLogueado;
-    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         CitasViewModel citasViewModel = new ViewModelProvider(this).get(CitasViewModel.class);
@@ -49,17 +36,6 @@ public class CitasFragment extends Fragment {
         binding = FragmentCitasBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        /*Para meter el listado de las citas de la BD asociadas al usuario*/
-        recyclerView = root.findViewById(R.id.myRecyclerView_Citas);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        // Obtener el idUsuarioLogueado de la MainActivity
-        idUsuarioFK = ((MainActivity) requireActivity()).idUsuarioLogueado;
-
-        Log.d("Mnsj. CitasFragment", "idUsuarioLogueado: " + idUsuarioFK);
-
-        //Llamamos a la API para obtener las citas del usuario
-        obtenerCitasPorUsuario(idUsuarioFK);
         return root;
     }
 
@@ -68,40 +44,5 @@ public class CitasFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-    }
-
-    public void obtenerCitasPorUsuario(int idUsuarioFK) {
-        // Llamamos a la API
-        if (idUsuarioFK != -1)
-        {
-            // Llamamos a la API con el idUsuarioFK obtenido
-            Call<List<Citas>> callAllCitas = ApiAdapter.getApiService().obtenerCitasPorUsuario(idUsuarioFK);
-            callAllCitas.enqueue(new Callback<List<Citas>>() {
-                @Override
-                public void onResponse(Call<List<Citas>> call, Response<List<Citas>> response) {
-                    if (response.isSuccessful())
-                    {
-                        List<Citas> listadoCitas = response.body();
-                        if (listadoCitas != null && !listadoCitas.isEmpty())
-                        {
-                            // Creamos el adaptador y asignamos los datos al RecyclerView
-                            citasAdapter = new CitasAdapter(listadoCitas, NavHostFragment.findNavController(CitasFragment.this), requireContext());
-                            recyclerView.setAdapter(citasAdapter);
-                            items = listadoCitas;
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List<Citas>> call, Throwable t) {
-                    Toast.makeText(requireContext(), "No hemos recibido respuesta de la API", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
-    //Método para actualizar el adaptador después de obtener la lista de pedidos
-    public void actualizarAdaptador(List<Citas> listadoCitas) {
-        citasAdapter = new CitasAdapter(listadoCitas, NavHostFragment.findNavController(CitasFragment.this), requireContext());
-        //recycler.setAdapter(citasAdapter);
     }
 }

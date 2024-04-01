@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_citas">
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/nav_citas"
         android:name="es.studium.healthm8.ui.citas.CitasFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_citas" />
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_medicamentos"
         android:name="es.studium.healthm8.ui.medicamentos.MedicamentosFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_medicamentos" />

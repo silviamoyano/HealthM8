@@ -25,17 +25,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import es.studium.healthm8.databinding.ActivityMainBinding;
 import es.studium.healthm8.ui.citas.CitasFragment;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity
+{
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
-
     SharedPreferences sharedpreferences;
-
-    RecyclerView recyclerView;
-
-    public int idUsuarioLogueado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,22 +43,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         //Configura la barra de herramientas (toolbar)
         setSupportActionBar(binding.appBarMain.toolbar);
-
-        //Botón flotante
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        
         //Obtenemos una referencia del contenedor del menú lateral
         DrawerLayout drawer = binding.drawerLayout;
         //Obtenemos una referencia del menú lateral. Mostramos la lista de elementos del menú.
         NavigationView navigationView = binding.navView;
         // Configuramos los items del menú lateral
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery)
+                R.id.nav_citas,
+                R.id.nav_medicamentos)
                 .setOpenableLayout(drawer)
                 .build();
 
@@ -76,15 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Inicializa las SharedPreferences
         sharedpreferences = getSharedPreferences(LoginActivity.MyPREFERENCES, Context.MODE_PRIVATE);
-
-        // Obtener el idUsuarioLogueado de los extras del intent
-        idUsuarioLogueado = getIntent().getIntExtra("idUsuarioLogueado", -1);
-        Log.d("Mnsj. MainActivity", "idUsuarioLogueado: " + idUsuarioLogueado);
-        // Iniciar CitasFragment y pasar el idUsuarioLogueado como argumento
-        CitasFragment citasFragment = new CitasFragment(idUsuarioLogueado);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.myRecyclerView_Citas, citasFragment)
-                .commit();
     }
     /*Se monta el menú lateral y se asigna el controlador que gestionará lo eventos*/
     @Override

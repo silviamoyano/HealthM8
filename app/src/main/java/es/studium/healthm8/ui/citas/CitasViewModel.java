@@ -8,7 +8,7 @@ public class CitasViewModel extends ViewModel {
     private final MutableLiveData<String> mText;
     public CitasViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        mText.setValue("This is CITAS fragment");
     }
 
     public LiveData<String> getText() {
