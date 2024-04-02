@@ -1,6 +1,5 @@
 package es.studium.healthm8.ui.citas;
 
-import java.sql.Time;
 import java.util.Date;
 
 public class Citas

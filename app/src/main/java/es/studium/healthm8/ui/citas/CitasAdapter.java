@@ -74,15 +74,14 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
         String horaCitaBD = cita.getHoraCita();
         int especialidadCitaBD = cita.getIdEspecialidadFK(); // numero
 
-        Log.d("Mnsj.CitasAdapter", "fechaCitaBD: " + fechaCitaBD);
-        Log.d("Mnsj.CitasAdapter", "horaCitaBD: " + horaCitaBD);
-        Log.d("Mnsj.CitasAdapter", "especialidadCitaBD: " + especialidadCitaBD);
+        Log.d("Mnsj. CitasAdapter", "fechaCitaBD: " + fechaCitaBD);
+        Log.d("Mnsj. CitasAdapter", "horaCitaBD: " + horaCitaBD);
+        Log.d("Mnsj. CitasAdapter", "especialidadCitaBD: " + especialidadCitaBD);
 
         //Formatear fecha y hora
         SimpleDateFormat formateoFecha = new SimpleDateFormat("dd/MM/yyyy");
         String fechaFormateada = formateoFecha.format(fechaCitaBD);
-        SimpleDateFormat formateoHora = new SimpleDateFormat("HH:mm");
-        String horaFormateada = formateoHora.format(horaCitaBD);
+        String horaFormateada = formateoHora(horaCitaBD);
         String especialidadCita = especialidadCitaBD +"";
 
         //Asignamos los datos a los elementos del cardview
@@ -99,10 +98,19 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
                 //Crear Bundle y agregar datos
                 Bundle args = new Bundle();
                 args.putString("fechaCita", fechaFormateada);
-                args.putString("horaCita", horaFormateada);
+                args.putString("horaCita", horaCitaBD);
                 args.putInt("especialidadCita", especialidadCitaBD);
 
             }
         });
+    }
+
+    // Método para formatear la hora
+    public String formateoHora(String hora) {
+        String[] partesHora = hora.split(":");
+        int horaInt = Integer.parseInt(partesHora[0]);
+        int minutosInt = Integer.parseInt(partesHora[1]);
+
+        return String.format("%02d:%02d", horaInt, minutosInt);
     }
 }
