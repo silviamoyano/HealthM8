@@ -40,9 +40,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     /*SharedPreferences*/
     //Nombre del xml
     public static final String MyPREFERENCES = "LoginCredentials";
-    /*Los campos que vamos a guardar*/
+    //Los campos que vamos a guardar
     public static final String Nombre = "nombreKey";
     public static final String Password = "passwordKey";
+    public static final String idUsuarioLogin = "idUsuario";
     //Creamos la sharedPreferences
     SharedPreferences sharedpreferences;
 
@@ -137,14 +138,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             {
                 //Leer todos los usuarios de la API
                 obtenerUsuarios();
-                if (switchGuardarCredenciales.isChecked())
-                {
-                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                    editor.putString(Nombre, editTextUsuario.getText().toString());
-                    editor.putString(Password, editTextPassword.getText().toString());
-                    editor.putInt("idUsuario", idUsuarioLogueado); // Guardar el ID de usuario
-                    editor.apply();
-                }
+
             }
         }
         //Botón Resgistrarse
@@ -214,7 +208,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 //Guardamos el id de usuario logueado
                                 idUsuarioLogueado = usuario.getIdUsuario();
                                 Log.d("Mnsj. LoginActivity", "API - idUsuarioLogueado: " + idUsuarioLogueado);
-
+                                if (switchGuardarCredenciales.isChecked())
+                                {
+                                    //Guardamos el nombre, la clave y el id de usuario logueado en el sharedPreferences
+                                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                                    editor.putString(Nombre, editTextUsuario.getText().toString());
+                                    editor.putString(Password, editTextPassword.getText().toString());
+                                    editor.putInt(idUsuarioLogin, usuario.getIdUsuario());
+                                    editor.apply();
+                                    Log.d("Mnsj. LoginActivity", "API - idUsuarioLogin: " + idUsuarioLogueado);
+                                }
                                 // Acceder al MainActivity
                                 abrirMainActivity();
                                 return; // Salir del bucle si se encuentra una coincidencia

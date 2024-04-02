@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity
     private ActivityMainBinding binding;
 
     SharedPreferences sharedpreferences;
-    private int idUsuarioLogueado;
+    public int idUsuarioLogueado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -53,24 +53,23 @@ public class MainActivity extends AppCompatActivity
         //Establecemos el contenido del activity_main.xml a la vista
         setContentView(binding.getRoot());
 
+        //Inicializa las SharedPreferences
+        sharedpreferences = getSharedPreferences(LoginActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+
         //Obtenemos el idUsuario de los extras del Intent
         idUsuarioLogueado = getIntent().getIntExtra("idUsuarioLogueado", 0);
-        Log.d("Mnsj. MainActivity", "idUsuarioLogueado: " + idUsuarioLogueado);
 
-        //Si no se proporciona el idUsuario
-        if (idUsuarioLogueado == 0)
-        {
-            // Manejar el caso en que no se proporciona el idUsuario
-            Log.d("Mnsj. MainActivity", "Error: No se proporciona el idUsuario");
-            finish(); // Finalizar la actividad actual si el idUsuario no está disponible
-            return;
+        //Comprobamos si el idUsuarioLogueado es 0
+        if (idUsuarioLogueado == 0) {
+            // Si es 0, intentamos obtenerlo de SharedPreferences
+            idUsuarioLogueado = sharedpreferences.getInt(LoginActivity.idUsuarioLogin, 0);
+            // Log para verificar si se ha recuperado el idUsuarioLogueado de SharedPreferences
+            Log.d("Mnsj. MainActivity", "idUsuarioLogueado recuperado de SharedPreferences: " + idUsuarioLogueado);
+        } else {
+            // Si se pasó desde LoginActivity, se muestra en el log
+            Log.d("Mnsj. MainActivity", "idUsuarioLogueado pasado desde LoginActivity: " + idUsuarioLogueado);
         }
-        //Obtenemos el idUsuarioLogueado
-        else
-        {
-            // Llamar al método para obtener las citas del usuario
-            obtenerCitasUsuario(idUsuarioLogueado);
-        }
+
         //Configura la barra de herramientas (toolbar)
         setSupportActionBar(binding.appBarMain.toolbar);
 
@@ -92,9 +91,31 @@ public class MainActivity extends AppCompatActivity
         //La selección del menú lateral cambiará automáticamente según la navegación.
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        //Inicializa las SharedPreferences
-        sharedpreferences = getSharedPreferences(LoginActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+        /*Verificamos si es la primera vez que se crea el MainActivity.
+        * Si es la primera vez es igual a null. Por lo tanto, mostramos CitasFragment
+        * y pasamos los argumentos necesarios.
+        * Lo colocamos al final del onCreate para que el MainActivity se cargue por completo
+        * antes de pasarle los args al fragmento.*/
+        if (savedInstanceState == null) {
+            mostrarCitasFragment();
+        }
     }
+    //Método para crear el fragmento Citas al que le pasamos como argumento el idUsuarioLogueado
+    private void mostrarCitasFragment()
+    {
+        CitasFragment citasFragment = new CitasFragment();
+
+        // Crear un Bundle para pasar argumentos
+        Bundle args = new Bundle();
+        args.putInt("idUsuarioLogueado", idUsuarioLogueado);
+        citasFragment.setArguments(args);
+
+        // Mostrar CitasFragment
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.nav_host_fragment_content_main, citasFragment)
+                .commit();
+    }
+
     /*Se monta el menú lateral y se asigna el controlador que gestionará lo eventos*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -185,66 +206,8 @@ public class MainActivity extends AppCompatActivity
                 .create();
         dialogoEliminarUsuario.show();
     }
-    public void obtenerCitasUsuario(int idUsuario) {
-        //Llamamos a la API
-        Call<List<Citas>>callCitasPorUsuario = ApiAdapter.getApiService().obtenerCitasPorUsuario(idUsuario);
-        if(callCitasPorUsuario != null)
-        {
-            callCitasPorUsuario.enqueue(new Callback<List<Citas>>()
-            {
-                @Override
-                public void onResponse(Call<List<Citas>> call, Response<List<Citas>> response) {
-                    if(response.isSuccessful())
-                    {
-                        List<Citas> listadoCitasDelUsuario = response.body();
-                        Log.d("Mnsj. obtenerCitasUsuario","response.body() - " +response.message());
-                        for (Citas cita : listadoCitasDelUsuario) {
-                            Log.d("Citas", "ID de cita: " + cita.getIdCita());
-                            // Aquí puedes imprimir o manejar otros datos de la cita según tu lógica
-                        }
-                        // Log para imprimir la respuesta completa de la API
-                        Log.d("Mnsj. obtenerCitasUsuario","Tamaño lista: "+listadoCitasDelUsuario.size()+"");
-                        // Convertir el listado de citas a JSON
-                        Gson gson = new Gson();
-                        String json = gson.toJson(listadoCitasDelUsuario);
-
-                        // Imprimir el JSON en la consola
-                        Log.d("JSON_RESPONSE", json);
-                        // Llama al método actualizarCitas en el fragmento CitasFragment
-                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
-                        if (navHostFragment != null) {
-                            Fragment fragment = navHostFragment.getChildFragmentManager().getPrimaryNavigationFragment();
-                            if (fragment instanceof CitasFragment) {
-                                CitasFragment citasFragment = (CitasFragment) fragment;
-                                citasFragment.actualizarCitas(listadoCitasDelUsuario);
-                            } else {
-                                Log.e("MainActivity", "El fragmento no es una instancia de CitasFragment");
-                            }
-                        } else {
-                            Log.e("MainActivity", "NavHostFragment no encontrado");
-                        }
-                    }
-                    else {
-                        Log.d("Mnsj. obtenerCitasUsuario", "La respuesta no es exitosa");
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List<Citas>> call, Throwable t) {
-                    Log.d("Mnsj.obtenerCitasUsuario-onFailure", "No hemos recibido respuesta de la API");
-                    Log.e("Citas", "Error al obtener citas: " + t.getMessage(), t);
-                }
-            });
-        }
-        else
-        {
-            Log.d("Mnsj.obtenerCitasUsuario", "callCitasPorUsuario es null");
-        }
-    }
     public void mostrarToast(String mensaje)
     {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
     }
-
 }
