@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             {
                 editTextPassword.setError("Debe contener números, un caracter especial y una letra");
             }
-            Log.d("MnsjAfterTextChanged.", "El usuario y la contraseña son correctos");
+            Log.d("Mnsj. LoginActivity", "AfterTextChanged - El usuario y la contraseña son correctos");
             btnAcceder.setEnabled(camposCumplimentados());
         }
     };
@@ -162,9 +162,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     {
         //Obtenemos los datos de los campos
         String usuario = editTextUsuario.getText().toString();
-        Log.d("Mnsj.", "editTextUsuario: " + usuario);
+        Log.d("Mnsj. LoginActivity", "editTextUsuario: " + usuario);
         String password = editTextPassword.getText().toString();
-        Log.d("Mnsj.", "editTextPassword: " + password);
+        Log.d("Mnsj. LoginActivity", "editTextPassword: " + password);
 
         // Para comprobar el formato de la contraseña
         boolean passwordValida = comprobarPassword(password);
@@ -174,8 +174,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return false;  // Retorna false ya que la contraseña no es válida
         }
 
-        Log.d("Mnsj.", "camposCumplimentados - Campos Completos: " + (!usuario.isEmpty() && !password.isEmpty()));
-        Log.d("Mnsj.", "camposCumplimentados - Password Válida: " + passwordValida);
+        Log.d("Mnsj. LoginActivity", "camposCumplimentados - Campos Completos: " + (!usuario.isEmpty() && !password.isEmpty()));
+        Log.d("Mnsj. LoginActivity", "camposCumplimentados - Password Válida: " + passwordValida);
 
         return true;  // Retorna true solo si los campos están completos y la contraseña es válida
     }
@@ -186,7 +186,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         boolean passwordValida = password.matches("^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=!.;])(?=\\S+$).*$");
 
-        Log.d("Mnsj.", "comprobarPassword: " + passwordValida);
+        Log.d("Mnsj. LoginActivity", "comprobarPassword: " + passwordValida);
 
         return passwordValida;
     }
@@ -213,7 +213,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             {
                                 //Guardamos el id de usuario logueado
                                 idUsuarioLogueado = usuario.getIdUsuario();
-                                Log.d("Mnsj. LoginActivityAPI", "idUsuarioLogueado: " + idUsuarioLogueado);
+                                Log.d("Mnsj. LoginActivity", "API - idUsuarioLogueado: " + idUsuarioLogueado);
 
                                 // Acceder al MainActivity
                                 abrirMainActivity();
@@ -232,14 +232,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 else
                 {
                     // Manejar el error de la llamada a la API
-                    Log.d("Error", "Error al leer usuarios: " + response.message());
+                    Log.d("Mnsj. LoginActivity", "Error al leer usuarios: " + response.message());
                     mostrarToast("Error al leer usuarios");
                 }
             }
             @Override
             public void onFailure(Call<List<Usuarios>> call, Throwable t)
             {
-                Log.d("Error", "Error al leer usuarios: " + t.getMessage());
+                Log.d("Mnsj. LoginActivity", "Error al leer usuarios: " + t.getMessage());
                 mostrarToast("Error al leer usuarios");
             }
         });
@@ -250,7 +250,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Intent intent = new Intent(this, MainActivity.class);
         //Pasamos el id al nuevo activity
         intent.putExtra("idUsuarioLogueado", idUsuarioLogueado);
-        Log.d("Mnsj. LoginActivityIntent", "idUsuarioLogueado: " + idUsuarioLogueado);
+        Log.d("Mnsj. LoginActivity", "Intent - idUsuarioLogueado: " + idUsuarioLogueado);
         startActivity(intent);
         finish();
     }
