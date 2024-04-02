@@ -15,7 +15,7 @@
             android:layout_height="76dp">
 
             <TextView
-                android:id="@+id/TextView_fechaCita"
+                android:id="@+id/nombreMedicamento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -23,11 +23,11 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="11dp"
-                android:text="26/03/2024"
+                android:text="Pastilla Tesión"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/TextView_especialista"
+                android:id="@+id/tomaMedicamento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -35,20 +35,8 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="40dp"
-                android:text="08:15" />
+                android:text="1 pastilla" />
 
-            <TextView
-                android:id="@+id/TextView_hora"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="192dp"
-                android:layout_toEndOf="@+id/TextView_especialista"
-                android:text="Médico de Cabecera" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

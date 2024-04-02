@@ -12,18 +12,28 @@ import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import es.studium.healthm8.databinding.ActivityMainBinding;
+import es.studium.healthm8.io.ApiAdapter;
+import es.studium.healthm8.ui.citas.Citas;
 import es.studium.healthm8.ui.citas.CitasFragment;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -31,6 +41,7 @@ public class MainActivity extends AppCompatActivity
     private ActivityMainBinding binding;
 
     SharedPreferences sharedpreferences;
+    private int idUsuarioLogueado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,9 +52,28 @@ public class MainActivity extends AppCompatActivity
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         //Establecemos el contenido del activity_main.xml a la vista
         setContentView(binding.getRoot());
+
+        //Obtenemos el idUsuario de los extras del Intent
+        idUsuarioLogueado = getIntent().getIntExtra("idUsuarioLogueado", 0);
+        Log.d("Mnsj. MainActivity", "idUsuarioLogueado: " + idUsuarioLogueado);
+
+        //Si no se proporciona el idUsuario
+        if (idUsuarioLogueado == 0)
+        {
+            // Manejar el caso en que no se proporciona el idUsuario
+            Log.d("Mnsj. MainActivity", "Error: No se proporciona el idUsuario");
+            finish(); // Finalizar la actividad actual si el idUsuario no está disponible
+            return;
+        }
+        //Obtenemos el idUsuarioLogueado
+        else
+        {
+            // Llamar al método para obtener las citas del usuario
+            obtenerCitasUsuario(idUsuarioLogueado);
+        }
         //Configura la barra de herramientas (toolbar)
         setSupportActionBar(binding.appBarMain.toolbar);
-        
+
         //Obtenemos una referencia del contenedor del menú lateral
         DrawerLayout drawer = binding.drawerLayout;
         //Obtenemos una referencia del menú lateral. Mostramos la lista de elementos del menú.
@@ -155,8 +185,66 @@ public class MainActivity extends AppCompatActivity
                 .create();
         dialogoEliminarUsuario.show();
     }
+    public void obtenerCitasUsuario(int idUsuario) {
+        //Llamamos a la API
+        Call<List<Citas>>callCitasPorUsuario = ApiAdapter.getApiService().obtenerCitasPorUsuario(idUsuario);
+        if(callCitasPorUsuario != null)
+        {
+            callCitasPorUsuario.enqueue(new Callback<List<Citas>>()
+            {
+                @Override
+                public void onResponse(Call<List<Citas>> call, Response<List<Citas>> response) {
+                    if(response.isSuccessful())
+                    {
+                        List<Citas> listadoCitasDelUsuario = response.body();
+                        Log.d("Mnsj. obtenerCitasUsuario","response.body() - " +response.message());
+                        for (Citas cita : listadoCitasDelUsuario) {
+                            Log.d("Citas", "ID de cita: " + cita.getIdCita());
+                            // Aquí puedes imprimir o manejar otros datos de la cita según tu lógica
+                        }
+                        // Log para imprimir la respuesta completa de la API
+                        Log.d("Mnsj. obtenerCitasUsuario","Tamaño lista: "+listadoCitasDelUsuario.size()+"");
+                        // Convertir el listado de citas a JSON
+                        Gson gson = new Gson();
+                        String json = gson.toJson(listadoCitasDelUsuario);
+
+                        // Imprimir el JSON en la consola
+                        Log.d("JSON_RESPONSE", json);
+                        // Llama al método actualizarCitas en el fragmento CitasFragment
+                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
+                        if (navHostFragment != null) {
+                            Fragment fragment = navHostFragment.getChildFragmentManager().getPrimaryNavigationFragment();
+                            if (fragment instanceof CitasFragment) {
+                                CitasFragment citasFragment = (CitasFragment) fragment;
+                                citasFragment.actualizarCitas(listadoCitasDelUsuario);
+                            } else {
+                                Log.e("MainActivity", "El fragmento no es una instancia de CitasFragment");
+                            }
+                        } else {
+                            Log.e("MainActivity", "NavHostFragment no encontrado");
+                        }
+                    }
+                    else {
+                        Log.d("Mnsj. obtenerCitasUsuario", "La respuesta no es exitosa");
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Citas>> call, Throwable t) {
+                    Log.d("Mnsj.obtenerCitasUsuario-onFailure", "No hemos recibido respuesta de la API");
+                    Log.e("Citas", "Error al obtener citas: " + t.getMessage(), t);
+                }
+            });
+        }
+        else
+        {
+            Log.d("Mnsj.obtenerCitasUsuario", "callCitasPorUsuario es null");
+        }
+    }
     public void mostrarToast(String mensaje)
     {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
     }
+
 }

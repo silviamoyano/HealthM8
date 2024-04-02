@@ -1,6 +1,8 @@
 package es.studium.healthm8.ui.citas;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,9 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
     private List<Citas> items;
     private NavController navController;
     private  Context context;
+
+    public void setItems(List<Citas> listaCitasUsuario) {this.items = items;}
+
 
     public static class CitasViewHolder extends RecyclerView.ViewHolder
     {
@@ -66,8 +71,12 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
         Citas cita = items.get(position);
         //Obtenemos los datos de la BD
         Date fechaCitaBD = cita.getFechaCita();
-        Time horaCitaBD = cita.getHoraCita();
+        String horaCitaBD = cita.getHoraCita();
         int especialidadCitaBD = cita.getIdEspecialidadFK(); // numero
+
+        Log.d("Mnsj.CitasAdapter", "fechaCitaBD: " + fechaCitaBD);
+        Log.d("Mnsj.CitasAdapter", "horaCitaBD: " + horaCitaBD);
+        Log.d("Mnsj.CitasAdapter", "especialidadCitaBD: " + especialidadCitaBD);
 
         //Formatear fecha y hora
         SimpleDateFormat formateoFecha = new SimpleDateFormat("dd/MM/yyyy");
@@ -86,7 +95,14 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
         {
             @Override
             public void onClick(View v)
-            {}
+            {
+                //Crear Bundle y agregar datos
+                Bundle args = new Bundle();
+                args.putString("fechaCita", fechaFormateada);
+                args.putString("horaCita", horaFormateada);
+                args.putInt("especialidadCita", especialidadCitaBD);
+
+            }
         });
     }
 }
