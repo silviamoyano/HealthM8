@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 import es.studium.healthm8.R;
+import es.studium.healthm8.ui.especialidad.Especialidades;
 
 /*Representa la vista individual de cada elemento en el RecyclerView*/
 public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHolder>
@@ -72,22 +73,23 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
         //Obtenemos los datos de la BD
         Date fechaCitaBD = cita.getFechaCita();
         String horaCitaBD = cita.getHoraCita();
-        int especialidadCitaBD = cita.getIdEspecialidadFK(); // numero
+        Especialidades especialidadesBD = cita.getEspecialidades();//obtengo: id y nombre
+        String nombreEspecialidad = cita.getEspecialidades().getNombreEspecialidad();//nombre
 
         Log.d("Mnsj. CitasAdapter", "fechaCitaBD: " + fechaCitaBD);
         Log.d("Mnsj. CitasAdapter", "horaCitaBD: " + horaCitaBD);
-        Log.d("Mnsj. CitasAdapter", "especialidadCitaBD: " + especialidadCitaBD);
+        Log.d("Mnsj. CitasAdapter", "especialidadCitaBD: " + nombreEspecialidad);
 
         //Formatear fecha y hora
         SimpleDateFormat formateoFecha = new SimpleDateFormat("dd/MM/yyyy");
         String fechaFormateada = formateoFecha.format(fechaCitaBD);
         String horaFormateada = formateoHora(horaCitaBD);
-        String especialidadCita = especialidadCitaBD +"";
+        String especialidadCita = nombreEspecialidad;
 
         //Asignamos los datos a los elementos del cardview
         viewHolder.fechaCita.setText(fechaFormateada);
         viewHolder.horaCita.setText(horaFormateada);
-        viewHolder.especialidadCita.setText(especialidadCita);
+        viewHolder.especialidadCita.setText(nombreEspecialidad);
 
         // Agregamos el clic del elemento del RecyclerView
         viewHolder.itemView.setOnClickListener(new View.OnClickListener()
@@ -99,7 +101,7 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
                 Bundle args = new Bundle();
                 args.putString("fechaCita", fechaFormateada);
                 args.putString("horaCita", horaCitaBD);
-                args.putInt("especialidadCita", especialidadCitaBD);
+                args.putString("especialidadCita", nombreEspecialidad);
 
             }
         });

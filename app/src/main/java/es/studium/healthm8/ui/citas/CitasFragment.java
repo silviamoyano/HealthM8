@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -22,6 +23,7 @@ import java.util.List;
 import es.studium.healthm8.R;
 import es.studium.healthm8.databinding.FragmentCitasBinding;
 import es.studium.healthm8.io.ApiAdapter;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,12 +31,14 @@ import retrofit2.Response;
 public class CitasFragment extends Fragment {
 
     private FragmentCitasBinding binding;
-
-     RecyclerView recyclerView;
+    RecyclerView recyclerView;
     private CitasAdapter citasAdapter;
     private List<Citas> listaCitasUsuario = new ArrayList<>();
     NavController navController;
     private int idUsuarioLogueado;
+    Button btnNuevaCitas;
+
+    DialogoNuevaCita dialogoNuevaCita;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,9 +69,23 @@ public class CitasFragment extends Fragment {
         obtenerCitasUsuario(idUsuarioLogueado);
         // Actualizar la vista con las citas obtenidas
         //actualizarCitas(listaCitasUsuario);
+
+        //Asignamos el botón a vista
+        btnNuevaCitas = root.findViewById(R.id.button_Nuevo);
+
+        //Agregamos el Listener al botón
+        btnNuevaCitas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Abrimos el diálogo para dar de alta una nueva cita
+                abrirDialogoNuevaCita();
+
+            }
+        });
         return root;
     }
 
+   //Método para obtener las citas del usuario logueado
     public void obtenerCitasUsuario(int idUsuario) {
         //Llamamos a la API
         Call<List<Citas>>callCitasPorUsuario = ApiAdapter.getApiService().obtenerCitasPorUsuario(idUsuario);
@@ -81,7 +99,9 @@ public class CitasFragment extends Fragment {
                     {
                         List<Citas> listadoCitasDelUsuario = response.body();
                         Log.d("Mnsj. CitasFragment","obtenerCitasUsuario - response.body() - " +response.message());
-                        for (Citas cita : listadoCitasDelUsuario) {
+                        for (Citas cita : listadoCitasDelUsuario)
+                        {
+
                             Log.d("Mnsj. CitasFragment", "obtenerCitasUsuario - ID de cita: " + cita.getIdCita());
                             // Aquí puedes imprimir o manejar otros datos de la cita según tu lógica
                         }
@@ -106,8 +126,8 @@ public class CitasFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<List<Citas>> call, Throwable t) {
-                    Log.d("Mnsj. CitasFragmentobtenerCitas", "onFailure: No hemos recibido respuesta de la API");
-                    Log.e("Mnsj. CitasFragment", "Error al obtener citas: " + t.getMessage(), t);
+                    Log.d("Mnsj. CitasFragment", "obtenerCitasUsuario - onFailure: No hemos recibido respuesta de la API");
+                    Log.e("Mnsj. CitasFragment", "obtenerCitasUsuario - onFailure: Error al obtener citas: " + t.getMessage(), t);
                 }
             });
         }
@@ -116,7 +136,27 @@ public class CitasFragment extends Fragment {
             Log.d("Mnsj. CitasFragment", "callCitasPorUsuario es null");
         }
     }
-    public void actualizarCitas(List<Citas> listaCitasUsuario) {
+
+    //Método para abrir el diálogo para dar de alta una nueva cita
+    public void abrirDialogoNuevaCita()
+    {
+        //Creamos DialogoNuevaCita
+         dialogoNuevaCita = new DialogoNuevaCita();
+        //Convertimos el dialogo en modal
+        dialogoNuevaCita.setCancelable(false);
+        //Pasamos el idUsuario como argumento
+        Bundle args = new Bundle();
+        args.putInt("idUsuarioLogueado", idUsuarioLogueado);
+        dialogoNuevaCita.setArguments(args);
+        //Mostramos el dialogo
+        /* Como el dialogo lo abrimos en un fragment tenemos que escribir:
+         * requireActivity() para obtener una referencia a la actividad asociada (MainActivity)*/
+        dialogoNuevaCita.show(requireActivity().getSupportFragmentManager(),"Nueva Cita");
+        Log.d("Mnsj. CitasFragment", "Abrimos dialogo nueva cita");
+    }
+
+
+    /*public void actualizarCitas(List<Citas> listaCitasUsuario) {
         // Actualizar el conjunto de datos del adaptador
         citasAdapter.setItems(listaCitasUsuario);
         // Notificar al adaptador que los datos han cambiado
@@ -134,5 +174,5 @@ public class CitasFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-    }
+    }*/
 }

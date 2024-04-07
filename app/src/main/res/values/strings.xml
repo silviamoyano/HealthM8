@@ -23,6 +23,15 @@
 
     <string name="boton_nuevo">+</string>
 
+    <!-- Nueva cita -->
+    <string name="hint_fecha">Escriba la fecha: dd/mm/yyyy</string>
+    <string name="hint_hora">Escriba la hora: HH:mm</string>
+    <string name="hint_lugar">Escriba el lugar de la cita</string>
+    <string name="hint_nombreMedico">Escriba el nombre del médico</string>
+    <string name="esOnline">¿Es online?</string>
+    <string name="esTelefonica">¿Es telefónica?</string>
+    <string name="boton_recodatorioCita">Recordatorio Cita</string>
+
 
 
 </resources>

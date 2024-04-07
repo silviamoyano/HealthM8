@@ -36,7 +36,8 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="40dp"
-                android:text="08:15" />
+                android:text="Médico de Cabecera" />
+
 
             <TextView
                 android:id="@+id/TextView_horaCita"
@@ -49,7 +50,7 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="192dp"
                 android:layout_toEndOf="@+id/TextView_especialistaCita"
-                android:text="Médico de Cabecera" />
+                android:text="08:15" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

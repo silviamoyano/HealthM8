@@ -6,36 +6,24 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
-import com.google.gson.Gson;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
 
 import es.studium.healthm8.databinding.ActivityMainBinding;
-import es.studium.healthm8.io.ApiAdapter;
-import es.studium.healthm8.ui.citas.Citas;
 import es.studium.healthm8.ui.citas.CitasFragment;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import es.studium.healthm8.ui.citas.OnDialogoNuevaCitaListener;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity implements OnDialogoNuevaCitaListener
 {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
@@ -209,5 +197,20 @@ public class MainActivity extends AppCompatActivity
     public void mostrarToast(String mensaje)
     {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDialogoAceptarListener() {
+
+    }
+
+    @Override
+    public void onDialogoCancelarListener() {
+
+    }
+
+    @Override
+    public void onDialogoRecordatorioCitaListener() {
+
     }
 }
