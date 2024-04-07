@@ -2,6 +2,8 @@ package es.studium.healthm8.ui.citas;
 
 import java.util.Date;
 
+import es.studium.healthm8.ui.especialidad.Especialidades;
+
 public class Citas
 {
     //Atributos
@@ -12,7 +14,7 @@ public class Citas
     private int esOnline;
     private int esTelefonica;
     private String nombreMedico;
-    private int idEspecialidadFK;
+    private Especialidades especialidades;
     private int idUsuarioFK;
 
     //Constructor vacío o por defecto
@@ -25,11 +27,12 @@ public class Citas
         esOnline = 0;
         esTelefonica = 0;
         nombreMedico = "";
-        idEspecialidadFK = 0;
         idUsuarioFK = 0;
     }
     //Constructor por parámetros
-    public Citas(int idCita, Date fechaCita, String horaCita, String lugarCita, int esOnline, int esTelefonica, String nombreMedico, int idEspecialidadFK, int idUsuarioFK) {
+
+
+    public Citas(int idCita, Date fechaCita, String horaCita, String lugarCita, int esOnline, int esTelefonica, String nombreMedico, Especialidades especialidades, int idUsuarioFK) {
         this.idCita = idCita;
         this.fechaCita = fechaCita;
         this.horaCita = horaCita;
@@ -37,15 +40,15 @@ public class Citas
         this.esOnline = esOnline;
         this.esTelefonica = esTelefonica;
         this.nombreMedico = nombreMedico;
-        this.idEspecialidadFK = idEspecialidadFK;
+        this.especialidades = especialidades;
         this.idUsuarioFK = idUsuarioFK;
     }
 
-    public Citas(int idCita, Date fechaCita, String horaCita, int idEspecialidadFK) {
+    public Citas(int idCita, Date fechaCita, String horaCita, Especialidades especialidades) {
         this.idCita = idCita;
         this.fechaCita = fechaCita;
         this.horaCita = horaCita;
-        this.idEspecialidadFK = idEspecialidadFK;
+        this.especialidades = especialidades;
 
     }
     //Métodos inspectores (getter and setter)
@@ -105,12 +108,12 @@ public class Citas
         this.nombreMedico = nombreMedico;
     }
 
-    public int getIdEspecialidadFK() {
-        return idEspecialidadFK;
+    public Especialidades getEspecialidades() {
+        return especialidades;
     }
 
-    public void setIdEspecialidadFK(int idEspecialidadFK) {
-        this.idEspecialidadFK = idEspecialidadFK;
+    public void setEspecialidades(Especialidades especialidades) {
+        this.especialidades = especialidades;
     }
 
     public int getIdUsuarioFK() {

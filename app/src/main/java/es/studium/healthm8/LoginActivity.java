@@ -20,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.List;
 
 import es.studium.healthm8.io.ApiAdapter;
-import es.studium.healthm8.ui.citas.CitasFragment;
 import es.studium.healthm8.usuarios.NuevoUsuarioActivity;
 import es.studium.healthm8.usuarios.Usuarios;
 import retrofit2.Call;
