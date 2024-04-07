@@ -8,7 +8,7 @@ public class Citas
 {
     //Atributos
     private int idCita;
-    private Date fechaCita;
+    private String fechaCita;
     private String horaCita;
     private String lugarCita;
     private int esOnline;
@@ -32,7 +32,7 @@ public class Citas
     //Constructor por parámetros
 
 
-    public Citas(int idCita, Date fechaCita, String horaCita, String lugarCita, int esOnline, int esTelefonica, String nombreMedico, Especialidades especialidades, int idUsuarioFK) {
+    public Citas(int idCita, String fechaCita, String horaCita, String lugarCita, int esOnline, int esTelefonica, String nombreMedico, Especialidades especialidades, int idUsuarioFK) {
         this.idCita = idCita;
         this.fechaCita = fechaCita;
         this.horaCita = horaCita;
@@ -44,7 +44,7 @@ public class Citas
         this.idUsuarioFK = idUsuarioFK;
     }
 
-    public Citas(int idCita, Date fechaCita, String horaCita, Especialidades especialidades) {
+    public Citas(int idCita, String fechaCita, String horaCita, Especialidades especialidades) {
         this.idCita = idCita;
         this.fechaCita = fechaCita;
         this.horaCita = horaCita;
@@ -60,11 +60,11 @@ public class Citas
         this.idCita = idCita;
     }
 
-    public Date getFechaCita() {
+    public String getFechaCita() {
         return fechaCita;
     }
 
-    public void setFechaCita(Date fechaCita) {
+    public void setFechaCita(String fechaCita) {
         this.fechaCita = fechaCita;
     }
 

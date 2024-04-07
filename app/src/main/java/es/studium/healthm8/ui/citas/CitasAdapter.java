@@ -13,6 +13,7 @@ import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -67,11 +68,10 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CitasViewHolder viewHolder, int position)
-    {
+    public void onBindViewHolder(@NonNull CitasViewHolder viewHolder, int position) {
         Citas cita = items.get(position);
         //Obtenemos los datos de la BD
-        Date fechaCitaBD = cita.getFechaCita();
+        String fechaCitaBD = cita.getFechaCita();
         String horaCitaBD = cita.getHoraCita();
         Especialidades especialidadesBD = cita.getEspecialidades();//obtengo: id y nombre
         String nombreEspecialidad = cita.getEspecialidades().getNombreEspecialidad();//nombre
@@ -80,9 +80,20 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
         Log.d("Mnsj. CitasAdapter", "horaCitaBD: " + horaCitaBD);
         Log.d("Mnsj. CitasAdapter", "especialidadCitaBD: " + nombreEspecialidad);
 
-        //Formatear fecha y hora
-        SimpleDateFormat formateoFecha = new SimpleDateFormat("dd/MM/yyyy");
-        String fechaFormateada = formateoFecha.format(fechaCitaBD);
+        //Formatear fecha
+        SimpleDateFormat formatoOriginal = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        SimpleDateFormat formateoDeseado = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaFormateada;
+        try {
+            Date fechaParseada = formatoOriginal.parse(fechaCitaBD);
+            fechaFormateada = formateoDeseado.format(fechaParseada);
+            Log.d("Mnsj. CitasAdapter", "fechaParseada: " + fechaParseada);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        //String fechaFormateada = formateoFecha.format(fechaCitaBD);
+
+        //Formatear hora
         String horaFormateada = formateoHora(horaCitaBD);
         String especialidadCita = nombreEspecialidad;
 
@@ -92,11 +103,9 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
         viewHolder.especialidadCita.setText(nombreEspecialidad);
 
         // Agregamos el clic del elemento del RecyclerView
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener()
-        {
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 //Crear Bundle y agregar datos
                 Bundle args = new Bundle();
                 args.putString("fechaCita", fechaFormateada);

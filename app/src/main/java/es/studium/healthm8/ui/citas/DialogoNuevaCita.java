@@ -159,7 +159,9 @@ public class DialogoNuevaCita extends DialogFragment {
                             horaBD = hora + segundos;//HH:mm:ss
                             //Llamar a la API
                             darAltaCita();
+
                         }
+                        mostrarToast("Cita dada de alta correctamente");
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -241,8 +243,8 @@ public class DialogoNuevaCita extends DialogFragment {
         especialidadSeleccionada.setNombreEspecialidad(nombreEspecialidad);
         //Construimos un objeto Citas
         Citas citaNueva = new Citas();
-        citaNueva.setFechaCita(fechaBDdate);
-        Log.d("Mnsj. DialogoNC", "citaNueva.setFechaCita: " + fechaBDdate);
+        citaNueva.setFechaCita(fechaBD);
+        Log.d("Mnsj. DialogoNC", "citaNueva.setFechaCita: " + fechaBD);
         citaNueva.setHoraCita(horaBD);
         citaNueva.setLugarCita(lugar);
         citaNueva.setNombreMedico(nombreMedico);
@@ -263,7 +265,7 @@ public class DialogoNuevaCita extends DialogFragment {
                     Log.d("Mnsj. DialogoNC ", "darAltaCita - onResponse: Cita creada correctamente");
                     Log.d("Mnsj. DialogoNC","darAltaCita - response.body() - " +response.message());
                     //Avisamos al MainActivity del alta para que actualice la lista
-                    mostrarToast("Cita creada correctamente");
+
 
                 }
                 else
@@ -282,12 +284,11 @@ public class DialogoNuevaCita extends DialogFragment {
                 Log.e("Mnsj. DialogoNC", "darAltaCita - onFailure: Error al obtener citas: " + t.getMessage(), t);
             }
         });
-
     }
 
     //Método para mostrar un Toast
     public void mostrarToast(String mensaje)
     {
-        Toast.makeText(getContext(), mensaje, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), mensaje, Toast.LENGTH_SHORT).show();
     }
 }
