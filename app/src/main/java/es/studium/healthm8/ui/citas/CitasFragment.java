@@ -64,6 +64,7 @@ public class CitasFragment extends Fragment
         else
         {
             Log.d("Mnsj. CitasFragment", "No hemos recibido idUsuarioLogueado");
+            Log.d("Mnsj. CitasFragment", "========================================================================");
         }
         obtenerCitasUsuario(idUsuarioLogueado);
 
@@ -96,12 +97,9 @@ public class CitasFragment extends Fragment
                     if(response.isSuccessful())
                     {
                         List<Citas> listadoCitasDelUsuario = response.body();
-                        Log.d("Mnsj. CitasFragment","obtenerCitasUsuario - response.body() - " +response.message());
                         for (Citas cita : listadoCitasDelUsuario)
                         {
-
-                            Log.d("Mnsj. CitasFragment", "obtenerCitasUsuario - ID de cita: " + cita.getIdCita());
-                            // Aquí puedes imprimir o manejar otros datos de la cita según tu lógica
+                            //Obtenemos todos las citas segun el id del usuario
                         }
                         // Log para imprimir la respuesta completa de la API
                         Log.d("Mnsj. CitasFragment","obtenerCitasUsuario - Tamaño lista: "+listadoCitasDelUsuario.size()+"");
@@ -128,7 +126,6 @@ public class CitasFragment extends Fragment
                     }
                     else {
                         Log.d("Mnsj. CitasFragment", "response: no es exitosa");
-
                     }
                 }
 
@@ -136,6 +133,7 @@ public class CitasFragment extends Fragment
                 public void onFailure(Call<List<Citas>> call, Throwable t) {
                     Log.d("Mnsj. CitasFragment", "obtenerCitasUsuario - onFailure: No hemos recibido respuesta de la API");
                     Log.e("Mnsj. CitasFragment", "obtenerCitasUsuario - onFailure: Error al obtener citas: " + t.getMessage(), t);
+                    Log.d("Mnsj. CitasFragment", "================================================================");
                 }
             });
         }
@@ -156,12 +154,10 @@ public class CitasFragment extends Fragment
         Bundle args = new Bundle();
         args.putInt("idUsuarioLogueado", idUsuarioLogueado);
         dialogoNuevaCita.setArguments(args);
-//        dialogoNuevaCita.setTargetFragment(this, 1);
         //Mostramos el dialogo
         /* Como el dialogo lo abrimos en un fragment tenemos que escribir:
          * requireActivity() para obtener una referencia a la actividad asociada (MainActivity)*/
         dialogoNuevaCita.show(requireActivity().getSupportFragmentManager(),"Nueva Cita");
-//        dialogoNuevaCita.show(getParentFragmentManager(),"Nueva Cita");
         Log.d("Mnsj. CitasFragment", "========================================================================");
         Log.d("Mnsj. CitasFragment", "Abrimos dialogo nueva cita");
     }

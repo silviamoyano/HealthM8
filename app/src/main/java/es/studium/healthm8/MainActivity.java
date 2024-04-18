@@ -11,10 +11,7 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -29,10 +26,9 @@ import java.util.List;
 import es.studium.healthm8.databinding.ActivityMainBinding;
 import es.studium.healthm8.ui.citas.Citas;
 import es.studium.healthm8.ui.citas.CitasFragment;
-import es.studium.healthm8.ui.citas.OnDialogoNuevaCitaListener;
-import es.studium.healthm8.ui.medicamentos.MedicamentosFragment;
+import es.studium.healthm8.ui.citas.OnDialogoCitaListener;
 
-public class MainActivity extends AppCompatActivity implements OnDialogoNuevaCitaListener//, NavigationView.OnNavigationItemSelectedListener
+public class MainActivity extends AppCompatActivity implements OnDialogoCitaListener//, NavigationView.OnNavigationItemSelectedListener
 {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;

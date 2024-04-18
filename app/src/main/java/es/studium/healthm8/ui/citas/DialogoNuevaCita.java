@@ -45,7 +45,7 @@ public class DialogoNuevaCita extends DialogFragment {
 
     int idUsuarioLogueado;
 
-    OnDialogoNuevaCitaListener mListener;
+    OnDialogoCitaListener mListener;
 
     int idEspecialidad;
     String nombreEspecialidad;
@@ -60,7 +60,7 @@ public class DialogoNuevaCita extends DialogFragment {
     int esOnlineChecked;
     int esTelefonicaChecked;
     int idUsuarioFK;
-    CitasFragment citasFragment;
+
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         //Construir el diálogo
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -161,7 +161,6 @@ public class DialogoNuevaCita extends DialogFragment {
 
                         }
                         mostrarToast("Cita dada de alta correctamente");
-                        //Notificamos del alta al fragment
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -182,7 +181,7 @@ public class DialogoNuevaCita extends DialogFragment {
         //Verificamos que la actividad principal ha implementado la interfaz
         try {
             //Instanciamos OnNuevoDialogoListener para poder enviar eventos a la Clase Principal
-            mListener = (OnDialogoNuevaCitaListener) context;
+            mListener = (OnDialogoCitaListener) context;
         } catch (ClassCastException e) {
             //La actividad no implementa el interfaz
             throw new ClassCastException(context.toString() + " debe implementar OnDialogoListener");
