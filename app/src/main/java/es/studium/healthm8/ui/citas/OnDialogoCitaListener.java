@@ -1,6 +1,6 @@
 package es.studium.healthm8.ui.citas;
 
-public interface OnDialogoNuevaCitaListener
+public interface OnDialogoCitaListener
 {
     public void onDialogoAceptarListener();
     public void onDialogoCancelarListener();
