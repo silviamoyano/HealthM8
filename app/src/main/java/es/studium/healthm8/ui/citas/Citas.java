@@ -1,7 +1,5 @@
 package es.studium.healthm8.ui.citas;
 
-import java.util.Date;
-
 import es.studium.healthm8.ui.especialidad.Especialidades;
 
 public class Citas

@@ -1,5 +1,4 @@
 package es.studium.healthm8.ui.citas;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import es.studium.healthm8.R;
@@ -28,12 +28,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CitasFragment extends Fragment {
-
+public class CitasFragment extends Fragment
+{
     private FragmentCitasBinding binding;
     RecyclerView recyclerView;
     private CitasAdapter citasAdapter;
-    private List<Citas> listaCitasUsuario = new ArrayList<>();
+    List<Citas> items = new ArrayList<>();
     NavController navController;
     private int idUsuarioLogueado;
     Button btnNuevaCitas;
@@ -41,17 +41,16 @@ public class CitasFragment extends Fragment {
     DialogoNuevaCita dialogoNuevaCita;
 
 
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        CitasViewModel citasViewModel = new ViewModelProvider(this).get(CitasViewModel.class);
-
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        //CitasViewModel citasViewModel = new ViewModelProvider(this).get(CitasViewModel.class);
         binding = FragmentCitasBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         // Configurar RecyclerView y adaptador
         recyclerView = root.findViewById(R.id.myRecyclerView_Citas);
         //citasAdapter = new CitasAdapter(listaCitasUsuario, navController, requireContext());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-       //recyclerView.setAdapter(citasAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));// getContext()
 
         //Obtener el idUsuarioLogueado
         //Recuperamos los argumentos del MainActivity
@@ -59,27 +58,26 @@ public class CitasFragment extends Fragment {
         if(args != null)
         {
             idUsuarioLogueado = args.getInt("idUsuarioLogueado", 0);
+            Log.d("Mnsj. CitasFragment", "========================================================================");
             Log.d("Mnsj. CitasFragment", "idUsuarioLogueado: " + idUsuarioLogueado);
         }
         else
         {
             Log.d("Mnsj. CitasFragment", "No hemos recibido idUsuarioLogueado");
         }
-
         obtenerCitasUsuario(idUsuarioLogueado);
-        // Actualizar la vista con las citas obtenidas
-        //actualizarCitas(listaCitasUsuario);
 
         //Asignamos el botón a vista
         btnNuevaCitas = root.findViewById(R.id.button_Nuevo);
 
         //Agregamos el Listener al botón
-        btnNuevaCitas.setOnClickListener(new View.OnClickListener() {
+        btnNuevaCitas.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 //Abrimos el diálogo para dar de alta una nueva cita
                 abrirDialogoNuevaCita();
-
             }
         });
         return root;
@@ -107,16 +105,26 @@ public class CitasFragment extends Fragment {
                         }
                         // Log para imprimir la respuesta completa de la API
                         Log.d("Mnsj. CitasFragment","obtenerCitasUsuario - Tamaño lista: "+listadoCitasDelUsuario.size()+"");
-                        // Convertir el listado de citas a JSON
-                        Gson gson = new Gson();
-                        String json = gson.toJson(listadoCitasDelUsuario);
 
-                        // Imprimir el JSON en la consola
-                        Log.d("Mnsj. CitasFragment", "JSON_RESPONSE: " +json);
-                        // Llama al método actualizarCitas en el fragmento CitasFragment
+                        //Ordenar la lista por fecha ascendente
+                        Collections.sort(listadoCitasDelUsuario, new Comparator<Citas>() {
+                            @Override
+                            public int compare(Citas cita1, Citas cita2) {
+                                return cita1.getFechaCita().compareTo(cita2.getFechaCita());
+                            }
+                        });
+
+//                        // Convertir el listado de citas a JSON
+//                        Gson gson = new Gson();
+//                        String json = gson.toJson(listadoCitasDelUsuario);
+//
+//                        // Imprimir el JSON en la consola
+//                        Log.d("Mnsj. CitasFragment", "JSON_RESPONSE: " +json);
+
                         // Configurar el adaptador con los datos de las citas
                         citasAdapter = new CitasAdapter(listadoCitasDelUsuario, NavHostFragment.findNavController(CitasFragment.this), requireContext());
                         recyclerView.setAdapter(citasAdapter);
+                        items = listadoCitasDelUsuario;
                     }
                     else {
                         Log.d("Mnsj. CitasFragment", "response: no es exitosa");
@@ -148,31 +156,19 @@ public class CitasFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt("idUsuarioLogueado", idUsuarioLogueado);
         dialogoNuevaCita.setArguments(args);
+//        dialogoNuevaCita.setTargetFragment(this, 1);
         //Mostramos el dialogo
         /* Como el dialogo lo abrimos en un fragment tenemos que escribir:
          * requireActivity() para obtener una referencia a la actividad asociada (MainActivity)*/
         dialogoNuevaCita.show(requireActivity().getSupportFragmentManager(),"Nueva Cita");
+//        dialogoNuevaCita.show(getParentFragmentManager(),"Nueva Cita");
+        Log.d("Mnsj. CitasFragment", "========================================================================");
         Log.d("Mnsj. CitasFragment", "Abrimos dialogo nueva cita");
-    }
-
-
-    /*public void actualizarCitas(List<Citas> listaCitasUsuario) {
-        // Actualizar el conjunto de datos del adaptador
-        citasAdapter.setItems(listaCitasUsuario);
-        // Notificar al adaptador que los datos han cambiado
-        citasAdapter.notifyDataSetChanged();
-
-        // Mostrar u ocultar el RecyclerView según la lista de citas
-        if (listaCitasUsuario != null && !listaCitasUsuario.isEmpty()) {
-            binding.myRecyclerViewCitas.setVisibility(View.VISIBLE);
-        } else {
-            binding.myRecyclerViewCitas.setVisibility(View.GONE);
-        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-    }*/
+    }
 }

@@ -25,9 +25,11 @@ public class MedicamentosFragment extends Fragment
     private RecyclerView recyclerView;
     private MedicamentosAdapter medicamentosAdapter;
 
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState)
     {
-        MedicamentosViewModel medicamentosViewModel = new ViewModelProvider(this).get(MedicamentosViewModel.class);
+        MedicamentosViewModel medicamentosViewModel =
+                new ViewModelProvider(this).get(MedicamentosViewModel.class);
 
         binding = FragmentMedicamentosBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -47,6 +49,10 @@ public class MedicamentosFragment extends Fragment
         List<Medicamentos> lista = new ArrayList<>();
         lista.add(new Medicamentos("Pastilla de la tensión", "1 pastilla"));
         lista.add(new Medicamentos("Pastilla del colesterol", "1 pastilla"));
+        lista.add(new Medicamentos("Couldina", "1 pastilla"));
+        lista.add(new Medicamentos("Pastillas pelaso", "2 pastillas"));
+        lista.add(new Medicamentos("Vitaminas", "2 pastillas"));
+        lista.add(new Medicamentos("Calcio", "3 pastillas"));
         return lista;
     }
 

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.Time;
@@ -28,12 +29,11 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
     private NavController navController;
     private  Context context;
 
-    public void setItems(List<Citas> listaCitasUsuario) {this.items = items;}
-
+    public void setItems(List<Citas> listaCitasUsuario) {this.items = listaCitasUsuario;}
 
     public static class CitasViewHolder extends RecyclerView.ViewHolder
     {
-        //Campos respectivos de un item
+        //Campos respectivos de un cardView
         public TextView fechaCita;
         public TextView especialidadCita;
         public TextView horaCita;
@@ -46,14 +46,14 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
             horaCita = v.findViewById(R.id.TextView_horaCita);
         }
     }
-
+    //Contructor del adapter
     public CitasAdapter(List<Citas> items, NavController navController, Context context) {
         this.items = items;
         this.navController = navController;
         this.context = context;
     }
 
-    /*Devolvemos el tamaño de la lista*/
+    /*Devolvemos el tamaño de la lista para poder cargarla*/
     @Override
     public int getItemCount() {
         return items.size();
@@ -69,7 +69,10 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
 
     @Override
     public void onBindViewHolder(@NonNull CitasViewHolder viewHolder, int position) {
+       //Creamos un objeto de tipo Cita y obetenemos su posicion
         Citas cita = items.get(position);
+
+        /*Obtenemos los items y trabajamos con ellos para poder asignarlos a la vista*/
         //Obtenemos los datos de la BD
         String fechaCitaBD = cita.getFechaCita();
         String horaCitaBD = cita.getHoraCita();
@@ -111,7 +114,14 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
                 args.putString("fechaCita", fechaFormateada);
                 args.putString("horaCita", horaCitaBD);
                 args.putString("especialidadCita", nombreEspecialidad);
+                //Añadir más argumentos de las citas para la siguiente vista
+                Log.d("Mnsj. CitasAdapter", "=============================================================================" );
+                Log.d("Mnsj. CitasAdapter", "item pulsado:" + cita.getIdCita());//obtenemos id de la cita pulsada
+                Log.d("Mnsj. CitasAdapter", "=============================================================================" );
 
+                // Navegar al fragmento de detalles usando NavController
+                // Obtener el NavController y navegar al fragmento de detalles con argumentos
+//                Navigation.findNavController(v).navigate(R.id.nav_detalles_citas, args);
             }
         });
     }
@@ -123,5 +133,11 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
         int minutosInt = Integer.parseInt(partesHora[1]);
 
         return String.format("%02d:%02d", horaInt, minutosInt);
+    }
+
+    public void actualizarLista(List<Citas> listadoCitas)
+    {
+        this.items = listadoCitas;
+        notifyDataSetChanged();//Cargará toda la lista
     }
 }

@@ -5,5 +5,8 @@ public interface OnDialogoNuevaCitaListener
     public void onDialogoAceptarListener();
     public void onDialogoCancelarListener();
 
-    void onDialogoRecordatorioCitaListener();
+    public void onDialogoRecordatorioCitaListener();
+
+    public void onDialogoRefrescarCitasListener();
+
 }

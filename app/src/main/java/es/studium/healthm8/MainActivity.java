@@ -11,29 +11,39 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import es.studium.healthm8.databinding.ActivityMainBinding;
+import es.studium.healthm8.ui.citas.Citas;
 import es.studium.healthm8.ui.citas.CitasFragment;
 import es.studium.healthm8.ui.citas.OnDialogoNuevaCitaListener;
+import es.studium.healthm8.ui.medicamentos.MedicamentosFragment;
 
-public class MainActivity extends AppCompatActivity implements OnDialogoNuevaCitaListener
+public class MainActivity extends AppCompatActivity implements OnDialogoNuevaCitaListener//, NavigationView.OnNavigationItemSelectedListener
 {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
     SharedPreferences sharedpreferences;
     public int idUsuarioLogueado;
+    List<Citas> listaCitasUsuario = new ArrayList<>();
+    CitasFragment citasFragment;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Creamos en memoria la vista de la actividad principal a partir del activity_main.xml
@@ -80,29 +90,34 @@ public class MainActivity extends AppCompatActivity implements OnDialogoNuevaCit
         NavigationUI.setupWithNavController(navigationView, navController);
 
         /*Verificamos si es la primera vez que se crea el MainActivity.
-        * Si es la primera vez es igual a null. Por lo tanto, mostramos CitasFragment
-        * y pasamos los argumentos necesarios.
-        * Lo colocamos al final del onCreate para que el MainActivity se cargue por completo
-        * antes de pasarle los args al fragmento.*/
+         * Si es la primera vez es igual a null. Por lo tanto, mostramos CitasFragment
+         * y pasamos los argumentos necesarios.
+         * Lo colocamos al final del onCreate para que el MainActivity se cargue por completo
+         * antes de pasarle los args al fragmento.*/
         if (savedInstanceState == null) {
             mostrarCitasFragment();
         }
-    }
-    //Método para crear el fragmento Citas al que le pasamos como argumento el idUsuarioLogueado
-    private void mostrarCitasFragment()
-    {
-        CitasFragment citasFragment = new CitasFragment();
 
+    }
+
+    //Método para crear el fragmento Citas al que le pasamos como argumento el idUsuarioLogueado
+    private void mostrarCitasFragment() {
         // Crear un Bundle para pasar argumentos
         Bundle args = new Bundle();
         args.putInt("idUsuarioLogueado", idUsuarioLogueado);
-        citasFragment.setArguments(args);
-
-        // Mostrar CitasFragment
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.nav_host_fragment_content_main, citasFragment)
-                .commit();
+        Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                .navigate(R.id.nav_citas, args);
     }
+
+    //Método para crear el framento Medicamentos
+    private void mostrarMedicamentosFragment() {
+        // Crear un Bundle para pasar argumentos
+        Bundle args = new Bundle();
+        args.putInt("idUsuarioLogueado", idUsuarioLogueado);
+        Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                .navigate(R.id.nav_medicamentos, args);
+    }
+
 
     /*Se monta el menú lateral y se asigna el controlador que gestionará lo eventos*/
     @Override
@@ -111,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements OnDialogoNuevaCit
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
     /*Hacemos que con el desplazamiento a la derecha, aparezca el menú */
     @Override
     public boolean onSupportNavigateUp() {
@@ -121,15 +137,11 @@ public class MainActivity extends AppCompatActivity implements OnDialogoNuevaCit
 
     /*Gestionamos el menú de acciones*/
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        if (item.getItemId() == R.id.mAction_ECredenciales)
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.mAction_ECredenciales) {
             crearDialogoEliminarCredenciales();
             Log.d("Mnsj.", "Se ha pulsado la acción Eliminar credenciales");
-        }
-        else if (item.getItemId() == R.id.mAction_EUsuario)
-        {
+        } else if (item.getItemId() == R.id.mAction_EUsuario) {
             //Borramos el usuario de la Base de Datos
             crearDialogoEliminarUsuario();
         }
@@ -137,16 +149,15 @@ public class MainActivity extends AppCompatActivity implements OnDialogoNuevaCit
         return super.onOptionsItemSelected(item);
     }
 
-    public void crearDialogoEliminarCredenciales()
-    {
+    //Método para crear el dialogo para Borrar las credenciales
+    public void crearDialogoEliminarCredenciales() {
         //Iniciamos el dialogo
         AlertDialog dialogoEliminarCredenciales = new AlertDialog.
                 Builder(this)
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                    public void onClick(DialogInterface dialog, int which) {
                         //Borramos los datos del SharedPreferences
                         SharedPreferences.Editor editor = sharedpreferences.edit();
                         editor.clear();  // Este método elimina todos los valores.
@@ -154,11 +165,9 @@ public class MainActivity extends AppCompatActivity implements OnDialogoNuevaCit
                         mostrarToast("Se han borrado las credenciales");
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener()
-                {
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss(); //Cerramos el dialogo
                     }
                 })
@@ -168,24 +177,22 @@ public class MainActivity extends AppCompatActivity implements OnDialogoNuevaCit
         dialogoEliminarCredenciales.show();
 
     }
-    public void crearDialogoEliminarUsuario()
-    {
+
+    //Método para crear el dialogo para Eliminar el usuario
+    public void crearDialogoEliminarUsuario() {
         //Iniciamos el dialogo
         AlertDialog dialogoEliminarUsuario = new AlertDialog.
                 Builder(this)
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                    public void onClick(DialogInterface dialog, int which) {
                         //mostrarToast("Se ha borrado el usuario");
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener()
-                {
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss(); //Cerramos el dialogo
                     }
                 })
@@ -194,23 +201,34 @@ public class MainActivity extends AppCompatActivity implements OnDialogoNuevaCit
                 .create();
         dialogoEliminarUsuario.show();
     }
-    public void mostrarToast(String mensaje)
-    {
+
+    //Método para mostrar un Toast
+    public void mostrarToast(String mensaje) {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
     }
 
+    //LISTENER Dialogos
     @Override
     public void onDialogoAceptarListener() {
-
     }
 
     @Override
     public void onDialogoCancelarListener() {
-
     }
 
     @Override
     public void onDialogoRecordatorioCitaListener() {
+    }
 
+    @Override
+    public void onDialogoRefrescarCitasListener() {
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
+        if (navHostFragment != null) {
+            CitasFragment citasFragment = (CitasFragment) navHostFragment.getChildFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
+            if (citasFragment != null) {
+                citasFragment.obtenerCitasUsuario(idUsuarioLogueado);  // Actualiza la lista de citas
+
+            }
+        }
     }
 }

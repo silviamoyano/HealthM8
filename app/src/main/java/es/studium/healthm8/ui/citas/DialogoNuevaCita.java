@@ -60,8 +60,7 @@ public class DialogoNuevaCita extends DialogFragment {
     int esOnlineChecked;
     int esTelefonicaChecked;
     int idUsuarioFK;
-
-
+    CitasFragment citasFragment;
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         //Construir el diálogo
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -162,6 +161,7 @@ public class DialogoNuevaCita extends DialogFragment {
 
                         }
                         mostrarToast("Cita dada de alta correctamente");
+                        //Notificamos del alta al fragment
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -170,6 +170,7 @@ public class DialogoNuevaCita extends DialogFragment {
                         //Cerramos el diálogo
                         dialog.dismiss();
                         mListener.onDialogoCancelarListener();
+                        Log.d("Mnsj. DialogoNC", "========================================================================");
                     }
                 });
         //Crear el objeto y devolverlo
@@ -264,9 +265,10 @@ public class DialogoNuevaCita extends DialogFragment {
                     // Éxito en la llamada a la API para dar de alta el pedido
                     Log.d("Mnsj. DialogoNC ", "darAltaCita - onResponse: Cita creada correctamente");
                     Log.d("Mnsj. DialogoNC","darAltaCita - response.body() - " +response.message());
-                    //Avisamos al MainActivity del alta para que actualice la lista
+                    Log.d("Mnsj. DialogoNC", "========================================================================");
 
-
+                   //Notificamos del alta al acticity para que actualice el CitasFragment
+                    mListener.onDialogoRefrescarCitasListener();
                 }
                 else
                 {
