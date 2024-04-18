@@ -7,8 +7,7 @@ import es.studium.healthm8.ui.especialidad.Especialidades;
 import es.studium.healthm8.usuarios.Usuarios;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
+
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
