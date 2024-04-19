@@ -25,6 +25,7 @@ import java.util.List;
 
 import es.studium.healthm8.databinding.ActivityMainBinding;
 import es.studium.healthm8.ui.citas.Citas;
+import es.studium.healthm8.ui.citas.CitasDetallesFragment;
 import es.studium.healthm8.ui.citas.CitasFragment;
 import es.studium.healthm8.ui.citas.OnDialogoCitaListener;
 
@@ -34,9 +35,8 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
     private ActivityMainBinding binding;
 
     SharedPreferences sharedpreferences;
-    public int idUsuarioLogueado;
-    List<Citas> listaCitasUsuario = new ArrayList<>();
-    CitasFragment citasFragment;
+    int idUsuarioLogueado;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,13 +217,29 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
     }
 
     @Override
-    public void onDialogoRefrescarCitasListener() {
+    public void onDialogoRefrescarCitasListener()
+    {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
         if (navHostFragment != null) {
             CitasFragment citasFragment = (CitasFragment) navHostFragment.getChildFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
             if (citasFragment != null) {
                 citasFragment.obtenerCitasUsuario(idUsuarioLogueado);  // Actualiza la lista de citas
+            }
+        }
+    }
 
+    @Override
+    public void onDialogoActualizarCitasDetallesListener() {
+
+
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
+        if (navHostFragment != null) {
+            CitasDetallesFragment citasDetallesFragment = (CitasDetallesFragment) navHostFragment.getChildFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
+            int idCita = citasDetallesFragment.obtenerIdCita();
+            if (citasDetallesFragment != null) {
+                citasDetallesFragment.obtenerCitaPorId(idCita);
+                Log.d("Mnsj. MainActivity", "idCita: " + idCita);
+                // Actualiza la lista de citas
             }
         }
     }

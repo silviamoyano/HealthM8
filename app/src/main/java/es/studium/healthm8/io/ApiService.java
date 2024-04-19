@@ -44,7 +44,8 @@ public interface ApiService
 
     //Modificar
     @PUT("citas/id/{idCita}")
-    Call<Void> actualizarCita(int idCita, Citas citaActualizada);
+    Call<Void> actualizarCita(@Path("idCita") int idCita, @Body Citas citaActualizada);
+
     //ESPECIALIDADES
     //Lectura
     @GET("especialidades/getall")
