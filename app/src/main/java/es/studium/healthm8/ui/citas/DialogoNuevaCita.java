@@ -9,9 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -39,9 +38,9 @@ public class DialogoNuevaCita extends DialogFragment {
     EditText editTextHora;
     EditText editTextLugar;
     EditText editTextNombreMedico;
-    RadioButton radioBtnEsOnline;
-    RadioButton radioBtnEsTelefonica;
-    Button btnRecordatorioCita;
+    CheckBox checkBoxEsOnline;
+    CheckBox checkBoxEsTelefonica;
+
 
     int idUsuarioLogueado;
 
@@ -73,9 +72,9 @@ public class DialogoNuevaCita extends DialogFragment {
         editTextHora = myView.findViewById(R.id.editTextHora);
         editTextLugar = myView.findViewById(R.id.editTextLugar);
         editTextNombreMedico = myView.findViewById(R.id.editTextNombreMedico);
-        radioBtnEsOnline = myView.findViewById(R.id.radioButtonEsOnline);
-        radioBtnEsTelefonica = myView.findViewById(R.id.radioButtonEsTelefonica);
-        btnRecordatorioCita = myView.findViewById(R.id.buttonRecordatorioCita);
+        checkBoxEsOnline = myView.findViewById(R.id.checkBox_esOnline);
+        checkBoxEsTelefonica = myView.findViewById(R.id.checkBox_esTelefonica);
+
 
         //Obtener el idUsuarioLogueado
         //Recuperamos los argumentos del CitasFragment
@@ -87,13 +86,6 @@ public class DialogoNuevaCita extends DialogFragment {
             Log.d("Mnsj. DialogoNC", "No hemos recibido idUsuarioLogueado");
         }
 
-        //Añadimos el listener al botón de recordatorio
-        btnRecordatorioCita.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onDialogoRecordatorioCitaListener();
-            }
-        });
 
         //Obtenemos el listado de especialidades
         obtenerEspecialidadesToSpinner();
@@ -111,8 +103,8 @@ public class DialogoNuevaCita extends DialogFragment {
                         fecha = editTextFecha.getText().toString();//dd/MM/yyyy
                         hora = editTextHora.getText().toString();lugar = editTextLugar.getText().toString();
                         nombreMedico = editTextNombreMedico.getText().toString();
-                        esOnlineChecked = radioBtnEsOnline.isChecked() ? 1 : 0; //1 = true, 0 = false
-                        esTelefonicaChecked = radioBtnEsTelefonica.isChecked() ? 1 : 0; //1 = true, 0 = false
+                        esOnlineChecked = checkBoxEsOnline.isChecked() ? 1 : 0; //1 = true, 0 = false
+                        esTelefonicaChecked = checkBoxEsTelefonica.isChecked() ? 1 : 0; //1 = true, 0 = false
                         idUsuarioFK = idUsuarioLogueado;
 
                         //Comprobaciones
