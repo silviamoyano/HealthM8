@@ -52,7 +52,6 @@ public class DialogoNuevaCita extends DialogFragment {
     String fecha;
     Date fechaDate;
     String fechaBD;
-    Date fechaBDdate;
     String hora;
     String horaBD;
     String lugar;
@@ -60,7 +59,6 @@ public class DialogoNuevaCita extends DialogFragment {
     int esOnlineChecked;
     int esTelefonicaChecked;
     int idUsuarioFK;
-
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         //Construir el diálogo
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -146,10 +144,10 @@ public class DialogoNuevaCita extends DialogFragment {
                                 //Formatear en el nuevo patrón yyyy-mm-dd
                                 fechaBD= formatoSalida.format(fechaDate);//String
                                 //Convertir a Date fechaBD (String)
-                                fechaBDdate = formatoSalida.parse(fechaBD);
+//                                fechaBDdate = formatoSalida.parse(fechaBD);
                                 Log.d("Mnsj. DialogoNC", "fechaDate: " + fechaDate);
                                 Log.d("Mnsj. DialogoNC", "fechaBD: " + fechaBD);
-                                Log.d("Mnsj. DialogoNC", "fechaBDdate: " + formatoSalida.format(fechaBDdate));
+//                                Log.d("Mnsj. DialogoNC", "fechaBDdate: " + formatoSalida.format(fechaBDdate));
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
@@ -280,6 +278,7 @@ public class DialogoNuevaCita extends DialogFragment {
             @Override
             public void onFailure(Call<Void> call, Throwable t)
             {
+                mostrarToast("Error al dar de alta la cita");
                 //Error en la llamada a la API al dar de alta la cita
                 Log.d("Mnsj. DialogoNC", "darAltaCita - onFailure: Error en la llamada a la API");
                 Log.e("Mnsj. DialogoNC", "darAltaCita - onFailure: Error al obtener citas: " + t.getMessage(), t);
