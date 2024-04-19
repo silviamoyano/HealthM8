@@ -8,6 +8,7 @@
 
     <string name="menu_home">Citas médicas</string>
     <string name="menu_gallery">Medicamentos</string>
+    <string name="menu_detalles_citas">Detalles cita</string>
     <string name="action_eliminarCredenciales">Eliminar Credenciales</string>
     <string name="action_eliminarUsuario">Eliminar Usuario</string>
 
@@ -30,7 +31,10 @@
     <string name="hint_nombreMedico">Escriba el nombre del médico</string>
     <string name="esOnline">¿Es online?</string>
     <string name="esTelefonica">¿Es telefónica?</string>
-    <string name="boton_recodatorioCita">Recordatorio Cita</string>
+    <string name="boton_recodatorioCita">Recordatorio</string>
+
+    <!-- Detalles cita -->
+    <string name="especialidad">Especialidad: </string>
 
 
 

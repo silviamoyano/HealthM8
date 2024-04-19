@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="350dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextFecha"
+        android:layout_width="350dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="9dp"
+        android:ems="10"
+        android:hint="@string/hint_fecha"
+        android:inputType="date"
+        app:layout_constraintEnd_toEndOf="@+id/spinner"
+        app:layout_constraintStart_toStartOf="@+id/spinner"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+    <EditText
+        android:id="@+id/editTextHora"
+        android:layout_width="350dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="9dp"
+        android:ems="10"
+        android:hint="@string/hint_hora"
+        android:inputType="time"
+        app:layout_constraintEnd_toEndOf="@+id/editTextFecha"
+        app:layout_constraintStart_toStartOf="@+id/editTextFecha"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFecha" />
+
+    <EditText
+        android:id="@+id/editTextLugar"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:ems="10"
+        android:hint="@string/hint_lugar"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/editTextHora"
+        app:layout_constraintStart_toStartOf="@+id/editTextHora"
+        app:layout_constraintTop_toBottomOf="@+id/editTextHora" />
+
+    <EditText
+        android:id="@+id/editTextNombreMedico"
+        android:layout_width="350dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="9dp"
+        android:ems="10"
+        android:hint="@string/hint_nombreMedico"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/editTextLugar"
+        app:layout_constraintStart_toStartOf="@+id/editTextLugar"
+        app:layout_constraintTop_toBottomOf="@+id/editTextLugar" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="229dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="9dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/editTextNombreMedico"
+        app:layout_constraintStart_toStartOf="@+id/editTextNombreMedico"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNombreMedico">
+
+        <RadioButton
+            android:id="@+id/radioButtonEsOnline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/esOnline"
+            tools:layout_editor_absoluteX="240dp"
+            tools:layout_editor_absoluteY="341dp" />
+
+        <RadioButton
+            android:id="@+id/radioButtonEsTelefonica"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/esTelefonica"
+            tools:layout_editor_absoluteX="59dp"
+            tools:layout_editor_absoluteY="340dp" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/buttonRecordatorioCita"
+        android:layout_width="264dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="9dp"
+
+        android:text="@string/boton_recodatorioCita"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/radioGroup"
+        app:layout_constraintHorizontal_bias="0.485"
+        app:layout_constraintStart_toStartOf="@+id/radioGroup"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+        app:layout_constraintVertical_bias="0.021" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

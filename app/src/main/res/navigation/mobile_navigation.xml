@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_nav_citas_to_nav_medicamentos"
             app:destination="@id/nav_medicamentos" />
+        <action
+            android:id="@+id/action_nav_citas_to_nav_detalle_citas"
+            app:destination="@id/nav_detalle_citas" />
     </fragment>
 
     <fragment
@@ -22,6 +25,16 @@
         tools:layout="@layout/fragment_medicamentos" >
         <action
             android:id="@+id/action_nav_medicamentos_to_nav_citas"
+            app:destination="@id/nav_citas" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_detalle_citas"
+        android:name="es.studium.healthm8.ui.citas.CitasDetallesFragment"
+        android:label="@string/menu_detalles_citas"
+        tools:layout="@layout/fragment_detalles_citas" >
+        <action
+            android:id="@+id/action_nav_detalle_citas_to_nav_citas2"
             app:destination="@id/nav_citas" />
     </fragment>
 

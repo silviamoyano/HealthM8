@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,7 +17,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,6 +36,8 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
     private NavController navController;
     private  Context context;
 
+    CitasFragment citasFragment;
+
     public void setItems(List<Citas> listaCitasUsuario) {this.items = listaCitasUsuario;}
 
     public static class CitasViewHolder extends RecyclerView.ViewHolder
@@ -44,6 +46,7 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
         public TextView fechaCita;
         public TextView especialidadCita;
         public TextView horaCita;
+
 
         public CitasViewHolder(@NonNull View v) {
             super(v);
@@ -119,17 +122,19 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
             public void onClick(View v) {
                 //Crear Bundle y agregar datos
                 Bundle args = new Bundle();
-                args.putString("fechaCita", fechaFormateada);
-                args.putString("horaCita", horaCitaBD);
-                args.putString("especialidadCita", nombreEspecialidad);
+//                args.putString("fechaCita", fechaFormateada);
+//                args.putString("horaCita", horaCitaBD);
+//                args.putString("especialidadCita", nombreEspecialidad);
+                args.putInt("idUsuarioLogueado", cita.getIdUsuarioFK());
+                args.putInt("idCita", cita.getIdCita());
                 //Añadir más argumentos de las citas para la siguiente vista
                 Log.d("Mnsj. CitasAdapter", "========================================================================" );
                 Log.d("Mnsj. CitasAdapter", "item pulsado:" + cita.getIdCita());//obtenemos id de la cita pulsada
-                Log.d("Mnsj. CitasAdapter", "========================================================================" );
+
 
                 // Navegar al fragmento de detalles usando NavController
                 // Obtener el NavController y navegar al fragmento de detalles con argumentos
-//                Navigation.findNavController(v).navigate(R.id.nav_detalles_citas, args);
+                Navigation.findNavController(v).navigate(R.id.nav_detalle_citas, args);
             }
         });
         // Agregamos el long clic del elemento del RecyclerView
@@ -173,7 +178,7 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
     public void eliminarCita(int idCita)
     {
         Log.d("Mnsj. CitasAdapter", "Id cita a eliminar:" + idCita);
-        Call<Void> callEliminarCita = ApiAdapter.getApiService().eliminarCita(idCita);
+        Call<Void> callEliminarCita = ApiAdapter.getApiService().eliminarCitaPorId(idCita);
         callEliminarCita.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

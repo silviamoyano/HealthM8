@@ -34,10 +34,8 @@ public class CitasFragment extends Fragment
     RecyclerView recyclerView;
     private CitasAdapter citasAdapter;
     List<Citas> items = new ArrayList<>();
-    NavController navController;
     private int idUsuarioLogueado;
     Button btnNuevaCitas;
-
     DialogoNuevaCita dialogoNuevaCita;
 
 
@@ -147,7 +145,7 @@ public class CitasFragment extends Fragment
     public void abrirDialogoNuevaCita()
     {
         //Creamos DialogoNuevaCita
-         dialogoNuevaCita = new DialogoNuevaCita();
+        dialogoNuevaCita = new DialogoNuevaCita();
         //Convertimos el dialogo en modal
         dialogoNuevaCita.setCancelable(false);
         //Pasamos el idUsuario como argumento
