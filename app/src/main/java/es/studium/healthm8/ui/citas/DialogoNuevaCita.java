@@ -135,6 +135,18 @@ public class DialogoNuevaCita extends DialogFragment {
                         //Campos cumplimentados
                         else
                         {
+                            // Validación de la fecha
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                            Date diaActual = new Date();
+                            try {
+                                Date selectedDate = sdf.parse(fecha);
+                                if (selectedDate.before(diaActual)) {
+                                    mostrarToast("La fecha no puede ser anterior al día actual");
+                                    return;
+                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                             // Formateamos la Fecha para que coincida con el formato requerido por la API
                             SimpleDateFormat formatoEntrada = new SimpleDateFormat("dd/MM/yyyy");
                             SimpleDateFormat formatoSalida = new SimpleDateFormat("yyyy-MM-dd");
@@ -143,11 +155,9 @@ public class DialogoNuevaCita extends DialogFragment {
                                 fechaDate = formatoEntrada.parse(fecha);//Date
                                 //Formatear en el nuevo patrón yyyy-mm-dd
                                 fechaBD= formatoSalida.format(fechaDate);//String
-                                //Convertir a Date fechaBD (String)
-//                                fechaBDdate = formatoSalida.parse(fechaBD);
-                                Log.d("Mnsj. DialogoNC", "fechaDate: " + fechaDate);
-                                Log.d("Mnsj. DialogoNC", "fechaBD: " + fechaBD);
-//                                Log.d("Mnsj. DialogoNC", "fechaBDdate: " + formatoSalida.format(fechaBDdate));
+//                                Log.d("Mnsj. DialogoNC", "fechaDate: " + fechaDate);
+//                                Log.d("Mnsj. DialogoNC", "fechaBD: " + fechaBD);
+
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }

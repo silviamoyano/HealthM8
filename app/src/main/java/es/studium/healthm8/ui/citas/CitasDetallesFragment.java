@@ -42,8 +42,8 @@ public class CitasDetallesFragment extends Fragment
     String fechaFormateadaAmostrarTxt;
     String horaFormateadaAmostrarTxt;
     Citas cita;
-    private int idUsuarioLogueado;
-    private int idCita;
+    int idUsuarioLogueado;
+    int idCita;
     DialogoModificarCita dialogoModificarCita;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -72,7 +72,7 @@ public class CitasDetallesFragment extends Fragment
             idCita =args.getInt("idCita", 0);
             Log.d("Mnsj. CDetallesFragment", "========================================================================");
             Log.d("Mnsj. CDetallesFragment", "idUsuarioLogueado: " + idUsuarioLogueado);
-            Log.d("Mnsj. CDetallesFragment", "idCita: " + idCita);
+            Log.d("Mnsj. CDetallesFragment", "idCita con método obtenerIdCita: " + obtenerIdCita());
         }
         else
         {
@@ -137,6 +137,7 @@ public class CitasDetallesFragment extends Fragment
 
         //Formateamos la fecha y la hora
         SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+
         SimpleDateFormat formatoSalida = new SimpleDateFormat("dd/MM/yyyy");
         String fechaBD = cita.getFechaCita(); // yyyy-MM-dd'T'HH:mm:ss.SSSXXX
         String horaBD = cita.getHoraCita(); // HH:mm:ss
@@ -187,6 +188,8 @@ public class CitasDetallesFragment extends Fragment
         args.putString("nombreEspecialidad",nombreEspecialidad);
         args.putInt("idUsuarioLogueado", idUsuarioLogueado);
         args.putInt("idCita", idCita);
+        args.putString("fechaCita", fechaFormateadaAmostrarTxt);
+        args.putString("horaCita", horaFormateadaAmostrarTxt);
         args.putString("lugarCita", cita.getLugarCita());
         args.putInt("esOnline", cita.getEsOnline());
         args.putInt("esTelefonica", cita.getEsTelefonica());
@@ -205,5 +208,10 @@ public class CitasDetallesFragment extends Fragment
     public void mostrarToast(String mensaje)
     {
         Toast.makeText(getActivity(), mensaje, Toast.LENGTH_SHORT).show();
+    }
+
+    public int obtenerIdCita()
+    {
+      return idCita;
     }
 }

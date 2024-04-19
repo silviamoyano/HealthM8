@@ -8,5 +8,6 @@ public interface OnDialogoCitaListener
     public void onDialogoRecordatorioCitaListener();
 
     public void onDialogoRefrescarCitasListener();
+    public void onDialogoActualizarCitasDetallesListener();
 
 }
