@@ -18,5 +18,4 @@ public interface ApiService
     //Lectura
     @GET("usuarios/getall")
     Call<List<Usuarios>> getAllUsuarios();
-
 }

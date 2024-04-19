@@ -44,7 +44,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static final String Password = "passwordKey";
     //Creamos la sharedPreferences
     SharedPreferences sharedpreferences;
-
     //Habilitamos el botón acceder según los campos de texto
     /* Para ello, usamos un rasterador de texto. Cada vez que el EditText cambie,
      * esto lo analizará.

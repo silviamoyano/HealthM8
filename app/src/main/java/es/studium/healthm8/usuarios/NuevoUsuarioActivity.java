@@ -28,7 +28,6 @@ public class NuevoUsuarioActivity  extends AppCompatActivity implements View.OnC
 {
     EditText editTextUsuario;
     EditText editTextPassword;
-
     Button btnAceptar;
     Button btnCancelar;
 

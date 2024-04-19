@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import es.studium.healthm8.databinding.FragmentMedicamentosBinding;
 
 public class MedicamentosFragment extends Fragment {
-
     private FragmentMedicamentosBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,

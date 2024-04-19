@@ -18,7 +18,6 @@ import es.studium.healthm8.databinding.FragmentCitasBinding;
 
 public class CitasFragment extends Fragment
 {
-
     private FragmentCitasBinding binding;
     private RecyclerView recyclerView;
     private CitasAdapter adapter;

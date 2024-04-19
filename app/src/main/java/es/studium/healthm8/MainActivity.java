@@ -131,8 +131,8 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage("¿Está segur@ de que quiere eliminar las credenciales?")
                 .create();
         dialogoEliminarCredenciales.show();
-
     }
+
     public void crearDialogoEliminarUsuario()
     {
         //Iniciamos el dialogo

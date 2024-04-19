@@ -25,27 +25,23 @@ public class Usuarios
         this.nombreUsuario = nombreUsuario;
         this.claveUsuario = claveUsuario;
     }
+
     //Métodos inspectores (getter and setter)
     public int getIdUsuario() {
         return idUsuario;
     }
-
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
-
     public String getNombreUsuario() {
         return nombreUsuario;
     }
-
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
-
     public String getClaveUsuario() {
         return claveUsuario;
     }
-
     public void setClaveUsuario(String claveUsuario) {
         this.claveUsuario = claveUsuario;
     }

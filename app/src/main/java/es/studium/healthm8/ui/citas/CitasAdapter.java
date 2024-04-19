@@ -71,9 +71,7 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
         {
             @Override
             public void onClick(View v)
-            {
-
-            }
+            {}
         });
     }
 }

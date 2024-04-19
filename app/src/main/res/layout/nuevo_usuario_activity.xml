@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <EditText
         android:id="@+id/editTextUsuario"
         android:layout_width="353dp"
