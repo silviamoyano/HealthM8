@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -38,9 +39,8 @@ public class DialogoModificarCita extends DialogFragment
     EditText editTextHora;
     EditText editTextLugar;
     EditText editTextNombreMedico;
-    RadioButton radioBtnEsOnline;
-    RadioButton radioBtnEsTelefonica;
-    Button btnRecordatorioCita;
+    CheckBox checkBoxEsOnline;
+    CheckBox checkBoxEsTelefonica;
 
     int idUsuarioLogueado;
     int idCita;
@@ -58,8 +58,8 @@ public class DialogoModificarCita extends DialogFragment
     String horaBD;
     String lugar;
     String nombreMedico_txt;
-    int esOnlineChecked_radioBtn;
-    int esTelefonicaChecked_radioBtn;
+    int esOnlineChecked;
+    int esTelefonicaChecked;
     int idUsuarioFK;
 
 
@@ -80,12 +80,10 @@ public class DialogoModificarCita extends DialogFragment
         editTextHora = myView.findViewById(R.id.editTextHora);
         editTextLugar = myView.findViewById(R.id.editTextLugar);
         editTextNombreMedico = myView.findViewById(R.id.editTextNombreMedico);
-        radioBtnEsOnline = myView.findViewById(R.id.radioButtonEsOnline);
-        radioBtnEsTelefonica = myView.findViewById(R.id.radioButtonEsTelefonica);
-        btnRecordatorioCita = myView.findViewById(R.id.buttonRecordatorioCita);
+        checkBoxEsOnline = myView.findViewById(R.id.checkBox_esOnline);
+        checkBoxEsTelefonica = myView.findViewById(R.id.checkBox_esTelefonica);
 
-        //Obtener el idUsuarioLogueado
-        //Recuperamos los argumentos del CitasFragment
+        //Recuperamos los argumentos
         Bundle args = getArguments();
         if (args != null) {
             nombreEspecialidad_spinner = args.getString("nombreEspecialidad", "Seleccione una Especialidad");
@@ -94,8 +92,8 @@ public class DialogoModificarCita extends DialogFragment
             fecha_txt = args.getString("fechaCita"," ");
             hora_txt = args.getString("horaCita"," ");
             lugar = args.getString("lugarCita"," ");
-            esOnlineChecked_radioBtn = args.getInt("esOnline",0);
-            esTelefonicaChecked_radioBtn = args.getInt("esTelefonica",0);
+            esOnlineChecked = args.getInt("esOnline",0);
+            esTelefonicaChecked = args.getInt("esTelefonica",0);
             nombreMedico_txt = args.getString("nombreMedico", " ");
 
             Log.d("Mnsj. DialogoMoC", "nombreEspecialidad: " + nombreEspecialidad_spinner);
@@ -104,23 +102,18 @@ public class DialogoModificarCita extends DialogFragment
             Log.d("Mnsj. DialogoMoC", "fecha_txt: " + fecha_txt);
             Log.d("Mnsj. DialogoMoC", "hora_txt: " + hora_txt);
             Log.d("Mnsj. DialogoMoC", "lugar: " + lugar);
-            Log.d("Mnsj. DialogoMoC", "esOnline: " + esOnlineChecked_radioBtn);
-            Log.d("Mnsj. DialogoMoC", "esTelefonica: " + esTelefonicaChecked_radioBtn);
+            Log.d("Mnsj. DialogoMoC", "esOnline: " + esOnlineChecked);
+            Log.d("Mnsj. DialogoMoC", "esTelefonica: " + esTelefonicaChecked);
             Log.d("Mnsj. DialogoMoC", "nombreMedico: " + nombreMedico_txt);
 
-        } else {
+        }
+        else
+        {
             Log.d("Mnsj. DialogoMoC", "No hemos recibido datos");
         }
 
         rellenarCampos();
-        //Añadimos el listener al botón de recordatorio
-        btnRecordatorioCita.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) {
-                mListener.onDialogoRecordatorioCitaListener();
-            }
-        });
+
 
         //Obtenemos el listado de especialidades
         obtenerEspecialidadesToSpinner();
@@ -128,7 +121,8 @@ public class DialogoModificarCita extends DialogFragment
         //Añadimos un título al diálogo + los botones Aceptar y Cancelar. Además, añadimos myView
         builder.setView(myView)
                 .setTitle("Modificar Cita")
-                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener()
+                {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
@@ -139,20 +133,20 @@ public class DialogoModificarCita extends DialogFragment
                         hora_txt = editTextHora.getText().toString();
                         lugar = editTextLugar.getText().toString();
                         nombreMedico_txt = editTextNombreMedico.getText().toString();
-                        esOnlineChecked_radioBtn = radioBtnEsOnline.isChecked() ? 1 : 0; //1 = true, 0 = false
-                        esTelefonicaChecked_radioBtn = radioBtnEsTelefonica.isChecked() ? 1 : 0; //1 = true, 0 = false
+                        esOnlineChecked = checkBoxEsOnline.isChecked() ? 1 : 0; //1 = true, 0 = false
+                        esTelefonicaChecked = checkBoxEsTelefonica.isChecked() ? 1 : 0; //1 = true, 0 = false
                         idUsuarioFK = idUsuarioLogueado;
 
                         //Comprobaciones
-                        Log.d("Mnsj.DialogoMoC", "================================================================================================================================");
+                        Log.d("Mnsj. DialogoMoC", "========================================================================");
                         Log.d("Mnsj. DialogoMoC", "idEspecialidad : " + idEspecialidad_spinner);
                         Log.d("Mnsj. DialogoMoC", "nombreEspecialidad: " + nombreEspecialidad_spinner);
                         Log.d("Mnsj. DialogoMoC", "fecha: " + fecha_txt);
                         Log.d("Mnsj. DialogoMoC", "hora: " + hora_txt);
                         Log.d("Mnsj. DialogoMoC", "lugar: " + lugar);
                         Log.d("Mnsj. DialogoMoC", "nombreMedico: " + nombreMedico_txt);
-                        Log.d("Mnsj. DialogoMoC", "esOnlineChecked: " + esOnlineChecked_radioBtn);
-                        Log.d("Mnsj. DialogoMoC", "esTelefonicaChecked: " + esTelefonicaChecked_radioBtn);
+                        Log.d("Mnsj. DialogoMoC", "esOnlineChecked: " + esOnlineChecked);
+                        Log.d("Mnsj. DialogoMoC", "esTelefonicaChecked: " + esTelefonicaChecked);
 
                         //Comprobamos que los campos de texto no estén vacíos
                         if(!comprobarCampos(idEspecialidad_spinner, fecha_txt, hora_txt, lugar))
@@ -167,17 +161,20 @@ public class DialogoModificarCita extends DialogFragment
                             Date diaActual = new Date();
                             try {
                                 Date selectedDate = sdf.parse(fecha_txt);
-                                if (selectedDate.before(diaActual)) {
+                                if (selectedDate.before(diaActual))
+                                {
                                     mostrarToast("La fecha seleccionada no puede ser anterior al día actual");
                                     return;
                                 }
-                            } catch (ParseException e) {
+                            } catch (ParseException e)
+                            {
                                 e.printStackTrace();
                             }
                             // Formateamos la Fecha para que coincida con el formato requerido por la API
                             SimpleDateFormat formatoEntrada = new SimpleDateFormat("dd/MM/yyyy");
                             SimpleDateFormat formatoSalida = new SimpleDateFormat("yyyy-MM-dd");
-                            try {
+                            try
+                            {
                                 //Convertir a Date fecha (String)
                                 fecha_txt_Date = formatoEntrada.parse(fecha_txt);//Date
                                 //Formatear en el nuevo patrón yyyy-mm-dd
@@ -186,7 +183,8 @@ public class DialogoModificarCita extends DialogFragment
                                 Log.d("Mnsj. DialogoMoC", "fechaDate: " + fecha_txt_Date);
                                 Log.d("Mnsj. DialogoMoC", "fechaBD: " + fecha_txt_BD);
 
-                            } catch (ParseException e) {
+                            } catch (ParseException e)
+                            {
                                 e.printStackTrace();
                             }
                             //Añadimos los segundos a la hora
@@ -202,8 +200,8 @@ public class DialogoModificarCita extends DialogFragment
                             citaActualizada.setFechaCita(fecha_txt_BD);
                             citaActualizada.setHoraCita(horaBD);
                             citaActualizada.setLugarCita(lugar);
-                            citaActualizada.setEsOnline(esOnlineChecked_radioBtn);
-                            citaActualizada.setEsTelefonica(esTelefonicaChecked_radioBtn);
+                            citaActualizada.setEsOnline(esOnlineChecked);
+                            citaActualizada.setEsTelefonica(esTelefonicaChecked);
                             citaActualizada.setNombreMedico(nombreMedico_txt);
                             citaActualizada.setIdUsuarioFK(idUsuarioFK);
                             citaActualizada.setEspecialidades(especialidadSeleccionada);
@@ -241,27 +239,32 @@ public class DialogoModificarCita extends DialogFragment
     }
 
     // Método para rellenar los campos del diálogo con los datos de la cita
-    public void rellenarCampos() {
+    public void rellenarCampos()
+    {
 //        int idEspecialidad = cita.getEspecialidades().getIdEspecialidad();//idEspecialidad
 
         // Rellenar los campos con los datos de la cita
         editTextFecha.setText(fecha_txt);
-        Log.d("Mnsj. DialogoMoC", "Fecha cita: " + fecha_txt);
+//        Log.d("Mnsj. DialogoMoC", "Fecha cita: " + fecha_txt);
         editTextHora.setText(hora_txt);
         editTextLugar.setText(lugar);
         editTextNombreMedico.setText(nombreMedico_txt);
-        radioBtnEsOnline.setChecked(esOnlineChecked_radioBtn == 1);
-        radioBtnEsTelefonica.setChecked(esTelefonicaChecked_radioBtn == 1);
+        checkBoxEsOnline.setChecked(esOnlineChecked == 1);
+        checkBoxEsTelefonica.setChecked(esTelefonicaChecked == 1);
     }
 
     //Método para obtener todas las especialidades para mostrarlas en el spinnerEspecialidades
-    public void obtenerEspecialidadesToSpinner() {
+    public void obtenerEspecialidadesToSpinner()
+    {
         //Llamamos a la API
         Call<List<Especialidades>> callEspecialidadesToSpinner = ApiAdapter.getApiService().getAllEspecialidades();
-        callEspecialidadesToSpinner.enqueue(new Callback<List<Especialidades>>() {
+        callEspecialidadesToSpinner.enqueue(new Callback<List<Especialidades>>()
+        {
             @Override
-            public void onResponse(Call<List<Especialidades>> call, Response<List<Especialidades>> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(Call<List<Especialidades>> call, Response<List<Especialidades>> response)
+            {
+                if (response.isSuccessful())
+                {
                     List<Especialidades> listadoNombresEspecialidades = response.body();
                     List<String> especialidadesListado = new ArrayList<>();
 
@@ -275,17 +278,19 @@ public class DialogoModificarCita extends DialogFragment
 
 
                     //Añadimos el resto de especialidades del listado
-                    for (int i = 0; i < listadoNombresEspecialidades.size(); i++) {
+                    for (int i = 0; i < listadoNombresEspecialidades.size(); i++)
+                    {
                         Especialidades especialidad = listadoNombresEspecialidades.get(i);
                         especialidadesListado.add(especialidad.getNombreEspecialidad());
-
                         // Buscar el índice de la especialidad seleccionada
                         // Verificar si el nombre de la especialidad se encuentra en la lista
-                        if (especialidad.getNombreEspecialidad().equals(nombreEspecialidad_spinner)) {
-                            Log.d("Mnsj. DialogoMoC", "nombreEspecialidad_spinner encontrado: " + nombreEspecialidad_spinner);
+                        if (especialidad.getNombreEspecialidad().equals(nombreEspecialidad_spinner))
+                        {
+//                            Log.d("Mnsj. DialogoMoC", "nombreEspecialidad_spinner encontrado: " + nombreEspecialidad_spinner);
                             indiceEspecialidadSeleccionada = i + 1; // +1 para tener en cuenta el ítem "Selecciona una Especialidad"
-                        } else {
-                            Log.d("Mnsj. DialogoMoC", "nombreEspecialidad_spinner no encontrado en esta iteración: " + especialidad.getNombreEspecialidad());
+                        }
+                        else {
+//                            Log.d("Mnsj. DialogoMoC", "nombreEspecialidad_spinner no encontrado en esta iteración: " + especialidad.getNombreEspecialidad());
                         }
                     }
                     //Mostramos el listado
@@ -299,7 +304,8 @@ public class DialogoModificarCita extends DialogFragment
                 }
             }
             @Override
-            public void onFailure(Call<List<Especialidades>> call, Throwable t) {
+            public void onFailure(Call<List<Especialidades>> call, Throwable t)
+            {
                 Log.d("Mnsj. DialogoMoC", "obtenerEspecialidades - onFailure: No hemos recibido respuesta de la API");
                 Log.e("Mnsj. DialogoMoC", "obtenerEspecialidades - onFailure: Error al obtener especialidades: " + t.getMessage(), t);
             }
@@ -326,10 +332,13 @@ public class DialogoModificarCita extends DialogFragment
     public void actualizarCita(int idCita, Citas citaActualizada)
     {
         Call<Void> callActualizarCita = ApiAdapter.getApiService().actualizarCita(idCita, citaActualizada);
-        callActualizarCita.enqueue(new Callback<Void>() {
+        callActualizarCita.enqueue(new Callback<Void>()
+        {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<Void> call, Response<Void> response)
+            {
                 if (response.isSuccessful()) {
+                    Log.d("Mnsj. DialogoMoC", "========================================================================");
                     Log.d("Mnsj. DialogoMoC", "Cita modificada correctamente");
                     //Aviso al fragment del cambio
                     mListener.onDialogoActualizarCitasDetallesListener();
@@ -342,7 +351,8 @@ public class DialogoModificarCita extends DialogFragment
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t)
+            {
                 mostrarToast("Error en la conexión, intenta de nuevo");
                 Log.e("Mnsj. DialogoMoC", "Error al actualizar la cita: " + t.getMessage(), t);
             }

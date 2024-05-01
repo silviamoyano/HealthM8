@@ -45,6 +45,7 @@ public class CitasDetallesFragment extends Fragment
     int idUsuarioLogueado;
     int idCita;
     DialogoModificarCita dialogoModificarCita;
+    DialogoRecordatorioCita dialogoRecordatorioCita;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -89,6 +90,7 @@ public class CitasDetallesFragment extends Fragment
             public void onClick(View v)
             {
                 //Abrimos el diálogo para dar modificar una cita
+                abrirDialogoRecordatorio();
                 Log.d("Mnsj. CDetallesFragment", "Ha pulsado botón recordatorio ");
             }
         });
@@ -114,18 +116,22 @@ public class CitasDetallesFragment extends Fragment
     public void obtenerCitaPorId(int idCita)
     {
         Call<Citas> callObtenerCita = ApiAdapter.getApiService().obtenerCitaPorId(idCita);
-        callObtenerCita.enqueue(new Callback<Citas>() {
+        callObtenerCita.enqueue(new Callback<Citas>()
+        {
             @Override
-            public void onResponse(Call<Citas> call, Response<Citas> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(Call<Citas> call, Response<Citas> response)
+            {
+                if (response.isSuccessful())
+                {
                     cita = response.body();
                     rellenarCampos(cita);//Rellenamos los campos de la vista
                 }
             }
 
             @Override
-            public void onFailure(Call<Citas> call, Throwable t) {
-                Log.e("Mnsj. DialogoMoC", "Error al obtener la cita: " + t.getMessage(), t);
+            public void onFailure(Call<Citas> call, Throwable t)
+            {
+                Log.e("Mnsj. CDetallesFragment", "Error al obtener la cita: " + t.getMessage(), t);
                 mostrarToast("Error al obtener la cita");
             }
         });
@@ -144,18 +150,21 @@ public class CitasDetallesFragment extends Fragment
         String partes_hora[] = horaBD.split(":");
         horaFormateadaAmostrarTxt = partes_hora[0] + ":" + partes_hora[1];// HH:mm
 
-        try {
+        try
+        {
             Date fechaDate = formatoEntrada.parse(fechaBD);
             fechaFormateadaAmostrarTxt = formatoSalida.format(fechaDate);// dd/MM/yyyy
 
-        }catch (ParseException e) {
+        }
+        catch (ParseException e)
+        {
             e.printStackTrace();
         }
 
         // Rellenar los campos con los datos de la cita
         especialidadCita.setText("Especialidad: " + nombreEspecialidad);
         fechaCita.setText("Fecha: " + fechaFormateadaAmostrarTxt);
-        Log.d("Mnsj. DialogoMoC", "Fecha cita: " + fechaFormateadaAmostrarTxt);
+        Log.d("Mnsj. CDetallesFragment", "Fecha cita: " + fechaFormateadaAmostrarTxt);
         horaCita.setText("Hora: " + horaFormateadaAmostrarTxt);
         lugarCita.setText("Lugar: " + cita.getLugarCita());
         nombreMedico.setText("Médico: " + cita.getNombreMedico());
@@ -172,7 +181,8 @@ public class CitasDetallesFragment extends Fragment
         {
             esTelefonica.setText("¿Es telefónica? - No");
         }
-        else {
+        else
+        {
             esTelefonica.setText("¿Es telefónica? - Sí");
         }
     }
@@ -183,7 +193,7 @@ public class CitasDetallesFragment extends Fragment
         dialogoModificarCita = new DialogoModificarCita();
         //Convertimos el dialogo en modal
         dialogoModificarCita.setCancelable(false);
-        //Pasamos el idUsuario como argumento
+        //Pasamos los argumentos
         Bundle args = new Bundle();
         args.putString("nombreEspecialidad",nombreEspecialidad);
         args.putInt("idUsuarioLogueado", idUsuarioLogueado);
@@ -194,7 +204,7 @@ public class CitasDetallesFragment extends Fragment
         args.putInt("esOnline", cita.getEsOnline());
         args.putInt("esTelefonica", cita.getEsTelefonica());
         args.putString("nombreMedico", cita.getNombreMedico());
-        Log.d("Mnsj. CDetallesFragment", "nombreEspecialidad:" + nombreEspecialidad);
+
         dialogoModificarCita.setArguments(args);
         //Mostramos el dialogo
         /* Como el dialogo lo abrimos en un fragment tenemos que escribir:
@@ -202,6 +212,24 @@ public class CitasDetallesFragment extends Fragment
         dialogoModificarCita.show(requireActivity().getSupportFragmentManager(),"Modificar Cita");
         Log.d("Mnsj. CDetallesFragment", "========================================================================");
         Log.d("Mnsj. CDetallesFragment", "Abrimos dialogo modificar cita");
+    }
+
+    //Método para abrir el diálogo para establecer un recodatorio de la cita
+    public void abrirDialogoRecordatorio()
+    {
+        //Creamos DialogoNuevaCita
+        dialogoRecordatorioCita = new DialogoRecordatorioCita();
+
+        //Argumentos
+        Bundle args = new Bundle();
+        args.putString("nombreEspecialidad",nombreEspecialidad);
+        Log.d("Mnsj. CDetallesFragment", "nombreEspecialidad: " + nombreEspecialidad);
+
+        //Pasamos los argumentos al diálogo
+        dialogoRecordatorioCita.setArguments(args);
+        //Convertimos el dialogo en modal
+        dialogoRecordatorioCita.setCancelable(false);
+        dialogoRecordatorioCita.show(requireActivity().getSupportFragmentManager(),"Recordatorio Cita");
     }
 
     //Método para mostrar un Toast

@@ -48,8 +48,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     int idUsuarioLogueado;
 
-    Usuarios usuarios;
-
     //Habilitamos el botón acceder según los campos de texto
     /* Para ello, usamos un rasterador de texto. Cada vez que el EditText cambie,
      * esto lo analizará.
@@ -172,6 +170,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         return true;  // Retorna true solo si los campos están completos y la contraseña es válida
     }
+
     // Método para validar la contraseña
     public boolean comprobarPassword(String password)
     {
@@ -183,6 +182,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         return passwordValida;
     }
+
+    //Método para obtener los usuarios y comprobar que está en la base de datos
     public void obtenerUsuarios()
     {
         //Llamamos a la API
@@ -247,6 +248,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
+    //Método para abrir el MainActivity
     public void abrirMainActivity()
     {
         Intent intent = new Intent(this, MainActivity.class);
@@ -257,6 +259,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         finish();
     }
 
+    //Método para mostrar un Toast
     public void mostrarToast(String mensaje)
     {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
