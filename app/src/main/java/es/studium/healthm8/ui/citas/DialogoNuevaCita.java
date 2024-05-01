@@ -31,7 +31,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DialogoNuevaCita extends DialogFragment {
+public class DialogoNuevaCita extends DialogFragment
+{
     //Atributos
     Spinner spinnerEspecialidades;
     EditText editTextFecha;
@@ -40,7 +41,6 @@ public class DialogoNuevaCita extends DialogFragment {
     EditText editTextNombreMedico;
     CheckBox checkBoxEsOnline;
     CheckBox checkBoxEsTelefonica;
-
 
     int idUsuarioLogueado;
 
@@ -58,7 +58,9 @@ public class DialogoNuevaCita extends DialogFragment {
     int esOnlineChecked;
     int esTelefonicaChecked;
     int idUsuarioFK;
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+    public Dialog onCreateDialog(Bundle savedInstanceState)
+    {
         //Construir el diálogo
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Aplicamos el diseño del layout
@@ -93,7 +95,8 @@ public class DialogoNuevaCita extends DialogFragment {
         //Añadimos un título al diálogo + los botones Aceptar y Cancelar. Además, añadimos myView
         builder.setView(myView)
                 .setTitle("Nueva Cita")
-                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener()
+                {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
@@ -107,8 +110,8 @@ public class DialogoNuevaCita extends DialogFragment {
                         esTelefonicaChecked = checkBoxEsTelefonica.isChecked() ? 1 : 0; //1 = true, 0 = false
                         idUsuarioFK = idUsuarioLogueado;
 
-                        //Comprobaciones
-                        Log.d("Mnsj.DialogoNC", "================================================================================================================================");
+                        //Comprobaciones Logcat
+                        Log.d("Mnsj. DialogoNC", "========================================================================");
                         Log.d("Mnsj. DialogoNC", "idEspecialidad: " + idEspecialidad);
                         Log.d("Mnsj. DialogoNC", "nombreEspecialidad: " + nombreEspecialidad);
                         Log.d("Mnsj. DialogoNC", "fecha: " + fecha);
@@ -118,7 +121,6 @@ public class DialogoNuevaCita extends DialogFragment {
                         Log.d("Mnsj. DialogoNC", "esOnlineChecked: " + esOnlineChecked);
                         Log.d("Mnsj. DialogoNC", "esTelefonicaChecked: " + esTelefonicaChecked);
 
-
                         //Comprobamos que los campos de texto no estén vacíos
                         if(!comprobarCampos(idEspecialidad, fecha, hora, lugar))
                         {
@@ -127,6 +129,12 @@ public class DialogoNuevaCita extends DialogFragment {
                         //Campos cumplimentados
                         else
                         {
+                            //Verificamos que solo se haya seleccionado un checkbox o ninguno
+                            if (checkBoxEsOnline.isChecked() && checkBoxEsTelefonica.isChecked())
+                            {
+                                //Ambos checkboxes están marcados, mostrar un toast
+                                mostrarToast("Solo se puede seleccionar una opción: en línea o telefónica");
+                            }
                             // Validación de la fecha
                             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                             Date diaActual = new Date();
@@ -134,7 +142,6 @@ public class DialogoNuevaCita extends DialogFragment {
                                 Date selectedDate = sdf.parse(fecha);
                                 if (selectedDate.before(diaActual)) {
                                     mostrarToast("La fecha no puede ser anterior al día actual");
-                                    return;
                                 }
                             } catch (ParseException e) {
                                 e.printStackTrace();
@@ -176,32 +183,40 @@ public class DialogoNuevaCita extends DialogFragment {
         return builder.create();
     }
 
-    public void onAttach(Context context) {
+    public void onAttach(Context context)
+    {
         super.onAttach(context);
         //Verificamos que la actividad principal ha implementado la interfaz
-        try {
+        try
+        {
             //Instanciamos OnNuevoDialogoListener para poder enviar eventos a la Clase Principal
             mListener = (OnDialogoCitaListener) context;
-        } catch (ClassCastException e) {
+        }
+        catch (ClassCastException e)
+        {
             //La actividad no implementa el interfaz
             throw new ClassCastException(context.toString() + " debe implementar OnDialogoListener");
         }
     }
 
     //Método para obtener todas las especialidades para mostrarlas en el spinnerEspecialidades
-    public void obtenerEspecialidadesToSpinner() {
+    public void obtenerEspecialidadesToSpinner()
+    {
         //Llamamos a la API
         Call<List<Especialidades>> callEspecialidadesToSpinner = ApiAdapter.getApiService().getAllEspecialidades();
-        callEspecialidadesToSpinner.enqueue(new Callback<List<Especialidades>>() {
+        callEspecialidadesToSpinner.enqueue(new Callback<List<Especialidades>>()
+        {
             @Override
             public void onResponse(Call<List<Especialidades>> call, Response<List<Especialidades>> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful())
+                {
                     List<Especialidades> listadoNombresEspecialidades = response.body();
                     List<String> especialidadesListado = new ArrayList<>();
                     //Añadimos el item 0 del listado
                     especialidadesListado.add(0, "Selecciona una Especialidad");
                     //Añadimos el resto de especialidades del listado
-                    for (Especialidades especialidades : listadoNombresEspecialidades) {
+                    for (Especialidades especialidades : listadoNombresEspecialidades)
+                    {
                         especialidadesListado.add(especialidades.getNombreEspecialidad());
                     }
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, especialidadesListado);
@@ -211,7 +226,8 @@ public class DialogoNuevaCita extends DialogFragment {
             }
 
             @Override
-            public void onFailure(Call<List<Especialidades>> call, Throwable t) {
+            public void onFailure(Call<List<Especialidades>> call, Throwable t)
+            {
                 Log.d("Mnsj. DialogoNC", "obtenerEspecialidades - onFailure: No hemos recibido respuesta de la API");
                 Log.e("Mnsj. DialogoNC", "obtenerEspecialidades - onFailure: Error al obtener especialidades: " + t.getMessage(), t);
             }
@@ -244,7 +260,6 @@ public class DialogoNuevaCita extends DialogFragment {
         //Construimos un objeto Citas
         Citas citaNueva = new Citas();
         citaNueva.setFechaCita(fechaBD);
-        Log.d("Mnsj. DialogoNC", "citaNueva.setFechaCita: " + fechaBD);
         citaNueva.setHoraCita(horaBD);
         citaNueva.setLugarCita(lugar);
         citaNueva.setNombreMedico(nombreMedico);
@@ -262,8 +277,8 @@ public class DialogoNuevaCita extends DialogFragment {
                 if (response.isSuccessful())
                 {
                     // Éxito en la llamada a la API para dar de alta el pedido
+                    Log.d("Mnsj. DialogoNC", "========================================================================");
                     Log.d("Mnsj. DialogoNC ", "darAltaCita - onResponse: Cita creada correctamente");
-                    Log.d("Mnsj. DialogoNC","darAltaCita - response.body() - " +response.message());
                     Log.d("Mnsj. DialogoNC", "========================================================================");
 
                    //Notificamos del alta al acticity para que actualice el CitasFragment

@@ -8,17 +8,19 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
+
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+
 
 import es.studium.healthm8.R;
 import es.studium.healthm8.databinding.FragmentCitasBinding;
@@ -83,7 +85,11 @@ public class CitasFragment extends Fragment
     }
 
    //Método para obtener las citas del usuario logueado
-    public void obtenerCitasUsuario(int idUsuario) {
+    public void obtenerCitasUsuario(int idUsuario)
+    {
+        // Obtener la fecha actual
+        Date fechaActual = new Date();
+
         //Llamamos a la API
         Call<List<Citas>>callCitasPorUsuario = ApiAdapter.getApiService().obtenerCitasPorUsuario(idUsuario);
         if(callCitasPorUsuario != null)
@@ -91,19 +97,42 @@ public class CitasFragment extends Fragment
             callCitasPorUsuario.enqueue(new Callback<List<Citas>>()
             {
                 @Override
-                public void onResponse(Call<List<Citas>> call, Response<List<Citas>> response) {
+                public void onResponse(Call<List<Citas>> call, Response<List<Citas>> response)
+                {
                     if(response.isSuccessful())
                     {
+                        //Método para obtener TODAS las citas del usuario
                         List<Citas> listadoCitasDelUsuario = response.body();
+
+                        //Lista para almacenar las citas posteriores al día actual
+                        List<Citas> listadoCitasPosterioresDiaActual = new ArrayList<>();
+
                         for (Citas cita : listadoCitasDelUsuario)
                         {
-                            //Obtenemos todos las citas segun el id del usuario
+                            try
+                            {
+                                //Convertimos la cadena de fecha de la cita a Date
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                                Date fechaCita = sdf.parse(cita.getFechaCita());
+
+                                //Comparamos la fecha de la cita con la fecha actual
+                                if (fechaCita.after(fechaActual))
+                                {
+                                    listadoCitasPosterioresDiaActual.add(cita);
+
+                                }
+                            }
+                            catch (ParseException e)
+                            {
+                                e.printStackTrace();
+                            }
                         }
                         // Log para imprimir la respuesta completa de la API
-                        Log.d("Mnsj. CitasFragment","obtenerCitasUsuario - Tamaño lista: "+listadoCitasDelUsuario.size()+"");
-
+                        Log.d("Mnsj. CitasFragment","obtenerCitasUsuario - Tamaño lista cistas: " + listadoCitasDelUsuario.size()+"");
+                        Log.d("Mnsj. CitasFragment","obtenerCitasUsuario - Listado Citas Posteriores Dia Actual: "+ listadoCitasPosterioresDiaActual.size()+"");
                         //Ordenar la lista por fecha ascendente
-                        Collections.sort(listadoCitasDelUsuario, new Comparator<Citas>() {
+                        Collections.sort(listadoCitasPosterioresDiaActual, new Comparator<Citas>()
+                        {
                             @Override
                             public int compare(Citas cita1, Citas cita2) {
                                 return cita1.getFechaCita().compareTo(cita2.getFechaCita());
@@ -118,17 +147,19 @@ public class CitasFragment extends Fragment
 //                        Log.d("Mnsj. CitasFragment", "JSON_RESPONSE: " +json);
 
                         // Configurar el adaptador con los datos de las citas
-                        citasAdapter = new CitasAdapter(listadoCitasDelUsuario, NavHostFragment.findNavController(CitasFragment.this), requireContext());
+                        citasAdapter = new CitasAdapter(listadoCitasPosterioresDiaActual, NavHostFragment.findNavController(CitasFragment.this), requireContext());
                         recyclerView.setAdapter(citasAdapter);
-                        items = listadoCitasDelUsuario;
+                        items = listadoCitasPosterioresDiaActual;
                     }
-                    else {
+                    else
+                    {
                         Log.d("Mnsj. CitasFragment", "response: no es exitosa");
                     }
                 }
 
                 @Override
-                public void onFailure(Call<List<Citas>> call, Throwable t) {
+                public void onFailure(Call<List<Citas>> call, Throwable t)
+                {
                     Log.d("Mnsj. CitasFragment", "obtenerCitasUsuario - onFailure: No hemos recibido respuesta de la API");
                     Log.e("Mnsj. CitasFragment", "obtenerCitasUsuario - onFailure: Error al obtener citas: " + t.getMessage(), t);
                     Log.d("Mnsj. CitasFragment", "================================================================");
@@ -161,7 +192,8 @@ public class CitasFragment extends Fragment
     }
 
     @Override
-    public void onDestroyView() {
+    public void onDestroyView()
+    {
         super.onDestroyView();
         binding = null;
     }

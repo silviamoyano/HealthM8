@@ -37,9 +37,9 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
     SharedPreferences sharedpreferences;
     int idUsuarioLogueado;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         //Creamos en memoria la vista de la actividad principal a partir del activity_main.xml
@@ -54,12 +54,15 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
         idUsuarioLogueado = getIntent().getIntExtra("idUsuarioLogueado", 0);
 
         //Comprobamos si el idUsuarioLogueado es 0
-        if (idUsuarioLogueado == 0) {
+        if (idUsuarioLogueado == 0)
+        {
             // Si es 0, intentamos obtenerlo de SharedPreferences
             idUsuarioLogueado = sharedpreferences.getInt(LoginActivity.idUsuarioLogin, 0);
             // Log para verificar si se ha recuperado el idUsuarioLogueado de SharedPreferences
             Log.d("Mnsj. MainActivity", "idUsuarioLogueado recuperado de SharedPreferences: " + idUsuarioLogueado);
-        } else {
+        }
+        else
+        {
             // Si se pasó desde LoginActivity, se muestra en el log
             Log.d("Mnsj. MainActivity", "idUsuarioLogueado pasado desde LoginActivity: " + idUsuarioLogueado);
         }
@@ -90,14 +93,15 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
          * y pasamos los argumentos necesarios.
          * Lo colocamos al final del onCreate para que el MainActivity se cargue por completo
          * antes de pasarle los args al fragmento.*/
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null)
+        {
             mostrarCitasFragment();
         }
-
     }
 
     //Método para crear el fragmento Citas al que le pasamos como argumento el idUsuarioLogueado
-    private void mostrarCitasFragment() {
+    private void mostrarCitasFragment()
+    {
         // Crear un Bundle para pasar argumentos
         Bundle args = new Bundle();
         args.putInt("idUsuarioLogueado", idUsuarioLogueado);
@@ -106,7 +110,8 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
     }
 
     //Método para crear el framento Medicamentos
-    private void mostrarMedicamentosFragment() {
+    private void mostrarMedicamentosFragment()
+    {
         // Crear un Bundle para pasar argumentos
         Bundle args = new Bundle();
         args.putInt("idUsuarioLogueado", idUsuarioLogueado);
@@ -117,7 +122,8 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
 
     /*Se monta el menú lateral y se asigna el controlador que gestionará lo eventos*/
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -125,7 +131,8 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
 
     /*Hacemos que con el desplazamiento a la derecha, aparezca el menú */
     @Override
-    public boolean onSupportNavigateUp() {
+    public boolean onSupportNavigateUp()
+    {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
@@ -133,11 +140,15 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
 
     /*Gestionamos el menú de acciones*/
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.mAction_ECredenciales) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if (item.getItemId() == R.id.mAction_ECredenciales)
+        {
             crearDialogoEliminarCredenciales();
             Log.d("Mnsj.", "Se ha pulsado la acción Eliminar credenciales");
-        } else if (item.getItemId() == R.id.mAction_EUsuario) {
+        }
+        else if (item.getItemId() == R.id.mAction_EUsuario)
+        {
             //Borramos el usuario de la Base de Datos
             crearDialogoEliminarUsuario();
         }
@@ -171,7 +182,6 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
                 .setMessage("¿Está segur@ de que quiere eliminar las credenciales?")
                 .create();
         dialogoEliminarCredenciales.show();
-
     }
 
     //Método para crear el dialogo para Eliminar el usuario
@@ -179,16 +189,19 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
         //Iniciamos el dialogo
         AlertDialog dialogoEliminarUsuario = new AlertDialog.
                 Builder(this)
-                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
-
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //mostrarToast("Se ha borrado el usuario");
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        //mostrarToast("Se ha borrado el usuario correctamente");
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton("No", new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
                         dialog.dismiss(); //Cerramos el dialogo
                     }
                 })
@@ -199,23 +212,22 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
     }
 
     //Método para mostrar un Toast
-    public void mostrarToast(String mensaje) {
+    public void mostrarToast(String mensaje)
+    {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
     }
 
     //LISTENER Dialogos
     @Override
-    public void onDialogoAceptarListener() {
-    }
+    public void onDialogoAceptarListener() {}
 
     @Override
-    public void onDialogoCancelarListener() {
-    }
+    public void onDialogoCancelarListener() {}
 
     @Override
-    public void onDialogoRecordatorioCitaListener() {
-    }
+    public void onDialogoRecordatorioCitaListener() {}
 
+    //Método para refrescar la lista de citas de CITAS FRAGMENT tras un alta nueva o modificación
     @Override
     public void onDialogoRefrescarCitasListener()
     {
@@ -228,18 +240,17 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
         }
     }
 
+    //Método para refrescar CITAS DETALLES FRAGMENT tras una modificación
     @Override
-    public void onDialogoActualizarCitasDetallesListener() {
-
-
+    public void onDialogoActualizarCitasDetallesListener()
+    {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
         if (navHostFragment != null) {
             CitasDetallesFragment citasDetallesFragment = (CitasDetallesFragment) navHostFragment.getChildFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
             int idCita = citasDetallesFragment.obtenerIdCita();
             if (citasDetallesFragment != null) {
-                citasDetallesFragment.obtenerCitaPorId(idCita);
+                citasDetallesFragment.obtenerCitaPorId(idCita); // Actualiza la lista de citas
                 Log.d("Mnsj. MainActivity", "idCita: " + idCita);
-                // Actualiza la lista de citas
             }
         }
     }

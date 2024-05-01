@@ -36,6 +36,9 @@
     <!-- Detalles cita -->
     <string name="especialidad">Especialidad: </string>
 
+    <string name="channel_name">Nombre del Canal</string>
+    <string name="channel_description">Descripción del Canal</string>
+
 
 
 </resources>
