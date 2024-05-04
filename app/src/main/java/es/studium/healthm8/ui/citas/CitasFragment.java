@@ -21,7 +21,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-
 import es.studium.healthm8.R;
 import es.studium.healthm8.databinding.FragmentCitasBinding;
 import es.studium.healthm8.io.ApiAdapter;
@@ -68,7 +67,7 @@ public class CitasFragment extends Fragment
         }
         obtenerCitasUsuario(idUsuarioLogueado);
 
-        //Asignamos el botón a vista
+        //Asignamos el botón a la vista
         btnNuevaCitas = root.findViewById(R.id.button_Nuevo);
 
         //Agregamos el Listener al botón
@@ -146,7 +145,7 @@ public class CitasFragment extends Fragment
 //                        // Imprimir el JSON en la consola
 //                        Log.d("Mnsj. CitasFragment", "JSON_RESPONSE: " +json);
 
-                        // Configurar el adaptador con los datos de las citas
+                        //Configuramos el adaptador con los datos de las citas
                         citasAdapter = new CitasAdapter(listadoCitasPosterioresDiaActual, NavHostFragment.findNavController(CitasFragment.this), requireContext());
                         recyclerView.setAdapter(citasAdapter);
                         items = listadoCitasPosterioresDiaActual;

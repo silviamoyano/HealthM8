@@ -39,6 +39,12 @@
     <string name="channel_name">Nombre del Canal</string>
     <string name="channel_description">Descripción del Canal</string>
 
-
+    <!-- Nuevo Medicamento -->
+    <string name="hint_nombreMedicamento">Escriba el nombre del medicamento</string>
+    <string name="hint_numeroPastillas">Escriba el número de pastillas por toma</string>
+    <string name="hint_toma">Escriba el número de tomas</string>
+    <string name="hint_fechaInicio">Fecha inicio tratamiento: dd/mm/yyyy</string>
+    <string name="hint_fechaFin">Fecha fin tratamiento: dd/mm/yyyy</string>
+    <string name="hint_fechaRenovacionReceta">Fecha renovación receta: dd/mm/yyyy</string>
 
 </resources>

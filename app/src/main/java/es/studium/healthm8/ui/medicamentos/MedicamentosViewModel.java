@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class MedicamentosViewModel extends ViewModel {
-
+public class MedicamentosViewModel extends ViewModel
+{
     private final MutableLiveData<String> mText;
 
-    public MedicamentosViewModel() {
+    public MedicamentosViewModel()
+    {
         mText = new MutableLiveData<>();
         mText.setValue("This is MEDICAMENTOS fragment");
     }

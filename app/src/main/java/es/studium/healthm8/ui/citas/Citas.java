@@ -28,8 +28,6 @@ public class Citas
         idUsuarioFK = 0;
     }
     //Constructor por parámetros
-
-
     public Citas(int idCita, String fechaCita, String horaCita, String lugarCita, int esOnline, int esTelefonica, String nombreMedico, Especialidades especialidades, int idUsuarioFK) {
         this.idCita = idCita;
         this.fechaCita = fechaCita;

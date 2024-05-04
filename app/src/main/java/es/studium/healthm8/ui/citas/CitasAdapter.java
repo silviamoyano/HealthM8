@@ -34,10 +34,12 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
 {
     private List<Citas> items;
     private NavController navController;
+    /*Declaramos la variable Context.
+     *
+     * El Context nos ayudará a obtener recursos (datos) específicos de la aplicación. En
+     * este caso, serían las cadenas de texto, que luego las utilizamos para pasar datos
+     * entre fragments.*/
     private  Context context;
-
-    CitasFragment citasFragment;
-
     public void setItems(List<Citas> listaCitasUsuario) {this.items = listaCitasUsuario;}
 
     public static class CitasViewHolder extends RecyclerView.ViewHolder
@@ -48,7 +50,8 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
         public TextView horaCita;
 
 
-        public CitasViewHolder(@NonNull View v) {
+        public CitasViewHolder(@NonNull View v)
+        {
             super(v);
             //Asociamos los objetos a la vista del CardView
             fechaCita = v.findViewById(R.id.TextView_fechaCita);
@@ -127,10 +130,9 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
 //                args.putString("especialidadCita", nombreEspecialidad);
                 args.putInt("idUsuarioLogueado", cita.getIdUsuarioFK());
                 args.putInt("idCita", cita.getIdCita());
-                //Añadir más argumentos de las citas para la siguiente vista
+
                 Log.d("Mnsj. CitasAdapter", "========================================================================" );
                 Log.d("Mnsj. CitasAdapter", "item pulsado:" + cita.getIdCita());//obtenemos id de la cita pulsada
-
 
                 // Navegar al fragmento de detalles usando NavController
                 // Obtener el NavController y navegar al fragmento de detalles con argumentos

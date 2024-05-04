@@ -4,6 +4,7 @@ import java.util.List;
 
 import es.studium.healthm8.ui.citas.Citas;
 import es.studium.healthm8.ui.especialidad.Especialidades;
+import es.studium.healthm8.ui.medicamentos.Medicamentos;
 import es.studium.healthm8.usuarios.Usuarios;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -34,6 +35,7 @@ public interface ApiService
     /*Todas las citas segun el idUsuarioFK*/
     @GET("citas/usuarios/{idUsuarioFK}")
     Call<List<Citas>> obtenerCitasPorUsuario(@Path("idUsuarioFK") int idUsuarioFK);
+
     /*Todos los datos segun el idCita*/
     @GET("citas/id/{idCita}")
     Call<Citas> obtenerCitaPorId(@Path("idCita") int idCita);
@@ -52,6 +54,12 @@ public interface ApiService
     Call<List<Especialidades>> getAllEspecialidades();
     @GET("especialidades/{idEspecialidad}")
     Call<List<Especialidades>> obtenerEspecialidadesPorId();
+
+    //MEDICAMENTOS
+    //Lectura
+    @GET("medicamentos/usuarios/{idUsuarioFK}")
+    Call<List<Medicamentos>> obtenerMedicamentosPorUsuario(@Path("idUsuarioFK") int idUsuarioFK);
+
 
 
 }

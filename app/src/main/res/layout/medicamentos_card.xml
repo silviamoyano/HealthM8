@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
+    android:layout_height="120dp"
     xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="86dp"
+        android:layout_height="120dp"
         card_view:cardCornerRadius="6dp"
         card_view:cardElevation="4dp"
         card_view:cardUseCompatPadding="true">
 
         <RelativeLayout
             android:layout_width="397dp"
-            android:layout_height="76dp">
+            android:layout_height="115dp">
 
             <TextView
                 android:id="@+id/nombreMedicamento"
@@ -24,8 +24,19 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="11dp"
-                android:text="Pastilla Tesión"
+                android:text="Paracetamol"
                 android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/numeroPastillas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="40dp"
+                android:text="1 pastilla" />
 
             <TextView
                 android:id="@+id/tomaMedicamento"
@@ -35,8 +46,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="40dp"
-                android:text="1 pastilla" />
+                android:layout_marginTop="70dp"
+                android:text="3 veces al día" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

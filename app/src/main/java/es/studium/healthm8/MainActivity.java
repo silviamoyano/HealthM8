@@ -11,7 +11,9 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -28,7 +30,6 @@ import es.studium.healthm8.ui.citas.Citas;
 import es.studium.healthm8.ui.citas.CitasDetallesFragment;
 import es.studium.healthm8.ui.citas.CitasFragment;
 import es.studium.healthm8.ui.citas.OnDialogoCitaListener;
-
 public class MainActivity extends AppCompatActivity implements OnDialogoCitaListener//, NavigationView.OnNavigationItemSelectedListener
 {
     private AppBarConfiguration mAppBarConfiguration;
@@ -88,6 +89,29 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
         //La selección del menú lateral cambiará automáticamente según la navegación.
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        //Establecemos el Listener para manejar los clics en el menú lateral
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                Bundle args = new Bundle();
+                args.putInt("idUsuarioLogueado", idUsuarioLogueado); // Pasar el idUsuarioLogueado al Fragmento Medicamentos
+//                Log.d("Mnsj. MA", "idUsuarioLogueado: " + idUsuarioLogueado);
+                // Manejamos la selección del elemento del menú lateral
+                if (id == R.id.nav_citas) {
+                    Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_content_main).navigate(R.id.nav_citas, args);
+                } else if (id == R.id.nav_medicamentos) {
+                    Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_content_main).navigate(R.id.nav_medicamentos, args); // Pasar los argumentos al Fragmento Medicamentos
+
+                }
+
+                DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+                // Cerrar el menú lateral después de la navegación
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
         /*Verificamos si es la primera vez que se crea el MainActivity.
          * Si es la primera vez es igual a null. Por lo tanto, mostramos CitasFragment
          * y pasamos los argumentos necesarios.
@@ -105,19 +129,26 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
         // Crear un Bundle para pasar argumentos
         Bundle args = new Bundle();
         args.putInt("idUsuarioLogueado", idUsuarioLogueado);
+//        Log.d("Mnsj. MA Citas", "========================================================================");
+//        Log.d("Mnsj. MA Citas", "idUsuarioLogueado: " + idUsuarioLogueado);
+
         Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
                 .navigate(R.id.nav_citas, args);
     }
 
     //Método para crear el framento Medicamentos
-    private void mostrarMedicamentosFragment()
-    {
-        // Crear un Bundle para pasar argumentos
-        Bundle args = new Bundle();
-        args.putInt("idUsuarioLogueado", idUsuarioLogueado);
-        Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
-                .navigate(R.id.nav_medicamentos, args);
-    }
+//    private void mostrarMedicamentosFragment()
+//    {
+////        // Crear un Bundle para pasar argumentos
+////        Bundle args = new Bundle();
+////        args.putInt("idUsuarioLogueado", idUsuarioLogueado);
+////        Log.d("Mnsj. MA Medicamentos", "========================================================================");
+////        Log.d("Mnsj. MA Medicamentos", "idUsuarioLogueado: " + idUsuarioLogueado);
+////        Log.d("Mnsj. MA Medicamentos", "========================================================================");
+//
+//        Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+//                .navigate(R.id.nav_medicamentos);
+//    }
 
 
     /*Se monta el menú lateral y se asigna el controlador que gestionará lo eventos*/
