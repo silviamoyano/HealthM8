@@ -40,6 +40,7 @@ public class Citas
         this.idUsuarioFK = idUsuarioFK;
     }
 
+    //Cardview
     public Citas(int idCita, String fechaCita, String horaCita, Especialidades especialidades) {
         this.idCita = idCita;
         this.fechaCita = fechaCita;

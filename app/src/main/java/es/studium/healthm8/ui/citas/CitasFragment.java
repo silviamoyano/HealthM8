@@ -32,7 +32,7 @@ import retrofit2.Response;
 public class CitasFragment extends Fragment
 {
     private FragmentCitasBinding binding;
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private CitasAdapter citasAdapter;
     List<Citas> items = new ArrayList<>();
     private int idUsuarioLogueado;
@@ -127,7 +127,7 @@ public class CitasFragment extends Fragment
                             }
                         }
                         // Log para imprimir la respuesta completa de la API
-                        Log.d("Mnsj. CitasFragment","obtenerCitasUsuario - Tamaño lista cistas: " + listadoCitasDelUsuario.size()+"");
+                        Log.d("Mnsj. CitasFragment","obtenerCitasUsuario - Tamaño lista citas: " + listadoCitasDelUsuario.size()+"");
                         Log.d("Mnsj. CitasFragment","obtenerCitasUsuario - Listado Citas Posteriores Dia Actual: "+ listadoCitasPosterioresDiaActual.size()+"");
                         //Ordenar la lista por fecha ascendente
                         Collections.sort(listadoCitasPosterioresDiaActual, new Comparator<Citas>()

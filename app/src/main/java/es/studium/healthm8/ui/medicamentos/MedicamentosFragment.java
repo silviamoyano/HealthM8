@@ -30,13 +30,12 @@ public class MedicamentosFragment extends Fragment
     private FragmentMedicamentosBinding binding;
     private RecyclerView recyclerView;
     private MedicamentosAdapter medicamentosAdapter;
-    List<Medicamentos> items = new ArrayList<Medicamentos>();
+    List<Medicamentos> items = new ArrayList<>();
     private int idUsuarioLogueado;
     Button btnNuevosMedicamentos;
     DialogoNuevoMedicamento dialogoNuevoMedicamento;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
 //        MedicamentosViewModel medicamentosViewModel = new ViewModelProvider(this).get(MedicamentosViewModel.class);
         binding = FragmentMedicamentosBinding.inflate(inflater, container, false);
@@ -81,9 +80,6 @@ public class MedicamentosFragment extends Fragment
 
     public void obtenerMedicamentosUsuario(int idUsuario)
     {
-        // Obtener la fecha actual
-        Date fechaActual = new Date();
-
         Call<List<Medicamentos>>callMedicamentosPorUsuario = ApiAdapter.getApiService().obtenerMedicamentosPorUsuario(idUsuario);
         if(callMedicamentosPorUsuario != null)
         {
@@ -96,11 +92,12 @@ public class MedicamentosFragment extends Fragment
                     {
                         //Método para obtener TODOS los medicamentos del usuario
                         List<Medicamentos> listadoMedicamentosDelUsuario = response.body();
-                        Log.d("Mnsj. MedFragment", "ObtenerMedicamentosUsuario - Tamaño lista: " + listadoMedicamentosDelUsuario.size()+"");
+                        Log.d("Mnsj. MedFragment", "ObtenerMedicamentosUsuario - Tamaño lista medicamentos: " + listadoMedicamentosDelUsuario.size()+"");
 
                         //Configuramos el adaptador con los datos de los medicamentos
                         medicamentosAdapter =  new MedicamentosAdapter(listadoMedicamentosDelUsuario, NavHostFragment.findNavController(MedicamentosFragment.this), requireContext());
                         recyclerView.setAdapter(medicamentosAdapter);
+                        items = listadoMedicamentosDelUsuario;
                         Log.d("Mnsj. MedFragment", "ObtenerMedicamentosUsuario - Tamaño adaptador: " + medicamentosAdapter.getItemCount()+"");
 
                     }
@@ -109,7 +106,6 @@ public class MedicamentosFragment extends Fragment
                         Log.d("Mnsj. MedFragment", "Response: no es exitosa");
                     }
                 }
-
                 @Override
                 public void onFailure(Call<List<Medicamentos>> call, Throwable t)
                 {
@@ -135,7 +131,7 @@ public class MedicamentosFragment extends Fragment
         //Mostramos el dialogo
         dialogoNuevoMedicamento.show(requireActivity().getSupportFragmentManager(),"Nuevo Medicamento");
         Log.d("Mnsj. MedFragment", "========================================================================");
-        Log.d("Mnsj. MedFragment", "Abrimos dialogo nueva cita");
+        Log.d("Mnsj. MedFragment", "Abrimos dialogo nuevo medicamento");
     }
 
     @Override

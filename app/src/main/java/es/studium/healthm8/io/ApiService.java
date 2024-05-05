@@ -60,6 +60,8 @@ public interface ApiService
     @GET("medicamentos/usuarios/{idUsuarioFK}")
     Call<List<Medicamentos>> obtenerMedicamentosPorUsuario(@Path("idUsuarioFK") int idUsuarioFK);
 
+    @GET("medicamentos/id/{idMedicamento}")
+    Call<List<Medicamentos>> obtenerMedicamentosPorId(@Path("idMedicamento") int idMedicamento);
 
 
 }

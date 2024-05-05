@@ -12,8 +12,9 @@ public class Medicamentos
     private String fechaRenovacionReceta;
     private int idUsuarioFK;
 
-    //Constructor vacío o por defecto
-    public Medicamentos() {
+    //Constructor por defecto o vacío
+    public Medicamentos()
+    {
         idMedicamento = 0;
         nombreMedicamento = "";
         numeroPastillas = 0;
@@ -21,11 +22,11 @@ public class Medicamentos
         fechaInicio = "";
         fechaFin = "";
         fechaRenovacionReceta = "";
+        idUsuarioFK = 0;
     }
 
     //Constructor por parámetros
-    public Medicamentos(int idMedicamento, String nombreMedicamento, int tomaMedicamento, int numeroPastillas)
-    {
+    public Medicamentos(int idMedicamento, String nombreMedicamento, int numeroPastillas, int tomaMedicamento) {
         this.idMedicamento = idMedicamento;
         this.nombreMedicamento = nombreMedicamento;
         this.numeroPastillas = numeroPastillas;
@@ -43,7 +44,8 @@ public class Medicamentos
         this.idUsuarioFK = idUsuarioFK;
     }
 
-    //Métodos inspectores (getter and setter)
+    //Métodos inspectores (getter y setter)
+
     public int getIdMedicamento() {
         return idMedicamento;
     }

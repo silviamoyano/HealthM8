@@ -219,6 +219,7 @@ public class DialogoNuevaCita extends DialogFragment
                     {
                         especialidadesListado.add(especialidades.getNombreEspecialidad());
                     }
+
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, especialidadesListado);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerEspecialidades.setAdapter(adapter);

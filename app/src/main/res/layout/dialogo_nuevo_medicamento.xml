@@ -1,50 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/editTextNombre"
+    <Spinner
+        android:id="@+id/spinnerMedicamentos"
+        android:layout_width="350dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="52dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/editTextOtro"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/hint_nombreMedicamento"
         android:inputType="text"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="59dp" />
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.269" />
 
     <EditText
         android:id="@+id/editTextNPastillas"
-
         android:layout_width="350dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
         android:ems="10"
         android:hint="@string/hint_numeroPastillas"
         android:inputType="text"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="124dp" />
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerMedicamentos"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/spinnerMedicamentos"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerMedicamentos" />
 
     <EditText
         android:id="@+id/editTextToma"
-
         android:layout_width="350dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:ems="10"
         android:hint="@string/hint_toma"
         android:inputType="text"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="190dp" />
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextNPastillas"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/editTextNPastillas"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNPastillas" />
 
     <EditText
-        android:id="@+id/editTextNombreMedico"
-        
+        android:id="@+id/editTextFechaInicio"
         android:layout_width="350dp"
         android:layout_height="48dp"
+        android:layout_marginTop="12dp"
         android:ems="10"
-        android:hint="@string/hint_nombreMedico"
-        android:inputType="text"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="456dp" />
+        android:hint="@string/hint_fechaInicio"
+        android:inputType="date"
+        app:layout_constraintEnd_toEndOf="@+id/editTextToma"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/editTextToma"
+        app:layout_constraintTop_toBottomOf="@+id/editTextToma" />
+
+    <EditText
+        android:id="@+id/editTextFechaFin"
+        android:layout_width="350dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:hint="@string/hint_fechaFin"
+        android:inputType="date"
+        app:layout_constraintEnd_toEndOf="@+id/editTextFechaInicio"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/editTextFechaInicio"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFechaInicio" />
+
+    <EditText
+        android:id="@+id/editTextFechaRenovacionReceta"
+        android:layout_width="350dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:hint="@string/hint_fechaRenovacionReceta"
+        android:inputType="date"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/editTextFechaFin"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/editTextFechaFin"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFechaFin"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

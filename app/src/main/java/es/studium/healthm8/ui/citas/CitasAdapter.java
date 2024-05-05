@@ -44,7 +44,7 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
 
     public static class CitasViewHolder extends RecyclerView.ViewHolder
     {
-        //Campos respectivos de un cardView
+        //Campos respectivos del cardView
         public TextView fechaCita;
         public TextView especialidadCita;
         public TextView horaCita;
@@ -132,7 +132,7 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
                 args.putInt("idCita", cita.getIdCita());
 
                 Log.d("Mnsj. CitasAdapter", "========================================================================" );
-                Log.d("Mnsj. CitasAdapter", "item pulsado:" + cita.getIdCita());//obtenemos id de la cita pulsada
+                Log.d("Mnsj. CitasAdapter", "item pulsado: " + cita.getIdCita());//obtenemos id de la cita pulsada
 
                 // Navegar al fragmento de detalles usando NavController
                 // Obtener el NavController y navegar al fragmento de detalles con argumentos

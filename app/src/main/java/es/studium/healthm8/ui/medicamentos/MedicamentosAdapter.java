@@ -23,14 +23,15 @@ public class MedicamentosAdapter extends RecyclerView.Adapter<MedicamentosAdapte
     private NavController navController;
     private Context context;
 
-    public MedicamentosAdapter(List<Medicamentos> items)
+
+    public void setItems(List<Medicamentos> listaMedicamentosUsuario)
     {
-        this.items = items;
+        this.items = listaMedicamentosUsuario;
     }
 
     public static class MedicamentosViewHolder extends RecyclerView.ViewHolder
     {
-        //Campos respectivos de un item
+        //Campos respectivos del cardview
         public TextView nombreMedicamento;
         public TextView numeroPastillas;
         public TextView tomaMedicamento;
@@ -60,26 +61,23 @@ public class MedicamentosAdapter extends RecyclerView.Adapter<MedicamentosAdapte
 
     @NonNull
     @Override
-    public MedicamentosViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MedicamentosViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.medicamentos_card, parent, false);
         return new MedicamentosViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MedicamentosViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull MedicamentosViewHolder viewHolder, int position)
+    {
         //Creamos un objeto de la clase Medicamentos y obtenemos su posicion
-        Medicamentos medicamentos = items.get(position);
-
-//        Log.d("Mnsj. MedAdapter", "nombreMedicamentoBD: " + medicamentos.getNombreMedicamento());
-//        Log.d("Mnsj. MedAdapter", "numeroPastillasBD: " + medicamentos.getNumeroPastillas()+"");
-//        Log.d("Mnsj. MedAdapter", "tomaMedicamentoBD: " + medicamentos.getTomaMedicamento()+"");
+        Medicamentos medicamento = items.get(position);
 
         //Asignamos al viewHolder el nombre de la medicamento y su toma
-        viewHolder.nombreMedicamento.setText(medicamentos.getNombreMedicamento());
-        viewHolder.numeroPastillas.setText("Pastillas a tomar: " + medicamentos.getNumeroPastillas() +"");
-        viewHolder.tomaMedicamento.setText("Toma: " + medicamentos.getTomaMedicamento() + " al día");
-
+        viewHolder.nombreMedicamento.setText(medicamento.getNombreMedicamento());
+        viewHolder.numeroPastillas.setText("Pastillas a tomar: " + medicamento.getNumeroPastillas() +"");
+        viewHolder.tomaMedicamento.setText("Toma: " + medicamento.getTomaMedicamento() + " al día");
 
         // Agregamos el clic del elemento del RecyclerView
         viewHolder.itemView.setOnClickListener(new View.OnClickListener()
@@ -91,14 +89,16 @@ public class MedicamentosAdapter extends RecyclerView.Adapter<MedicamentosAdapte
             {
                 // Crear el Bundle y agregar datos
                 Bundle args = new Bundle();
-                args.putInt("idMedicamento", medicamentos.getIdMedicamento());
-                Log.d("Mnsj. MedAdapter", "idMedicamento:" + medicamentos.getIdMedicamento());//obtenemos id del medicamento pulsado
-                args.putString("nombreMedicamento", medicamentos.getNombreMedicamento());
-                args.putInt("numeroPastillas",medicamentos.getNumeroPastillas());
-                args.putInt("tomaMedicamento", medicamentos.getTomaMedicamento());
+                args.putInt("idMedicamento", medicamento.getIdMedicamento());
+                Log.d("Mnsj. MedAdapter", "========================================================================" );
+                Log.d("Mnsj. MedAdapter", "idMedicamento:" + medicamento.getIdMedicamento());//obtenemos id del medicamento pulsado
+                args.putString("nombreMedicamento", medicamento.getNombreMedicamento());
+                Log.d("Mnsj. MedAdapter", "nombreMedicamento: " + medicamento.getNombreMedicamento() );
+                args.putInt("numeroPastillas",medicamento.getNumeroPastillas());
+                args.putInt("tomaMedicamento", medicamento.getTomaMedicamento());
 
                 Log.d("Mnsj. MedAdapter", "========================================================================" );
-                Log.d("Mnsj. MedAdapter", "item pulsado:" + medicamentos.getIdMedicamento());//obtenemos id del medicamento pulsado
+                Log.d("Mnsj. MedAdapter", "item pulsado:" + medicamento.getIdMedicamento());//obtenemos id del medicamento pulsado
 
                 // Navegar al fragmento de detalles usando NavController
                 // Obtener el NavController y navegar al fragmento de detalles con argumentos
@@ -112,7 +112,7 @@ public class MedicamentosAdapter extends RecyclerView.Adapter<MedicamentosAdapte
             @Override
             public boolean onLongClick(View v)
             {
-                int idMedicamentoAEliminar = medicamentos.getIdMedicamento();
+                int idMedicamentoAEliminar = medicamento.getIdMedicamento();
                 Log.d("Mnsj. MedAdapter", "========================================================================");
                 Log.d("Mnsj. MedAdapter", "Medicamento a eliminar: " + idMedicamentoAEliminar);
 //                mostrarDialogoEliminarMedicamento(idMedicamentoAEliminar);

@@ -30,7 +30,9 @@ import es.studium.healthm8.ui.citas.Citas;
 import es.studium.healthm8.ui.citas.CitasDetallesFragment;
 import es.studium.healthm8.ui.citas.CitasFragment;
 import es.studium.healthm8.ui.citas.OnDialogoCitaListener;
-public class MainActivity extends AppCompatActivity implements OnDialogoCitaListener//, NavigationView.OnNavigationItemSelectedListener
+import es.studium.healthm8.ui.medicamentos.OnDialogoMedicamentoListener;
+
+public class MainActivity extends AppCompatActivity implements OnDialogoCitaListener, OnDialogoMedicamentoListener//, NavigationView.OnNavigationItemSelectedListener
 {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
