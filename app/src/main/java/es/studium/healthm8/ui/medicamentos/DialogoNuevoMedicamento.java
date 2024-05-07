@@ -44,8 +44,8 @@ public class DialogoNuevoMedicamento extends DialogFragment
     int idMedicamento;
     String nombreMedicamentoSpinner;
     String nombreMedicamentoAagregar;
-    int numeroPastillas;
-    int tomaMedicamento;
+    String numeroPastillas;
+    String tomaMedicamento;
     String fechaInicio;
     String fechaFin;
     String fechaRenovacionReceta;
@@ -57,6 +57,8 @@ public class DialogoNuevoMedicamento extends DialogFragment
     Date fechaRenovacionRecetaDate;
     String fechaRenovacionRecetaBD;
     int idUsuarioFK;
+
+    Medicamentos medicamentoActualizado;
 
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
@@ -98,24 +100,44 @@ public class DialogoNuevoMedicamento extends DialogFragment
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-
                         //Obtenemos el valor de los campos de texto
                         idMedicamento = (int) spinnerMedicamentos.getSelectedItemId();
                         nombreMedicamentoSpinner = (String) spinnerMedicamentos.getSelectedItem();
-//                        nombreMedicamentoAagregar = editTextOtro.getText().toString();
-//                        numeroPastillas = Integer.parseInt(editTextNumPastillas.getText().toString());
-//                        tomaMedicamento = Integer.parseInt(editTextToma.getText().toString());
-//                        fechaInicio = editTextFechaInicio.getText().toString();
-//                        fechaFin = editTextFechaFin.getText().toString();
-//                        fechaRenovacionReceta = editTextFechaRenovacionReceta.getText().toString();
-//                        idUsuarioFK = idUsuarioLogueado;
+                        nombreMedicamentoAagregar = editTextOtro.getText().toString();
+                        numeroPastillas = editTextNumPastillas.getText().toString();
+                        tomaMedicamento = editTextToma.getText().toString();
+                        fechaInicio = editTextFechaInicio.getText().toString();
+                        fechaFin = editTextFechaFin.getText().toString();
+                        fechaRenovacionReceta = editTextFechaRenovacionReceta.getText().toString();
+                        idUsuarioFK = idUsuarioLogueado;
+
+                        //Comprobar que los campos de texto no estén vacíos
+                        if(!comprobarCamposPOST(idMedicamento, nombreMedicamentoSpinner, nombreMedicamentoAagregar, numeroPastillas, tomaMedicamento))
+                        {
+                            //Al menos un campo vacío
+                        }
+                        //Comprobar formato fecha
+                        //Campos cumplimentados
+                        else
+                        {
+                            if(nombreMedicamentoAagregar.isEmpty())
+                            {
+                                //Hacemos un PUT
+                                modificarMedicamento(idMedicamento, medicamentoActualizado);
+                            }
+                            else
+                            {
+                                //Hacemos un POST
+                                darDeAltaMedicamento();
+                            }
+                        }
 
                         Log.d("Mnsj. DialogoNMed", "id item Spinner: " + idMedicamento);
                         Log.d("Mnsj. DialogoNMed", "id item Spinner: " + nombreMedicamentoSpinner);
 
 
 
-                        mostrarToast("Medicamento agregado correctamente");
+//                        mostrarToast("Medicamento agregado correctamente");
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener()
@@ -140,8 +162,7 @@ public class DialogoNuevoMedicamento extends DialogFragment
                     case "Otro":
                         // Código a ejecutar si se selecciona la opción 1
                         // Por ejemplo:
-                         editTextOtro.setVisibility(View.VISIBLE);
-
+                        editTextOtro.setVisibility(View.VISIBLE);
                         break;
 
                     // Agregar más casos según las opciones del Spinner
@@ -152,15 +173,13 @@ public class DialogoNuevoMedicamento extends DialogFragment
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // Método necesario de implementar, pero no necesitamos realizar ninguna acción aquí
-            }
+            public void onNothingSelected(AdapterView<?> parentView) {}
         });
         //Crear el objeto y devolverlo
         return builder.create();
     }
 
-
+    //Método para obtener los Medicamentos para el Spinner
     public void obtenerMedicamentosToSpinner(int idUsuarioLogueado)
     {
         Call<List<Medicamentos>> callMedicamentosToSpinner = ApiAdapter.getApiService().obtenerMedicamentosPorUsuario(idUsuarioLogueado);
@@ -178,10 +197,10 @@ public class DialogoNuevoMedicamento extends DialogFragment
                         List<String> listadoMedicamentos = new ArrayList<>();
                         //Añadimos el item 0 del listado
                         listadoMedicamentos.add(0, "Seleccione un medicamento");
-                       for(Medicamentos medicamentos : listadoMedicamentosDelUsuario)
-                       {
-                           listadoMedicamentos.add(medicamentos.getNombreMedicamento());
-                       }
+                        for(Medicamentos medicamentos : listadoMedicamentosDelUsuario)
+                        {
+                            listadoMedicamentos.add(medicamentos.getNombreMedicamento());
+                        }
 
                         //Añadimos el último elemento al listado
                         listadoMedicamentos.add("Otro");
@@ -221,6 +240,45 @@ public class DialogoNuevoMedicamento extends DialogFragment
         }
     }
 
+    //Método para comprobar que los campos de texto no estén vacíos en POST
+    private boolean comprobarCamposPOST(int idMedicamento, String nombreMedicamentoSpinner, String nombreMedicamentoAagregar, String numeroPastillas, String tomaMedicamento)
+    {
+        if(idMedicamento == 0)
+        {
+            mostrarToast("No ha seleccionado ningún medicamento");
+            return false;
+        }
+        else if((nombreMedicamentoSpinner.equals("Otro") && nombreMedicamentoAagregar.isEmpty()))
+        {
+            mostrarToast("El campo nombre medicamento está vacío");
+            return false;
+        }
+        else if( idMedicamento != 0 && numeroPastillas.isEmpty() || tomaMedicamento.isEmpty())
+        {
+            mostrarToast("Los campos número de pastillas o toma están vacíos");
+            return false;
+        }
+        return true;
+    }
+
+    //Método para dar de alta el medicamento
+    private void darDeAltaMedicamento()
+    {
+        Log.d("Mnsj. DialogoNMed","Medicamento dado de alta correctamente");
+    }
+
+    //Método para comprobar que los campos de texto no estén vacíos en PUT
+    private boolean comprobarCamposPUT(int idMedicamento, int numeroPastillas, int tomaMedicamento)
+    {
+
+        return true;
+    }
+
+    //Método para modificar el medicamento, agregar nueva toma
+    private void modificarMedicamento(int idMedicamento, Medicamentos medicamentoActualizado)
+    {
+        Log.d("Mnsj. DialogoNMed","Modificamos toma del medicamento");
+    }
     //Método para mostrar un Toast
     public void mostrarToast(String mensaje)
     {
