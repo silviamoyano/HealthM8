@@ -129,12 +129,6 @@ public class DialogoNuevaCita extends DialogFragment
                         //Campos cumplimentados
                         else
                         {
-                            //Verificamos que solo se haya seleccionado un checkbox o ninguno
-                            if (checkBoxEsOnline.isChecked() && checkBoxEsTelefonica.isChecked())
-                            {
-                                //Ambos checkboxes están marcados, mostrar un toast
-                                mostrarToast("Solo se puede seleccionar una opción: en línea o telefónica");
-                            }
                             // Validación de la fecha
                             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                             Date diaActual = new Date();
@@ -237,14 +231,15 @@ public class DialogoNuevaCita extends DialogFragment
     //Método para comprobar que los campos de texto no estén vacíos
     public boolean comprobarCampos(int idEspecialidad, String fecha, String hora, String lugar)
     {
-        if(idEspecialidad == 0)
+        if(idEspecialidad == 0 ||fecha.isEmpty() || hora.isEmpty() || lugar.isEmpty())
         {
-            mostrarToast("Seleccione una Especialidad");
+            mostrarToast("Los campos fecha, hora y lugar no pueden estar vacíos. Además, tiene que seleccionar una especialidad");
             return false;
         }
-        else if(fecha.isEmpty() || hora.isEmpty() || lugar.isEmpty())
+        else if (checkBoxEsOnline.isChecked() && checkBoxEsTelefonica.isChecked())
         {
-            mostrarToast("Los campos fecha, hora y lugar no pueden estar vacíos");
+            //Ambos checkboxes están marcados, mostrar un toast
+            mostrarToast("Solo se puede seleccionar una opción: en línea o telefónica");
             return false;
         }
         return true;

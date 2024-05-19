@@ -6,6 +6,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="86dp"
+        card_view:cardBackgroundColor="@color/blue"
         card_view:cardCornerRadius="6dp"
         card_view:cardElevation="4dp"
         card_view:cardUseCompatPadding="true">
@@ -16,6 +17,7 @@
 
             <TextView
                 android:id="@+id/nombreMedicamento"
+                style="@style/CardViewTextHighStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -28,6 +30,7 @@
 
             <TextView
                 android:id="@+id/tomaMedicamento"
+                style="@style/CardViewTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"

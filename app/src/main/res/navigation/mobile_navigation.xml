@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/nav_citas"
         android:name="es.studium.healthm8.ui.citas.CitasFragment"
-        android:label="@string/menu_home"
+        android:label="@string/menu_citas"
         tools:layout="@layout/fragment_citas" >
         <action
             android:id="@+id/action_nav_citas_to_nav_medicamentos"
@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/nav_medicamentos"
         android:name="es.studium.healthm8.ui.medicamentos.MedicamentosFragment"
-        android:label="@string/menu_gallery"
+        android:label="@string/menu_medicamentos"
         tools:layout="@layout/fragment_medicamentos" >
         <action
             android:id="@+id/action_nav_medicamentos_to_nav_citas"

@@ -24,10 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.studium.healthm8.databinding.ActivityMainBinding;
+import es.studium.healthm8.io.ApiAdapter;
 import es.studium.healthm8.ui.citas.Citas;
 import es.studium.healthm8.ui.citas.CitasDetallesFragment;
 import es.studium.healthm8.ui.citas.CitasFragment;
 import es.studium.healthm8.ui.citas.OnDialogoCitaListener;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements OnDialogoCitaListener//, NavigationView.OnNavigationItemSelectedListener
 {
@@ -145,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
         if (item.getItemId() == R.id.mAction_ECredenciales)
         {
             crearDialogoEliminarCredenciales();
-            Log.d("Mnsj.", "Se ha pulsado la acción Eliminar credenciales");
+            Log.d("Mnsj. MainActivity", "Se ha pulsado la acción Eliminar credenciales");
         }
         else if (item.getItemId() == R.id.mAction_EUsuario)
         {
@@ -157,14 +161,17 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
     }
 
     //Método para crear el dialogo para Borrar las credenciales
-    public void crearDialogoEliminarCredenciales() {
+    public void crearDialogoEliminarCredenciales()
+    {
         //Iniciamos el dialogo
         AlertDialog dialogoEliminarCredenciales = new AlertDialog.
                 Builder(this)
-                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener()
+                {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
                         //Borramos los datos del SharedPreferences
                         SharedPreferences.Editor editor = sharedpreferences.edit();
                         editor.clear();  // Este método elimina todos los valores.
@@ -172,9 +179,11 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
                         mostrarToast("Se han borrado las credenciales");
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton("No", new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
                         dialog.dismiss(); //Cerramos el dialogo
                     }
                 })
@@ -185,7 +194,8 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
     }
 
     //Método para crear el dialogo para Eliminar el usuario
-    public void crearDialogoEliminarUsuario() {
+    public void crearDialogoEliminarUsuario()
+    {
         //Iniciamos el dialogo
         AlertDialog dialogoEliminarUsuario = new AlertDialog.
                 Builder(this)
@@ -194,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
+                        eliminarUsuario(idUsuarioLogueado);
                         //mostrarToast("Se ha borrado el usuario correctamente");
                     }
                 })
@@ -206,9 +217,40 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
                     }
                 })
                 .setTitle("Eliminar Usuario")
-                .setMessage("¿Está segur@ de que quiere eliminar el usuario?")
+                .setMessage("¿Está segur@ de que quiere eliminar su usuario?")
                 .create();
         dialogoEliminarUsuario.show();
+    }
+
+    private void eliminarUsuario(int idUsuarioLogueado)
+    {
+        Call<Void> callEliminarUsuario = ApiAdapter.getApiService().eliminarUsuarioPorId(idUsuarioLogueado);
+        callEliminarUsuario.enqueue(new Callback<Void>()
+        {
+
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response)
+            {
+                if(response.isSuccessful())
+                {
+
+                    mostrarToast("Se ha eliminado el usuario");
+                }
+                else
+                {
+                    mostrarToast("Error al borrar el usuario.");
+                    Log.d("Mnsj. MainActivity", "Error al borrar el usuario. Código:" + response.code());
+                    Log.d("Mnsj. MainActivity", "================================================================");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t)
+            {
+                Log.d("Mnsj. MainActivity", "onFailure - Error en la llamada a la API. Mensaje: " + t.getMessage());
+                Log.d("Mnsj. MainActivity", "================================================================");
+            }
+        });
     }
 
     //Método para mostrar un Toast
@@ -232,9 +274,11 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
     public void onDialogoRefrescarCitasListener()
     {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
-        if (navHostFragment != null) {
+        if (navHostFragment != null)
+        {
             CitasFragment citasFragment = (CitasFragment) navHostFragment.getChildFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
-            if (citasFragment != null) {
+            if (citasFragment != null)
+            {
                 citasFragment.obtenerCitasUsuario(idUsuarioLogueado);  // Actualiza la lista de citas
             }
         }
@@ -245,10 +289,12 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
     public void onDialogoActualizarCitasDetallesListener()
     {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
-        if (navHostFragment != null) {
+        if (navHostFragment != null)
+        {
             CitasDetallesFragment citasDetallesFragment = (CitasDetallesFragment) navHostFragment.getChildFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
             int idCita = citasDetallesFragment.obtenerIdCita();
-            if (citasDetallesFragment != null) {
+            if (citasDetallesFragment != null)
+            {
                 citasDetallesFragment.obtenerCitaPorId(idCita); // Actualiza la lista de citas
                 Log.d("Mnsj. MainActivity", "idCita: " + idCita);
             }

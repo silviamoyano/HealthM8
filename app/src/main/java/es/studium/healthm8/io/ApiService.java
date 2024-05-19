@@ -25,6 +25,9 @@ public interface ApiService
     @GET("usuarios/getall")
     Call<List<Usuarios>> getAllUsuarios();
 
+    //Eliminar
+    @DELETE("usuarios/id/{idUsuario}")
+    Call<Void> eliminarUsuarioPorId(@Path("idUsuario") int idUsuario);
     //CITAS
     //Alta
     @POST("citas")
