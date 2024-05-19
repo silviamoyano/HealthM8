@@ -325,6 +325,12 @@ public class DialogoModificarCita extends DialogFragment
             mostrarToast("Los campos fecha, hora y lugar no pueden estar vacíos");
             return false;
         }
+        else if (checkBoxEsOnline.isChecked() && checkBoxEsTelefonica.isChecked())
+        {
+            //Ambos checkboxes están marcados, mostrar un toast
+            mostrarToast("Solo se puede seleccionar una opción: en línea o telefónica");
+            return false;
+        }
         return true;
     }
 
