@@ -1,0 +1,21 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Botón redondeado -->
+    <style name="MainRoundedButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!-- CardViews -->
+    <!-- Estilo para el texto dentro de los CardViews Fecha -->
+    <style name="CardViewTextHighStyle" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/teal_900</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <!-- Estilo para el resto de texto dentro de los CardViews -->
+    <style name="CardViewTextStyle" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/teal_900</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+</resources>

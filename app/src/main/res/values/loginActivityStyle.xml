@@ -1,0 +1,24 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Style for white text -->
+    <style name="LoginTextStyle" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">20sp</item> <!-- Ajusta el tamaño de texto según tu preferencia -->
+        <item name="android:textStyle">bold</item> <!-- Aplica negrita -->
+    </style>
+
+    <!-- Style for rounded button -->
+    <style name="RoundedButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!-- Style for switch thumb -->
+    <style name="SwitchThumbStyle">
+        <item name="android:thumbTint">@drawable/switch_thumb_selector</item>
+    </style>
+
+    <!-- Style for switch track -->
+    <style name="SwitchTrackStyle">
+        <item name="android:trackTint">@drawable/switch_track_selector</item>
+    </style>
+</resources>

@@ -5,22 +5,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondo_listado"
     tools:context=".ui.citas.CitasFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myRecyclerView_Citas"
         android:layout_width="413dp"
-        android:layout_height="490dp"
+        android:layout_height="460dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.282" />
+        app:layout_constraintVertical_bias="0.540" />
 
     <Button
         android:id="@+id/button_Nuevo"
+        style="@style/MainRoundedButtonStyle"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:background="@drawable/rounded_button"
         android:text="@string/boton_nuevo"
         android:textAlignment="gravity"
         android:textSize="34sp"
@@ -29,6 +32,6 @@
         app:layout_constraintHorizontal_bias="0.954"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myRecyclerView_Citas"
-        app:layout_constraintVertical_bias="0.566" />
+        app:layout_constraintVertical_bias="0.339" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

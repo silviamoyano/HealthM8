@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +28,8 @@ import retrofit2.Response;
 * Una vez que se ha dado de alta, nos devuelve al LoginActivity. */
 public class NuevoUsuarioActivity  extends AppCompatActivity implements View.OnClickListener
 {
+    TextView txtTitulo;
+    ImageView imagen;
     EditText editTextUsuario;
     EditText editTextPassword;
 
@@ -67,20 +71,23 @@ public class NuevoUsuarioActivity  extends AppCompatActivity implements View.OnC
         setContentView(R.layout.nuevo_usuario_activity);
 
         //Asociamos los objetos a la vista
+        txtTitulo = findViewById(R.id.textView);
+        imagen = findViewById(R.id.imageView);
         editTextUsuario = findViewById(R.id.editTextUsuario);
         editTextPassword = findViewById(R.id.editTextPassword);
 
         btnAceptar = findViewById(R.id.button_aceptar);
         btnCancelar = findViewById(R.id.button_cancelar);
 
-        // Mostrar mensaje de error para el campo de usuario
-        editTextUsuario.setError("Escribe tu nombre");
         //Deshabilitamos el botón
         btnAceptar.setEnabled(false);
 
         //Asocio el TextWatcher a los campos de texto
         editTextUsuario.addTextChangedListener(textWatcher);
         editTextPassword.addTextChangedListener(textWatcher);
+
+        // Mostrar mensaje de error para el campo de usuario
+        editTextUsuario.setError("Escribe tu nombre");
 
         //Asociamos los listener
         btnAceptar.setOnClickListener(this);

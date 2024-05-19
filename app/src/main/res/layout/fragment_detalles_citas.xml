@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:background="@color/teal_200"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        card_view:cardCornerRadius="6dp"
+
+        card_view:cardCornerRadius="20dp"
         card_view:cardElevation="4dp"
         card_view:cardUseCompatPadding="true">
 
@@ -18,18 +20,20 @@
 
             <TextView
                 android:id="@+id/TextView_especialidad"
+                style="@style/CardViewTextDetallesStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="50dp"
                 android:text="ESPECIALIDAD"
                 android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/TextView_fechaCita"
+                style="@style/CardViewTextDetallesStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -43,6 +47,7 @@
 
             <TextView
                 android:id="@+id/TextView_horaCita"
+                style="@style/CardViewTextDetallesStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -56,6 +61,7 @@
 
             <TextView
                 android:id="@+id/TextView_lugarCita"
+                style="@style/CardViewTextDetallesStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -69,6 +75,7 @@
 
             <TextView
                 android:id="@+id/TextView_esOnline"
+                style="@style/CardViewTextDetallesStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -82,6 +89,7 @@
 
             <TextView
                 android:id="@+id/TextView_esTelefonica"
+                style="@style/CardViewTextDetallesStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -95,6 +103,7 @@
 
             <TextView
                 android:id="@+id/TextView_medico"
+                style="@style/CardViewTextDetallesStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -108,27 +117,29 @@
 
             <Button
                 android:id="@+id/button_Recordatorio"
-                android:layout_width="wrap_content"
+                style="@style/RoundedButtonDetallesStyle"
+                android:layout_width="166dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="178dp"
                 android:layout_marginTop="100dp"
-                android:layout_marginEnd="53dp"
+                android:layout_marginEnd="23dp"
                 android:layout_marginBottom="50dp"
                 android:text="@string/boton_recodatorioCita" />
 
             <Button
                 android:id="@+id/button_Editar"
-                android:layout_width="wrap_content"
+                style="@style/RoundedButtonDetallesStyle"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="57dp"
+                android:layout_marginStart="38dp"
                 android:layout_marginTop="100dp"
-                android:layout_marginEnd="240dp"
+                android:layout_marginEnd="229dp"
                 android:layout_marginBottom="50dp"
                 android:text="Editar" />
 
