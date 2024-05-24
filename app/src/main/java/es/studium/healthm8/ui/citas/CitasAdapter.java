@@ -36,8 +36,6 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
     private NavController navController;
     private  Context context;
 
-    CitasFragment citasFragment;
-
     public void setItems(List<Citas> listaCitasUsuario) {this.items = listaCitasUsuario;}
 
     public static class CitasViewHolder extends RecyclerView.ViewHolder
@@ -48,7 +46,8 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
         public TextView horaCita;
 
 
-        public CitasViewHolder(@NonNull View v) {
+        public CitasViewHolder(@NonNull View v)
+        {
             super(v);
             //Asociamos los objetos a la vista del CardView
             fechaCita = v.findViewById(R.id.TextView_fechaCita);
@@ -57,7 +56,8 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
         }
     }
     //Contructor del adapter
-    public CitasAdapter(List<Citas> items, NavController navController, Context context) {
+    public CitasAdapter(List<Citas> items, NavController navController, Context context)
+    {
         this.items = items;
         this.navController = navController;
         this.context = context;
@@ -71,14 +71,16 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
 
     @NonNull
     @Override
-    public CitasViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CitasViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.citas_card, parent, false);
         return new CitasViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CitasViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull CitasViewHolder viewHolder, int position)
+    {
        //Creamos un objeto de tipo Cita y obetenemos su posicion
         Citas cita = items.get(position);
 
@@ -97,11 +99,14 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
         SimpleDateFormat formatoOriginal = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         SimpleDateFormat formateoDeseado = new SimpleDateFormat("dd/MM/yyyy");
         String fechaFormateada;
-        try {
+        try
+        {
             Date fechaParseada = formatoOriginal.parse(fechaCitaBD);
             fechaFormateada = formateoDeseado.format(fechaParseada);
 //            Log.d("Mnsj. CitasAdapter", "fechaParseada: " + fechaParseada);
-        } catch (ParseException e) {
+        }
+        catch (ParseException e)
+        {
             throw new RuntimeException(e);
         }
         //String fechaFormateada = formateoFecha.format(fechaCitaBD);
@@ -117,14 +122,13 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
 
         // Agregamos el clic del elemento del RecyclerView
         // Modificar cita
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 //Crear Bundle y agregar datos
                 Bundle args = new Bundle();
-//                args.putString("fechaCita", fechaFormateada);
-//                args.putString("horaCita", horaCitaBD);
-//                args.putString("especialidadCita", nombreEspecialidad);
                 args.putInt("idUsuarioLogueado", cita.getIdUsuarioFK());
                 args.putInt("idCita", cita.getIdCita());
                 //Añadir más argumentos de las citas para la siguiente vista
@@ -133,7 +137,6 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
 
 
                 // Navegar al fragmento de detalles usando NavController
-                // Obtener el NavController y navegar al fragmento de detalles con argumentos
                 Navigation.findNavController(v).navigate(R.id.nav_detalle_citas, args);
             }
         });
