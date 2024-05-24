@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 
+import java.util.List;
+
 import es.studium.healthm8.LoginActivity;
 import es.studium.healthm8.R;
 import es.studium.healthm8.io.ApiAdapter;
@@ -59,7 +61,7 @@ public class NuevoUsuarioActivity  extends AppCompatActivity implements View.OnC
             {
                 editTextPassword.setError("Debe contener números, un caracter especial y una letra");
             }
-            Log.d("MnsjAfterTextChanged.", "El usuario y la contraseña son correctos");
+            Log.d("Mnsj.NewUser", "El usuario y la contraseña son correctos");
             btnAceptar.setEnabled(camposCumplimentados());
         }
     };
@@ -101,9 +103,8 @@ public class NuevoUsuarioActivity  extends AppCompatActivity implements View.OnC
         {
             String nombreUsuario = editTextUsuario.getText().toString();
             String claveUsuario = editTextPassword.getText().toString();
-            //Conexion con la API REST
-            //Dar de alta un usuario
-            darAltaUsuario(nombreUsuario, claveUsuario);
+            //Verificamos si el nombre de usuario introducido existe ya en la BD
+            verificarNombreUsuario(nombreUsuario, claveUsuario);
         }
         //Botón cancelar
         else
@@ -119,9 +120,9 @@ public class NuevoUsuarioActivity  extends AppCompatActivity implements View.OnC
     {
         //Obtenemos los datos de los campos
         String usuario = editTextUsuario.getText().toString();
-        Log.d("Mnsj.", "editTextUsuario: " + usuario);
+        Log.d("Mnsj.NewUser", "editTextUsuario: " + usuario);
         String password = editTextPassword.getText().toString();
-        Log.d("Mnsj.", "editTextPassword: " + password);
+        Log.d("Mnsj.NewUser", "editTextPassword: " + password);
 
         // Para comprobar el formato de la contraseña
         boolean passwordValida = comprobarPassword(password);
@@ -131,8 +132,8 @@ public class NuevoUsuarioActivity  extends AppCompatActivity implements View.OnC
             return false;  // Retorna false ya que la contraseña no es válida
         }
 
-        Log.d("Mnsj.", "camposCumplimentados - Campos Completos: " + (!usuario.isEmpty() && !password.isEmpty()));
-        Log.d("Mnsj.", "camposCumplimentados - Password Válida: " + passwordValida);
+        Log.d("Mnsj.NewUser", "camposCumplimentados - Campos Completos: " + (!usuario.isEmpty() && !password.isEmpty()));
+        Log.d("Mnsj.NewUser", "camposCumplimentados - Password Válida: " + passwordValida);
 
         return true;  // Retorna true solo si los campos están completos y la contraseña es válida
     }
@@ -144,11 +145,57 @@ public class NuevoUsuarioActivity  extends AppCompatActivity implements View.OnC
 
         boolean passwordValida = password.matches("^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=!.;])(?=\\S+$).*$");
 
-        Log.d("Mnsj.", "comprobarPassword: " + passwordValida);
+        Log.d("Mnsj.NewUser", "comprobarPassword: " + passwordValida);
 
         return passwordValida;
     }
 
+    //Verificarmos si el nombre de usuario existe ya en la BD
+    private void  verificarNombreUsuario(String nombreUsuario, String claveUsuario)
+    {
+        Call<List<Usuarios>> callUsuarios = ApiAdapter.getApiService().getAllUsuarios();
+        callUsuarios.enqueue(new Callback<List<Usuarios>>()
+        {
+            @Override
+            public void onResponse(Call<List<Usuarios>> call, Response<List<Usuarios>> response)
+            {
+                if (response.isSuccessful() && response.body() != null)
+                {
+                    List<Usuarios> listaUsuarios = response.body();
+                    boolean usuarioExiste = false;
+
+                    for (Usuarios usuario : listaUsuarios)
+                    {
+                        if (usuario.getNombreUsuario().equals(nombreUsuario))
+                        {
+
+                            usuarioExiste = true;
+                            break;
+                        }
+                    }
+
+                    if (usuarioExiste)
+                    {
+                        // Mostrar un Toast informando que el usuario ya existe
+                        mostrarToast("El nombre de usuario ya existe. Por favor, elige otro.");
+                    }
+                    else
+                    {
+                        // Dar de alta el usuario ya que no existe previamente
+                        darAltaUsuario(nombreUsuario, claveUsuario);
+                    }
+                } else {
+                    Log.d("Mnsj.NewUser", "Error al verificar el usuario");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Usuarios>> call, Throwable t)
+            {
+                Log.d("Mnsj.NewUser", "Error en la llamada a la API para verificar usuario");
+            }
+        });
+    }
     //Dar de alta un usuario
     public void darAltaUsuario(String nombre, String clave)
     {
@@ -158,7 +205,7 @@ public class NuevoUsuarioActivity  extends AppCompatActivity implements View.OnC
         // Log para mostrar el objeto JSON que se enviará
         Gson gson = new Gson();
         String json = gson.toJson(usuarios);
-        Log.d("Mnsj.JSON enviado", json);
+        Log.d("Mnsj.NewUser", json);
 
         //Llamamos a la API
         Call<Void> callAltaUsuario = ApiAdapter.getApiService().altaUsuario(usuarios);
@@ -171,18 +218,18 @@ public class NuevoUsuarioActivity  extends AppCompatActivity implements View.OnC
                 if (response.isSuccessful())
                 {
                     // Éxito en la llamada a la API para dar de alta el pedido
-                    Log.d("Mnsj. Alta Usuario ", "Usuario dado de alta correctamente");
+                    Log.d("Mnsj.NewUser", "Usuario dado de alta correctamente");
                     //Toast.makeText(NuevoUsuarioActivity.this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
                     mostrarToast("Usuario registrado correctamente");
                     //Hacemos visible el otro Activity
                     Intent intent = new Intent(NuevoUsuarioActivity.this, LoginActivity.class);
                     startActivity(intent);
-                    Log.d("Mnsj.", "Abriendo LoginActivity");
+                    Log.d("Mnsj.NewUser", "Abriendo LoginActivity");
                 }
                 else
                 {
                     // Manejamos el error alta usuario
-                    Log.d("Mnsj. Error Alta Usuario", "Error al dar de alta el usuario");
+                    Log.d("Mnsj.NewUser", "Error al dar de alta el usuario");
                     //Toast.makeText(LoginActivity.this, "Error al registrarse", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -191,7 +238,7 @@ public class NuevoUsuarioActivity  extends AppCompatActivity implements View.OnC
             public void onFailure(Call<Void> call, Throwable t)
             {
                 //Mensaje de error en la llamada a la API
-                Log.d("Mnsj. darAltaUsuario-onFailure ", "Error en la llamada a la API");
+                Log.d("Mnsj.NewUser-onFailure ", "Error en la llamada a la API");
             }
         });
     }
