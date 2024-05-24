@@ -204,8 +204,9 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        eliminarUsuario(idUsuarioLogueado);
-                        //mostrarToast("Se ha borrado el usuario correctamente");
+                        verificarCitasDelUsuario();
+//                        eliminarUsuario(idUsuarioLogueado);
+//                        mostrarToast("Se ha borrado el usuario correctamente");
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener()
@@ -222,12 +223,47 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
         dialogoEliminarUsuario.show();
     }
 
+    private void verificarCitasDelUsuario()
+    {
+        // Llamamos a la API para obtener las citas del usuario
+        Call<List<Citas>> callCitasPorUsuario = ApiAdapter.getApiService().obtenerCitasPorUsuario(idUsuarioLogueado);
+        callCitasPorUsuario.enqueue(new Callback<List<Citas>>()
+        {
+            @Override
+            public void onResponse(Call<List<Citas>> call, Response<List<Citas>> response)
+            {
+                if (response.isSuccessful()) {
+                    List<Citas> citasUsuario = response.body();
+                    // Verificar si el usuario tiene citas
+                    if (citasUsuario != null && !citasUsuario.isEmpty())
+                    {
+                        // El usuario tiene citas, mostrar mensaje
+                        mostrarToast("El usuario tiene citas asociadas. Elimine las citas primero.");
+                    } else {
+                        // El usuario no tiene citas, proceder con la eliminación
+                        eliminarUsuario(idUsuarioLogueado);
+                        mostrarToast("Se ha borrado el usuario correctamente");
+                    }
+                }
+                else
+                {
+                    mostrarToast("Error al obtener citas del usuario.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Citas>> call, Throwable t)
+            {
+                Log.e("Mnsj. MainActivity", "Error al obtener citas del usuario: " + t.getMessage(), t);
+                mostrarToast("Error al obtener citas del usuario.");
+            }
+        });
+    }
     private void eliminarUsuario(int idUsuarioLogueado)
     {
         Call<Void> callEliminarUsuario = ApiAdapter.getApiService().eliminarUsuarioPorId(idUsuarioLogueado);
         callEliminarUsuario.enqueue(new Callback<Void>()
         {
-
             @Override
             public void onResponse(Call<Void> call, Response<Void> response)
             {
@@ -299,5 +335,17 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
                 Log.d("Mnsj. MainActivity", "idCita: " + idCita);
             }
         }
+    }
+
+    @Override
+    public void onDialogoAltaListener()
+    {
+        mostrarToast("Cita dada de alta correctamente");
+    }
+
+    @Override
+    public void onDialogoModificarListener()
+    {
+        mostrarToast("Cita modificada correctamente");
     }
 }

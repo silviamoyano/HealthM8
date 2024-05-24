@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +60,7 @@ public class DialogoNuevaCita extends DialogFragment
     int esTelefonicaChecked;
     int idUsuarioFK;
 
+
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
         //Construir el diálogo
@@ -81,10 +83,13 @@ public class DialogoNuevaCita extends DialogFragment
         //Obtener el idUsuarioLogueado
         //Recuperamos los argumentos del CitasFragment
         Bundle args = getArguments();
-        if (args != null) {
+        if (args != null)
+        {
             idUsuarioLogueado = args.getInt("idUsuarioLogueado", 0);
             Log.d("Mnsj. DialogoNC", "idUsuarioLogueado: " + idUsuarioLogueado);
-        } else {
+        }
+        else
+        {
             Log.d("Mnsj. DialogoNC", "No hemos recibido idUsuarioLogueado");
         }
 
@@ -132,12 +137,16 @@ public class DialogoNuevaCita extends DialogFragment
                             // Validación de la fecha
                             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                             Date diaActual = new Date();
-                            try {
+                            try
+                            {
                                 Date selectedDate = sdf.parse(fecha);
-                                if (selectedDate.before(diaActual)) {
+                                if (selectedDate.before(diaActual))
+                                {
                                     mostrarToast("La fecha no puede ser anterior al día actual");
                                 }
-                            } catch (ParseException e) {
+                            }
+                            catch (ParseException e)
+                            {
                                 e.printStackTrace();
                             }
                             // Formateamos la Fecha para que coincida con el formato requerido por la API
@@ -161,7 +170,6 @@ public class DialogoNuevaCita extends DialogFragment
                             darAltaCita();
 
                         }
-                        mostrarToast("Cita dada de alta correctamente");
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -276,13 +284,13 @@ public class DialogoNuevaCita extends DialogFragment
                     Log.d("Mnsj. DialogoNC ", "darAltaCita - onResponse: Cita creada correctamente");
                     Log.d("Mnsj. DialogoNC", "========================================================================");
 
+                    //Notificamos del alta al acticity para mostrar el toast al usuario
+                    mListener.onDialogoAltaListener();
                    //Notificamos del alta al acticity para que actualice el CitasFragment
                     mListener.onDialogoRefrescarCitasListener();
                 }
                 else
                 {
-                    // Manejar el caso de respuesta no exitosa al dar de alta el pedido
-                    //Toast.makeText(getActivity(), "Error al dar de alta el pedido", Toast.LENGTH_SHORT).show();
                     Log.d("Mnsj. Error Alta Cita", "onResponse: Error al dar de alta la cita");
                     mostrarToast("Error al dar de alta la cita");
                 }
@@ -301,6 +309,6 @@ public class DialogoNuevaCita extends DialogFragment
     //Método para mostrar un Toast
     public void mostrarToast(String mensaje)
     {
-        Toast.makeText(getActivity(), mensaje, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), mensaje, Toast.LENGTH_SHORT).show();
     }
 }

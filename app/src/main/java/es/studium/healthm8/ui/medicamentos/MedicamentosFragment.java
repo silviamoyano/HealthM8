@@ -47,12 +47,8 @@ public class MedicamentosFragment extends Fragment
 
     private List<Medicamentos> obtenerListaMedicamentos() {
         List<Medicamentos> lista = new ArrayList<>();
-        lista.add(new Medicamentos("Pastilla de la tensión", "1 pastilla"));
-        lista.add(new Medicamentos("Pastilla del colesterol", "1 pastilla"));
-        lista.add(new Medicamentos("Couldina", "1 pastilla"));
-        lista.add(new Medicamentos("Pastillas pelaso", "2 pastillas"));
-        lista.add(new Medicamentos("Vitaminas", "2 pastillas"));
-        lista.add(new Medicamentos("Calcio", "3 pastillas"));
+        lista.add(new Medicamentos("En construcción...", " "));
+
         return lista;
     }
 
