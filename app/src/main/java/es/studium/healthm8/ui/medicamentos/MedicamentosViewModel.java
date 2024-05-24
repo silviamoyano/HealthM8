@@ -10,7 +10,7 @@ public class MedicamentosViewModel extends ViewModel {
 
     public MedicamentosViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is MEDICAMENTOS fragment");
+        mText.setValue("En construcción");
     }
 
     public LiveData<String> getText() {

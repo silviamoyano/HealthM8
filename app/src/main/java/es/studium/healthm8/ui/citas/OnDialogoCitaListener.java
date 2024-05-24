@@ -10,4 +10,6 @@ public interface OnDialogoCitaListener
     public void onDialogoRefrescarCitasListener();
     public void onDialogoActualizarCitasDetallesListener();
 
+    public void onDialogoAltaListener();
+    public void onDialogoModificarListener();
 }

@@ -209,7 +209,6 @@ public class DialogoModificarCita extends DialogFragment
                             //Llamar a la API
                             actualizarCita(idCita, citaActualizada);
                         }
-                        mostrarToast("Cita modificada correctamente");
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -226,13 +225,17 @@ public class DialogoModificarCita extends DialogFragment
     }
 
 
-    public void onAttach(Context context) {
+    public void onAttach(Context context)
+    {
         super.onAttach(context);
         //Verificamos que la actividad principal ha implementado la interfaz
-        try {
+        try
+        {
             //Instanciamos OnNuevoDialogoListener para poder enviar eventos a la Clase Principal
             mListener = (OnDialogoCitaListener) context;
-        } catch (ClassCastException e) {
+        }
+        catch (ClassCastException e)
+        {
             //La actividad no implementa el interfaz
             throw new ClassCastException(context.toString() + " debe implementar OnDialogoListener");
         }
@@ -346,9 +349,10 @@ public class DialogoModificarCita extends DialogFragment
                 if (response.isSuccessful()) {
                     Log.d("Mnsj. DialogoMoC", "========================================================================");
                     Log.d("Mnsj. DialogoMoC", "Cita modificada correctamente");
-                    //Aviso al fragment del cambio
-                    mListener.onDialogoActualizarCitasDetallesListener();
 
+                    //Aviso al fragment del cambio
+                    mListener.onDialogoModificarListener();
+                    mListener.onDialogoActualizarCitasDetallesListener();
                 }
                 else
                 {

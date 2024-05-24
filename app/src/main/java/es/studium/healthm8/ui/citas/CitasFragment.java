@@ -84,7 +84,7 @@ public class CitasFragment extends Fragment
         return root;
     }
 
-   //Método para obtener las citas del usuario logueado
+    //Método para obtener las citas del usuario logueado
     public void obtenerCitasUsuario(int idUsuario)
     {
         // Obtener la fecha actual
@@ -134,17 +134,31 @@ public class CitasFragment extends Fragment
                         Collections.sort(listadoCitasPosterioresDiaActual, new Comparator<Citas>()
                         {
                             @Override
-                            public int compare(Citas cita1, Citas cita2) {
-                                return cita1.getFechaCita().compareTo(cita2.getFechaCita());
+                            public int compare(Citas cita1, Citas cita2)
+                            {
+                                // Comparar por fecha
+                                int compararFecha = cita1.getFechaCita().compareTo(cita2.getFechaCita());
+                                if (compararFecha != 0)
+                                {
+                                    return compararFecha;
+                                }
+                                else
+                                {
+                                    // Si las fechas son iguales, comparamos por hora
+                                    try
+                                    {
+                                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                                        String horaCita1 = String.valueOf(sdf.parse(cita1.getHoraCita()));
+                                        String horaCita2 = String.valueOf(sdf.parse(cita2.getHoraCita()));
+                                        return horaCita1.compareTo(horaCita2);
+                                    } catch (ParseException e)
+                                    {
+                                        e.printStackTrace();
+                                        return 0;
+                                    }
+                                }
                             }
                         });
-
-//                        // Convertir el listado de citas a JSON
-//                        Gson gson = new Gson();
-//                        String json = gson.toJson(listadoCitasDelUsuario);
-//
-//                        // Imprimir el JSON en la consola
-//                        Log.d("Mnsj. CitasFragment", "JSON_RESPONSE: " +json);
 
                         // Configurar el adaptador con los datos de las citas
                         citasAdapter = new CitasAdapter(listadoCitasPosterioresDiaActual, NavHostFragment.findNavController(CitasFragment.this), requireContext());
