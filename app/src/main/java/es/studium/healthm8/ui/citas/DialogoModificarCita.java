@@ -121,11 +121,9 @@ public class DialogoModificarCita extends DialogFragment
         //Añadimos un título al diálogo + los botones Aceptar y Cancelar. Además, añadimos myView
         builder.setView(myView)
                 .setTitle("Modificar Cita")
-                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                    public void onClick(DialogInterface dialog, int which) {
                         //Obtenemos el valor de los campos de texto
                         idEspecialidad_spinner = (int) spinnerEspecialidades.getSelectedItemId();
                         nombreEspecialidad_spinner = (String) spinnerEspecialidades.getSelectedItem();
@@ -149,48 +147,40 @@ public class DialogoModificarCita extends DialogFragment
                         Log.d("Mnsj. DialogoMoC", "esTelefonicaChecked: " + esTelefonicaChecked);
 
                         //Comprobamos que los campos de texto no estén vacíos
-                        if(!comprobarCampos(idEspecialidad_spinner, fecha_txt, hora_txt, lugar))
-                        {
+                        if(!comprobarCampos(idEspecialidad_spinner, fecha_txt, hora_txt, lugar)) {
                             //Al menos un campo está vacío
                         }
                         //Campos cumplimentados
-                        else
-                        {
+                        else {
                             // Validación de la fecha
                             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                             Date diaActual = new Date();
                             try {
                                 Date selectedDate = sdf.parse(fecha_txt);
-                                if (selectedDate.before(diaActual))
-                                {
+                                if (selectedDate.before(diaActual)) {
                                     mostrarToast("La fecha seleccionada no puede ser anterior al día actual");
                                     return;
                                 }
-                            } catch (ParseException e)
-                            {
+                            } catch (ParseException e) {
                                 e.printStackTrace();
                             }
                             // Formateamos la Fecha para que coincida con el formato requerido por la API
                             SimpleDateFormat formatoEntrada = new SimpleDateFormat("dd/MM/yyyy");
                             SimpleDateFormat formatoSalida = new SimpleDateFormat("yyyy-MM-dd");
-                            try
-                            {
+                            try {
                                 //Convertir a Date fecha (String)
                                 fecha_txt_Date = formatoEntrada.parse(fecha_txt);//Date
                                 //Formatear en el nuevo patrón yyyy-mm-dd
                                 fecha_txt_BD = formatoSalida.format(fecha_txt_Date);//String
-
                                 Log.d("Mnsj. DialogoMoC", "fechaDate: " + fecha_txt_Date);
                                 Log.d("Mnsj. DialogoMoC", "fechaBD: " + fecha_txt_BD);
 
-                            } catch (ParseException e)
-                            {
+                            } catch (ParseException e) {
                                 e.printStackTrace();
                             }
                             //Añadimos los segundos a la hora
                             String segundos = ":00";
                             horaBD = hora_txt + segundos;//HH:mm:ss
-
                             //Creamos los objetos de la cita actualizada
                             Especialidades especialidadSeleccionada = new Especialidades();
                             especialidadSeleccionada.setIdEspecialidad(idEspecialidad_spinner);
@@ -244,11 +234,9 @@ public class DialogoModificarCita extends DialogFragment
     // Método para rellenar los campos del diálogo con los datos de la cita
     public void rellenarCampos()
     {
-//        int idEspecialidad = cita.getEspecialidades().getIdEspecialidad();//idEspecialidad
-
         // Rellenar los campos con los datos de la cita
         editTextFecha.setText(fecha_txt);
-//        Log.d("Mnsj. DialogoMoC", "Fecha cita: " + fecha_txt);
+
         editTextHora.setText(hora_txt);
         editTextLugar.setText(lugar);
         editTextNombreMedico.setText(nombreMedico_txt);
@@ -289,11 +277,8 @@ public class DialogoModificarCita extends DialogFragment
                         // Verificar si el nombre de la especialidad se encuentra en la lista
                         if (especialidad.getNombreEspecialidad().equals(nombreEspecialidad_spinner))
                         {
-//                            Log.d("Mnsj. DialogoMoC", "nombreEspecialidad_spinner encontrado: " + nombreEspecialidad_spinner);
                             indiceEspecialidadSeleccionada = i + 1; // +1 para tener en cuenta el ítem "Selecciona una Especialidad"
-                        }
-                        else {
-//                            Log.d("Mnsj. DialogoMoC", "nombreEspecialidad_spinner no encontrado en esta iteración: " + especialidad.getNombreEspecialidad());
+                        } else {//  Log.d("Mnsj. DialogoMoC", "nombreEspecialidad_spinner no encontrado en esta iteración: " + especialidad.getNombreEspecialidad());
                         }
                     }
                     //Mostramos el listado

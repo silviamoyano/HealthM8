@@ -126,6 +126,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnAcceder.setOnClickListener(this);
         btnRegistrarse.setOnClickListener(this);
     }
+
     @Override
     public void onClick(View view)
     {
@@ -184,32 +185,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     //Método para obtener los usuarios y comprobar que está en la base de datos
-    public void obtenerUsuarios()
-    {
+    public void obtenerUsuarios() {
         //Llamamos a la API
         Call<List<Usuarios>> callAllUsuarios = ApiAdapter.getApiService().getAllUsuarios();
-        callAllUsuarios.enqueue(new Callback<List<Usuarios>>()
-        {
+        callAllUsuarios.enqueue(new Callback<List<Usuarios>>() {
             @Override
             public void onResponse(Call<List<Usuarios>> call, Response<List<Usuarios>> response)
             {
-                if (response.isSuccessful())
-                {
+                if (response.isSuccessful()) {
                     List<Usuarios> usuariosList = response.body();
-                    if (usuariosList != null && !usuariosList.isEmpty())
-                    {
+                    if (usuariosList != null && !usuariosList.isEmpty()) {
                         // Verificar si algún usuario coincide con los datos ingresados
                         String nombreUsuario = editTextUsuario.getText().toString();
                         String claveUsuario = editTextPassword.getText().toString();
-                        for (Usuarios usuario : usuariosList)
-                        {
-                            if (usuario.getNombreUsuario().equals(nombreUsuario) && usuario.getClaveUsuario().equals(claveUsuario))
-                            {
+                        for (Usuarios usuario : usuariosList) {
+                            if (usuario.getNombreUsuario().equals(nombreUsuario) && usuario.getClaveUsuario().equals(claveUsuario)) {
                                 //Guardamos el id de usuario logueado
                                 idUsuarioLogueado = usuario.getIdUsuario();
                                 Log.d("Mnsj. LoginActivity", "API - idUsuarioLogueado: " + idUsuarioLogueado);
-                                if (switchGuardarCredenciales.isChecked())
-                                {
+                                if (switchGuardarCredenciales.isChecked()) {
                                     //Guardamos el nombre, la clave y el id de usuario logueado en el sharedPreferences
                                     SharedPreferences.Editor editor = sharedpreferences.edit();
                                     editor.putString(Nombre, editTextUsuario.getText().toString());
@@ -224,24 +218,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }
                         }
                         // Si no se encontró ninguna coincidencia, mostrar un Toast
-                        mostrarToast("Tienes que darte de alta primero");
-                    }
-                    else
-                    {
+                        mostrarToast("Tienes que darte de alta primero, el usuario no existe");
+                    } else {
                         // Si la lista de usuarios está vacía, mostrar un Toast
                         mostrarToast("No hay usuarios registrados");
                     }
-                }
-                else
-                {
+                } else {
                     // Manejar el error de la llamada a la API
                     Log.d("Mnsj. LoginActivity", "Error al leer usuarios: " + response.message());
                     mostrarToast("Error al leer usuarios");
                 }
             }
             @Override
-            public void onFailure(Call<List<Usuarios>> call, Throwable t)
-            {
+            public void onFailure(Call<List<Usuarios>> call, Throwable t) {
                 Log.d("Mnsj. LoginActivity", "Error al leer usuarios: " + t.getMessage());
                 mostrarToast("Error al leer usuarios");
             }

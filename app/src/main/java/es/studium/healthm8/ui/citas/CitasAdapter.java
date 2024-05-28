@@ -79,11 +79,9 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CitasViewHolder viewHolder, int position)
-    {
+    public void onBindViewHolder(@NonNull CitasViewHolder viewHolder, int position) {
        //Creamos un objeto de tipo Cita y obetenemos su posicion
         Citas cita = items.get(position);
-
         /*Obtenemos los items y trabajamos con ellos para poder asignarlos a la vista*/
         //Obtenemos los datos de la BD
         String fechaCitaBD = cita.getFechaCita();
@@ -91,42 +89,28 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
         Especialidades especialidadesBD = cita.getEspecialidades();//obtengo: id y nombre
         String nombreEspecialidad = cita.getEspecialidades().getNombreEspecialidad();//nombre
 
-//        Log.d("Mnsj. CitasAdapter", "fechaCitaBD: " + fechaCitaBD);
-//        Log.d("Mnsj. CitasAdapter", "horaCitaBD: " + horaCitaBD);
-//        Log.d("Mnsj. CitasAdapter", "especialidadCitaBD: " + nombreEspecialidad);
-
         //Formatear fecha
         SimpleDateFormat formatoOriginal = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         SimpleDateFormat formateoDeseado = new SimpleDateFormat("dd/MM/yyyy");
         String fechaFormateada;
-        try
-        {
+        try {
             Date fechaParseada = formatoOriginal.parse(fechaCitaBD);
             fechaFormateada = formateoDeseado.format(fechaParseada);
-//            Log.d("Mnsj. CitasAdapter", "fechaParseada: " + fechaParseada);
-        }
-        catch (ParseException e)
-        {
+        } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        //String fechaFormateada = formateoFecha.format(fechaCitaBD);
-
         //Formatear hora
         String horaFormateada = formateoHora(horaCitaBD);
         String especialidadCita = nombreEspecialidad;
-
         //Asignamos los datos a los elementos del cardview
         viewHolder.fechaCita.setText(fechaFormateada);
         viewHolder.horaCita.setText(horaFormateada);
         viewHolder.especialidadCita.setText(nombreEspecialidad);
-
         // Agregamos el clic del elemento del RecyclerView
         // Modificar cita
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener()
-        {
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 //Crear Bundle y agregar datos
                 Bundle args = new Bundle();
                 args.putInt("idUsuarioLogueado", cita.getIdUsuarioFK());
@@ -134,19 +118,15 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
                 //Añadir más argumentos de las citas para la siguiente vista
                 Log.d("Mnsj. CitasAdapter", "========================================================================" );
                 Log.d("Mnsj. CitasAdapter", "item pulsado:" + cita.getIdCita());//obtenemos id de la cita pulsada
-
-
                 // Navegar al fragmento de detalles usando NavController
                 Navigation.findNavController(v).navigate(R.id.nav_detalle_citas, args);
             }
         });
         // Agregamos el long clic del elemento del RecyclerView
         // Eliminar cita
-        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener()
-        {
+        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v)
-            {
+            public boolean onLongClick(View v) {
                 int idCitaAEliminar = cita.getIdCita();
                 Log.d("Mnsj. CitasAdapter", "========================================================================");
                 Log.d("Mnsj CitasAdapter", "Cita a eliminar: " + idCitaAEliminar);
@@ -210,7 +190,6 @@ public class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitasViewHol
                     Log.d("Mnsj. CitasAdapter", "========================================================================");
                 }
             }
-
             @Override
             public void onFailure(Call<Void> call, Throwable t)
             {

@@ -187,7 +187,6 @@ public class NuevoUsuarioActivity  extends AppCompatActivity implements View.OnC
                     Log.d("Mnsj.NewUser", "Error al verificar el usuario");
                 }
             }
-
             @Override
             public void onFailure(Call<List<Usuarios>> call, Throwable t)
             {
@@ -218,7 +217,6 @@ public class NuevoUsuarioActivity  extends AppCompatActivity implements View.OnC
                 {
                     // Éxito en la llamada a la API para dar de alta el pedido
                     Log.d("Mnsj.NewUser", "Usuario dado de alta correctamente");
-                    //Toast.makeText(NuevoUsuarioActivity.this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
                     mostrarToast("Usuario registrado correctamente");
                     //Hacemos visible el otro Activity
                     Intent intent = new Intent(NuevoUsuarioActivity.this, LoginActivity.class);
@@ -229,7 +227,6 @@ public class NuevoUsuarioActivity  extends AppCompatActivity implements View.OnC
                 {
                     // Manejamos el error alta usuario
                     Log.d("Mnsj.NewUser", "Error al dar de alta el usuario");
-                    //Toast.makeText(LoginActivity.this, "Error al registrarse", Toast.LENGTH_SHORT).show();
                 }
             }
 

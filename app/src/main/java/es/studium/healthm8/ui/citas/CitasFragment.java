@@ -85,45 +85,31 @@ public class CitasFragment extends Fragment
     }
 
     //Método para obtener las citas del usuario logueado
-    public void obtenerCitasUsuario(int idUsuario)
-    {
+    public void obtenerCitasUsuario(int idUsuario) {
         // Obtener la fecha actual
         Date fechaActual = new Date();
-
         //Llamamos a la API
         Call<List<Citas>>callCitasPorUsuario = ApiAdapter.getApiService().obtenerCitasPorUsuario(idUsuario);
-        if(callCitasPorUsuario != null)
-        {
-            callCitasPorUsuario.enqueue(new Callback<List<Citas>>()
-            {
+        if(callCitasPorUsuario != null) {
+            callCitasPorUsuario.enqueue(new Callback<List<Citas>>() {
                 @Override
-                public void onResponse(Call<List<Citas>> call, Response<List<Citas>> response)
-                {
-                    if(response.isSuccessful())
-                    {
+                public void onResponse(Call<List<Citas>> call, Response<List<Citas>> response) {
+                    if(response.isSuccessful()) {
                         //Método para obtener TODAS las citas del usuario
                         List<Citas> listadoCitasDelUsuario = response.body();
-
                         //Lista para almacenar las citas posteriores al día actual
                         List<Citas> listadoCitasPosterioresDiaActual = new ArrayList<>();
-
-                        for (Citas cita : listadoCitasDelUsuario)
-                        {
-                            try
-                            {
+                        for (Citas cita : listadoCitasDelUsuario) {
+                            try {
                                 //Convertimos la cadena de fecha de la cita a Date
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
                                 Date fechaCita = sdf.parse(cita.getFechaCita());
-
                                 //Comparamos la fecha de la cita con la fecha actual
-                                if (fechaCita.after(fechaActual))
-                                {
+                                if (fechaCita.after(fechaActual)) {
                                     listadoCitasPosterioresDiaActual.add(cita);
 
                                 }
-                            }
-                            catch (ParseException e)
-                            {
+                            } catch (ParseException e) {
                                 e.printStackTrace();
                             }
                         }
@@ -131,57 +117,43 @@ public class CitasFragment extends Fragment
                         Log.d("Mnsj. CitasFragment","obtenerCitasUsuario - Tamaño lista cistas: " + listadoCitasDelUsuario.size()+"");
                         Log.d("Mnsj. CitasFragment","obtenerCitasUsuario - Listado Citas Posteriores Dia Actual: "+ listadoCitasPosterioresDiaActual.size()+"");
                         //Ordenar la lista por fecha ascendente
-                        Collections.sort(listadoCitasPosterioresDiaActual, new Comparator<Citas>()
-                        {
+                        Collections.sort(listadoCitasPosterioresDiaActual, new Comparator<Citas>() {
                             @Override
-                            public int compare(Citas cita1, Citas cita2)
-                            {
+                            public int compare(Citas cita1, Citas cita2) {
                                 // Comparar por fecha
                                 int compararFecha = cita1.getFechaCita().compareTo(cita2.getFechaCita());
-                                if (compararFecha != 0)
-                                {
+                                if (compararFecha != 0) {
                                     return compararFecha;
-                                }
-                                else
-                                {
+                                } else {
                                     // Si las fechas son iguales, comparamos por hora
-                                    try
-                                    {
+                                    try {
                                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
                                         String horaCita1 = String.valueOf(sdf.parse(cita1.getHoraCita()));
                                         String horaCita2 = String.valueOf(sdf.parse(cita2.getHoraCita()));
                                         return horaCita1.compareTo(horaCita2);
-                                    } catch (ParseException e)
-                                    {
+                                    } catch (ParseException e) {
                                         e.printStackTrace();
                                         return 0;
                                     }
                                 }
                             }
                         });
-
                         // Configurar el adaptador con los datos de las citas
                         citasAdapter = new CitasAdapter(listadoCitasPosterioresDiaActual, NavHostFragment.findNavController(CitasFragment.this), requireContext());
                         recyclerView.setAdapter(citasAdapter);
                         items = listadoCitasPosterioresDiaActual;
-                    }
-                    else
-                    {
+                    } else {
                         Log.d("Mnsj. CitasFragment", "response: no es exitosa");
                     }
                 }
-
                 @Override
-                public void onFailure(Call<List<Citas>> call, Throwable t)
-                {
+                public void onFailure(Call<List<Citas>> call, Throwable t) {
                     Log.d("Mnsj. CitasFragment", "obtenerCitasUsuario - onFailure: No hemos recibido respuesta de la API");
                     Log.e("Mnsj. CitasFragment", "obtenerCitasUsuario - onFailure: Error al obtener citas: " + t.getMessage(), t);
                     Log.d("Mnsj. CitasFragment", "================================================================");
                 }
             });
-        }
-        else
-        {
+        } else {
             Log.d("Mnsj. CitasFragment", "callCitasPorUsuario es null");
         }
     }

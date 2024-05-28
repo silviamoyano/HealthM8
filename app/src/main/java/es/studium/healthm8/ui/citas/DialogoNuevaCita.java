@@ -100,11 +100,9 @@ public class DialogoNuevaCita extends DialogFragment
         //Añadimos un título al diálogo + los botones Aceptar y Cancelar. Además, añadimos myView
         builder.setView(myView)
                 .setTitle("Nueva Cita")
-                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                    public void onClick(DialogInterface dialog, int which) {
                         //Obtenemos el valor de los campos de texto
                         idEspecialidad = (int) spinnerEspecialidades.getSelectedItemId();
                         nombreEspecialidad = (String) spinnerEspecialidades.getSelectedItem();
@@ -127,26 +125,20 @@ public class DialogoNuevaCita extends DialogFragment
                         Log.d("Mnsj. DialogoNC", "esTelefonicaChecked: " + esTelefonicaChecked);
 
                         //Comprobamos que los campos de texto no estén vacíos
-                        if(!comprobarCampos(idEspecialidad, fecha, hora, lugar))
-                        {
+                        if(!comprobarCampos(idEspecialidad, fecha, hora, lugar)) {
                             //Al menos un campo está vacío
                         }
                         //Campos cumplimentados
-                        else
-                        {
+                        else {
                             // Validación de la fecha
                             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                             Date diaActual = new Date();
-                            try
-                            {
+                            try {
                                 Date selectedDate = sdf.parse(fecha);
-                                if (selectedDate.before(diaActual))
-                                {
+                                if (selectedDate.before(diaActual)) {
                                     mostrarToast("La fecha no puede ser anterior al día actual");
                                 }
-                            }
-                            catch (ParseException e)
-                            {
+                            } catch (ParseException e) {
                                 e.printStackTrace();
                             }
                             // Formateamos la Fecha para que coincida con el formato requerido por la API
@@ -157,9 +149,6 @@ public class DialogoNuevaCita extends DialogFragment
                                 fechaDate = formatoEntrada.parse(fecha);//Date
                                 //Formatear en el nuevo patrón yyyy-mm-dd
                                 fechaBD= formatoSalida.format(fechaDate);//String
-//                                Log.d("Mnsj. DialogoNC", "fechaDate: " + fechaDate);
-//                                Log.d("Mnsj. DialogoNC", "fechaBD: " + fechaBD);
-
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
@@ -168,7 +157,6 @@ public class DialogoNuevaCita extends DialogFragment
                             horaBD = hora + segundos;//HH:mm:ss
                             //Llamar a la API
                             darAltaCita();
-
                         }
                     }
                 })
@@ -226,7 +214,6 @@ public class DialogoNuevaCita extends DialogFragment
                     spinnerEspecialidades.setAdapter(adapter);
                 }
             }
-
             @Override
             public void onFailure(Call<List<Especialidades>> call, Throwable t)
             {
@@ -254,8 +241,7 @@ public class DialogoNuevaCita extends DialogFragment
     }
 
     //Método para dar de alta una nueva cita
-    public void darAltaCita()
-    {
+    public void darAltaCita() {
         //Objeto especialidades
         Especialidades especialidadSeleccionada = new Especialidades();
         especialidadSeleccionada.setIdEspecialidad(idEspecialidad);
@@ -272,13 +258,10 @@ public class DialogoNuevaCita extends DialogFragment
         citaNueva.setIdUsuarioFK(idUsuarioFK);
 
         Call<Void> callAltaCita = ApiAdapter.getApiService().altaCita(citaNueva);
-        callAltaCita.enqueue(new Callback<Void>()
-        {
+        callAltaCita.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response)
-            {
-                if (response.isSuccessful())
-                {
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
                     // Éxito en la llamada a la API para dar de alta el pedido
                     Log.d("Mnsj. DialogoNC", "========================================================================");
                     Log.d("Mnsj. DialogoNC ", "darAltaCita - onResponse: Cita creada correctamente");
@@ -288,16 +271,13 @@ public class DialogoNuevaCita extends DialogFragment
                     mListener.onDialogoAltaListener();
                    //Notificamos del alta al acticity para que actualice el CitasFragment
                     mListener.onDialogoRefrescarCitasListener();
-                }
-                else
-                {
+                } else {
                     Log.d("Mnsj. Error Alta Cita", "onResponse: Error al dar de alta la cita");
                     mostrarToast("Error al dar de alta la cita");
                 }
             }
             @Override
-            public void onFailure(Call<Void> call, Throwable t)
-            {
+            public void onFailure(Call<Void> call, Throwable t) {
                 mostrarToast("Error al dar de alta la cita");
                 //Error en la llamada a la API al dar de alta la cita
                 Log.d("Mnsj. DialogoNC", "darAltaCita - onFailure: Error en la llamada a la API");
