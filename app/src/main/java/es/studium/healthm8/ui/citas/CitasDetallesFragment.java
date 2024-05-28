@@ -140,7 +140,6 @@ public class CitasDetallesFragment extends Fragment
     // Método para rellenar los campos del diálogo con los datos de la cita
     public void rellenarCampos(Citas cita) {
         nombreEspecialidad = cita.getEspecialidades().getNombreEspecialidad();
-
         //Formateamos la fecha y la hora
         SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
@@ -150,14 +149,11 @@ public class CitasDetallesFragment extends Fragment
         String partes_hora[] = horaBD.split(":");
         horaFormateadaAmostrarTxt = partes_hora[0] + ":" + partes_hora[1];// HH:mm
 
-        try
-        {
+        try {
             Date fechaDate = formatoEntrada.parse(fechaBD);
             fechaFormateadaAmostrarTxt = formatoSalida.format(fechaDate);// dd/MM/yyyy
 
-        }
-        catch (ParseException e)
-        {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 
@@ -168,21 +164,15 @@ public class CitasDetallesFragment extends Fragment
         horaCita.setText("Hora: " + horaFormateadaAmostrarTxt);
         lugarCita.setText("Lugar: " + cita.getLugarCita());
         nombreMedico.setText("Médico: " + cita.getNombreMedico());
-        if(cita.getEsOnline()== 0)
-        {
+        if(cita.getEsOnline()== 0) {
             esOnline.setText("¿Es online? - No");
-        }
-        else
-        {
+        } else {
             esOnline.setText("¿Es online? - Sí");
         }
 
-        if(cita.getEsTelefonica()== 0)
-        {
+        if(cita.getEsTelefonica()== 0) {
             esTelefonica.setText("¿Es telefónica? - No");
-        }
-        else
-        {
+        } else {
             esTelefonica.setText("¿Es telefónica? - Sí");
         }
     }

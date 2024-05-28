@@ -168,15 +168,10 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
                 Builder(this)
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener()
                 {
-
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        //Borramos los datos del SharedPreferences
-                        SharedPreferences.Editor editor = sharedpreferences.edit();
-                        editor.clear();  // Este método elimina todos los valores.
-                        editor.apply();
-                        mostrarToast("Se han borrado las credenciales");
+                        borrarCredenciales();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener()
@@ -193,6 +188,8 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
         dialogoEliminarCredenciales.show();
     }
 
+
+
     //Método para crear el dialogo para Eliminar el usuario
     public void crearDialogoEliminarUsuario()
     {
@@ -205,8 +202,6 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
                     public void onClick(DialogInterface dialog, int which)
                     {
                         verificarCitasDelUsuario();
-//                        eliminarUsuario(idUsuarioLogueado);
-//                        mostrarToast("Se ha borrado el usuario correctamente");
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener()
@@ -222,7 +217,17 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
                 .create();
         dialogoEliminarUsuario.show();
     }
+//Método para borrar las credenciales
+    private void borrarCredenciales()
+    {
+        //Borramos los datos del SharedPreferences
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.clear();  // Este método elimina todos los valores.
+        editor.apply();
+        mostrarToast("Se han borrado las credenciales");
+    }
 
+    //Método para borrar el usuario
     private void verificarCitasDelUsuario()
     {
         // Llamamos a la API para obtener las citas del usuario
@@ -239,9 +244,13 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
                     {
                         // El usuario tiene citas, mostrar mensaje
                         mostrarToast("El usuario tiene citas asociadas. Elimine las citas primero.");
-                    } else {
+                    } else
+                    {
                         // El usuario no tiene citas, proceder con la eliminación
                         eliminarUsuario(idUsuarioLogueado);
+                        //Borramos credenciales
+                        borrarCredenciales();
+                        //Mostramos el mensaje de éxito
                         mostrarToast("Se ha borrado el usuario correctamente");
                     }
                 }
@@ -336,13 +345,11 @@ public class MainActivity extends AppCompatActivity implements OnDialogoCitaList
             }
         }
     }
-
     @Override
     public void onDialogoAltaListener()
     {
         mostrarToast("Cita dada de alta correctamente");
     }
-
     @Override
     public void onDialogoModificarListener()
     {

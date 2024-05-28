@@ -14,17 +14,14 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-public interface ApiService
-{
+public interface ApiService {
     //USUARIOS
     //Alta
     @POST("usuarios")
     Call<Void> altaUsuario(@Body Usuarios usuarios);
-
     //Lectura
     @GET("usuarios/getall")
     Call<List<Usuarios>> getAllUsuarios();
-
     //Eliminar
     @DELETE("usuarios/id/{idUsuario}")
     Call<Void> eliminarUsuarioPorId(@Path("idUsuario") int idUsuario);
@@ -32,7 +29,6 @@ public interface ApiService
     //Alta
     @POST("citas")
     Call<Void> altaCita(@Body Citas cita);
-
     //Lectura
     /*Todas las citas segun el idUsuarioFK*/
     @GET("citas/usuarios/{idUsuarioFK}")
@@ -40,21 +36,16 @@ public interface ApiService
     /*Todos los datos segun el idCita*/
     @GET("citas/id/{idCita}")
     Call<Citas> obtenerCitaPorId(@Path("idCita") int idCita);
-
     //Eliminar
     @DELETE("citas/id/{idCita}")
     Call<Void> eliminarCitaPorId(@Path("idCita") int idCita);
-
     //Modificar
     @PUT("citas/id/{idCita}")
     Call<Void> actualizarCita(@Path("idCita") int idCita, @Body Citas citaActualizada);
-
     //ESPECIALIDADES
     //Lectura
     @GET("especialidades/getall")
     Call<List<Especialidades>> getAllEspecialidades();
     @GET("especialidades/{idEspecialidad}")
     Call<List<Especialidades>> obtenerEspecialidadesPorId();
-
-
 }
